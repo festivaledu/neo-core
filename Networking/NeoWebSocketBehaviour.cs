@@ -12,17 +12,17 @@ namespace Neo.Core.Networking
         }
 
         protected override void OnClose(CloseEventArgs e) {
-            Pool.Server.OnDisconnect(ID, e);
+            Pool.Server.OnDisconnect(ID, e.Code, e.Reason, e.WasClean);
             Pool.Server.SessionManager = Sessions;
         }
 
         protected override void OnError(ErrorEventArgs e) {
-            Pool.Server.OnError(ID, e);
+            Pool.Server.OnError(ID, e.Exception, e.Message);
             Pool.Server.SessionManager = Sessions;
         }
 
         protected override void OnMessage(MessageEventArgs e) {
-            Pool.Server.OnMessage(ID, e);
+            Pool.Server.OnMessage(ID, e.Data);
         }
     }
 }

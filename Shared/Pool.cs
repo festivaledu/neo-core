@@ -4,6 +4,6 @@ namespace Neo.Core.Shared
 {
     internal static class Pool
     {
-        internal static IServer Server { get; set; }
+        internal static BaseServer Server { get; set; }
     }
 }
