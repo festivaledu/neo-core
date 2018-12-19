@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Neo.Core.Shared;
 using WebSocketSharp.Server;
@@ -7,7 +7,7 @@ namespace Neo.Core.Networking
 {
     public abstract class BaseServer
     {
-        private List<Client> Clients { get; set; }
+        private List<Client> Clients { get; set; } = new List<Client>();
         internal WebSocketSessionManager SessionManager { get; set; }
         private WebSocketServer WebSocketServer { get; set; }
 
