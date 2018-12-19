@@ -4,6 +4,9 @@ using WebSocketSharp.Server;
 
 namespace Neo.Core.Networking
 {
+    /// <summary>
+    ///     <see cref="WebSocketBehavior"/> used to redirect all <see cref="WebSocket"/> events to <see cref="Pool.Server"/>.
+    /// </summary>
     internal class NeoWebSocketBehaviour : WebSocketBehavior
     {
         protected override void OnOpen() {
