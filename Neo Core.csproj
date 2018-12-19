@@ -5,4 +5,8 @@
     <RootNamespace>Neo.Core</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="websocketsharp.core" Version="1.0.0" />
+  </ItemGroup>
+
 </Project>
