@@ -26,10 +26,18 @@ namespace Neo.Core.Networking
         }
 
         protected override void OnMessage(MessageEventArgs e) {
-            if (!Pool.Server.Clients.Find(c => c.ClientId == ID).IsOfficial && e.Data != "4D303DA2-6A01-483E-89DF-BA01E919FF99") {
-                Pool.Server.Clients.RemoveAll(c => c.ClientId == ID);
-                Sessions.CloseSession(ID);
-                return;
+            var client = Pool.Server.Clients.Find(c => c.ClientId == ID);
+
+            if (!client.IsOfficial) {
+                if (e.Data == "4D303DA2-6A01-483E-89DF-BA01E919FF99") {
+                    client.IsOfficial = true;
+                    Sessions.SendTo(ID, "7FDB1C16-F94A-4A6C-90C9-47404EC44594");
+                    return;
+                } else {
+                    Pool.Server.Clients.Remove(client);
+                    Sessions.CloseSession(ID);
+                    return;
+                }
             }
 
             Pool.Server.OnMessage(ID, e.Data);
