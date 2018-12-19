@@ -10,7 +10,7 @@ namespace Neo.Core.Networking
     /// </summary>
     public abstract class BaseServer
     {
-        private List<Client> Clients { get; set; } = new List<Client>();
+        public List<Client> Clients { get; set; } = new List<Client>();
         internal WebSocketSessionManager SessionManager { get; set; }
         private WebSocketServer WebSocketServer { get; set; }
 
@@ -25,6 +25,7 @@ namespace Neo.Core.Networking
         ///     Applies all necessary settings and starts the underlying <see cref="WebSocketSharp.Server.WebSocketServer"/>.
         /// </summary>
         public void Start() {
+            Clients = new List<Client>();
             WebSocketServer = new WebSocketServer("ws://localhost:42421");
             WebSocketServer.AddWebSocketService<NeoWebSocketBehaviour>("/neo");
             WebSocketServer.Start();
@@ -37,7 +38,7 @@ namespace Neo.Core.Networking
             WebSocketServer.Stop();
         }
 
-        public abstract void OnConnect(Client client);
+        public abstract void OnConnect(string clientId);
         public abstract void OnDisconnect(string clientId, ushort code, string reason, bool wasClean);
         public abstract void OnError(string clientId, Exception ex, string message);
         public abstract void OnMessage(string clientId, string message);

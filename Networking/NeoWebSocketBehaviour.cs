@@ -10,7 +10,8 @@ namespace Neo.Core.Networking
     internal class NeoWebSocketBehaviour : WebSocketBehavior
     {
         protected override void OnOpen() {
-            Pool.Server.OnConnect(new Client(ID, Context.WebSocket));
+            Pool.Server.Clients.Add(new Client(ID, Context.WebSocket));
+            Pool.Server.OnConnect(ID);
             Pool.Server.SessionManager = Sessions;
         }
 
@@ -25,6 +26,12 @@ namespace Neo.Core.Networking
         }
 
         protected override void OnMessage(MessageEventArgs e) {
+            if (!Pool.Server.Clients.Find(c => c.ClientId == ID).IsOfficial && e.Data != "4D303DA2-6A01-483E-89DF-BA01E919FF99") {
+                Pool.Server.Clients.RemoveAll(c => c.ClientId == ID);
+                Sessions.CloseSession(ID);
+                return;
+            }
+
             Pool.Server.OnMessage(ID, e.Data);
         }
     }
