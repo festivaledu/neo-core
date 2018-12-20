@@ -1,6 +1,6 @@
 ﻿namespace Neo.Core.Shared
 {
-    public class Guest : Member
+    public class Guest : User
     {
     }
 }
