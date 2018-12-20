@@ -1,4 +1,7 @@
-﻿using Neo.Core.Shared;
+﻿using System.Threading.Tasks;
+using Neo.Core.Communication;
+using Neo.Core.Shared;
+using Newtonsoft.Json;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 
@@ -25,7 +28,24 @@ namespace Neo.Core.Networking
         }
 
         protected override void OnMessage(MessageEventArgs e) {
-            Pool.Server.OnMessage(ID, e.Data);
+            Container container;
+
+            try {
+                container = JsonConvert.DeserializeObject<Container>(e.Data);
+            } catch {
+                // TODO: Close connection
+                return;
+            }
+
+            Task.Run(async () => {
+                var package = await Pool.Server.Clients.Find(c => c.ClientId == ID).ReadContainer(container);
+
+                if (package.Type == PackageType.Aes) {
+                    // TODO: Load cryptographic data
+                } else {
+                    Pool.Server.OnPackage(ID, package);
+                }
+            });
         }
     }
 }

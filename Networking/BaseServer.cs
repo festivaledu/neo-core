@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Neo.Core.Communication;
 using Neo.Core.Config;
 using Neo.Core.Shared;
 using WebSocketSharp.Server;
@@ -11,7 +12,7 @@ namespace Neo.Core.Networking
     /// </summary>
     public abstract class BaseServer
     {
-        private List<Client> Clients { get; set; } = new List<Client>();
+        internal List<Client> Clients { get; set; } = new List<Client>();
         internal WebSocketSessionManager SessionManager { get; set; }
         private WebSocketServer WebSocketServer { get; set; }
 
@@ -41,6 +42,6 @@ namespace Neo.Core.Networking
         public abstract void OnConnect(Client client);
         public abstract void OnDisconnect(string clientId, ushort code, string reason, bool wasClean);
         public abstract void OnError(string clientId, Exception ex, string message);
-        public abstract void OnMessage(string clientId, string message);
+        public abstract void OnPackage(string clientId, Package package);
     }
 }

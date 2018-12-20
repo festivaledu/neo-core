@@ -1,4 +1,9 @@
-﻿using WebSocketSharp;
+﻿using System.Security.Cryptography;
+using System.Threading.Tasks;
+using Neo.Core.Communication;
+using Neo.Core.Cryptography;
+using Newtonsoft.Json;
+using WebSocketSharp;
 using WebSocketSharp.Server;
 
 namespace Neo.Core.Networking
@@ -11,12 +16,14 @@ namespace Neo.Core.Networking
         /// <summary>
         ///     Id used by the <see cref="WebSocketSessionManager"/> to identify the <see cref="IWebSocketSession"/> this <see cref="Socket"/> belongs to.
         /// </summary>
-        private string ClientId { get; set; }
+        internal string ClientId { get; set; }
 
         /// <summary>
         ///     <see cref="WebSocket"/> used for sending and receiving data.
         /// </summary>
         private WebSocket Socket { get; set; }
+
+        private CryptographicData cryptographicData;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Client"/> class.
@@ -29,6 +36,38 @@ namespace Neo.Core.Networking
 
             var wssv = new WebSocketServer("ws://localhost:42421");
             wssv.AddWebSocketService<NeoWebSocketBehaviour>("/neo");
+        }
+
+        internal async Task<Package> ReadContainer(Container data) {
+            Package package;
+
+            if (data.IsEncrypted) {
+                var decrypted = await NeoCryptoProvider.Instance.AesDecryptAsync(data.Payload, cryptographicData);
+
+                package = JsonConvert.DeserializeObject<Package>(decrypted);
+            } else {
+                package = JsonConvert.DeserializeObject<Package>(data.Payload);
+            }
+
+            return package;
+        }
+
+        internal async Task SendPackage(Package data, bool encrypt = true) {
+            Container container;
+
+            if (encrypt) {
+                if (!cryptographicData.IsValid()) {
+                    throw new CryptographicException("No cryptographic data is set.");
+                }
+
+                var encrypted = await NeoCryptoProvider.Instance.AesEncryptAsync(JsonConvert.SerializeObject(data), cryptographicData);
+
+                container = new Container(true, encrypted);
+            } else {
+                container = new Container(false, JsonConvert.SerializeObject(data));
+            }
+
+            Socket.Send(JsonConvert.SerializeObject(container));
         }
     }
 }
