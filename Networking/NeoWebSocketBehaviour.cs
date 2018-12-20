@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Neo.Core.Communication;
+using Neo.Core.Cryptography;
 using Neo.Core.Shared;
 using Newtonsoft.Json;
 using WebSocketSharp;
@@ -33,15 +34,17 @@ namespace Neo.Core.Networking
             try {
                 container = JsonConvert.DeserializeObject<Container>(e.Data);
             } catch {
-                // TODO: Close connection
+                Pool.Server.Clients.RemoveAll(c => c.ClientId == ID);
+                Sessions.CloseSession(ID);
                 return;
             }
 
             Task.Run(async () => {
-                var package = await Pool.Server.Clients.Find(c => c.ClientId == ID).ReadContainer(container);
+                var client = Pool.Server.Clients.Find(c => c.ClientId == ID);
+                var package = await client.ReadContainer(container);
 
                 if (package.Type == PackageType.Aes) {
-                    // TODO: Load cryptographic data
+                    client.SetCryptographicData(JsonConvert.DeserializeObject<CryptographicData>(NeoCryptoProvider.Instance.RsaDecrypt(package.Content, Pool.Server.RSAPrivateParameters)));
                 } else {
                     Pool.Server.OnPackage(ID, package);
                 }

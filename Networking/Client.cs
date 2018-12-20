@@ -43,7 +43,6 @@ namespace Neo.Core.Networking
 
             if (data.IsEncrypted) {
                 var decrypted = await NeoCryptoProvider.Instance.AesDecryptAsync(data.Payload, cryptographicData);
-
                 package = JsonConvert.DeserializeObject<Package>(decrypted);
             } else {
                 package = JsonConvert.DeserializeObject<Package>(data.Payload);
@@ -61,13 +60,16 @@ namespace Neo.Core.Networking
                 }
 
                 var encrypted = await NeoCryptoProvider.Instance.AesEncryptAsync(JsonConvert.SerializeObject(data), cryptographicData);
-
                 container = new Container(true, encrypted);
             } else {
                 container = new Container(false, JsonConvert.SerializeObject(data));
             }
 
             Socket.Send(JsonConvert.SerializeObject(container));
+        }
+
+        internal void SetCryptographicData(CryptographicData data) {
+            cryptographicData = data;
         }
     }
 }

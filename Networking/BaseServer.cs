@@ -30,7 +30,7 @@ namespace Neo.Core.Networking
         }
 
         /// <summary>
-        ///     Applies all necessary settings and starts the underlying <see cref="WebSocketSharp.Server.WebSocketServer"/>.
+        ///     Applies all necessary settings and starts the underlying <see cref="WebSocketServer"/>.
         /// </summary>
         public void Start() {
             using (var rsa = new RSACryptoServiceProvider(ConfigManager.Instance["rsa.keysize", 4096])) {
@@ -44,7 +44,7 @@ namespace Neo.Core.Networking
         }
 
         /// <summary>
-        ///     Stops the underlying <see cref="WebSocketSharp.Server.WebSocketServer"/>.
+        ///     Stops the underlying <see cref="WebSocketServer"/>.
         /// </summary>
         public void Stop() {
             webSocketServer.Stop();
