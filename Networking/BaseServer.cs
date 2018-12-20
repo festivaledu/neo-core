@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Neo.Core.Communication;
 using Neo.Core.Config;
@@ -16,6 +16,7 @@ namespace Neo.Core.Networking
         internal WebSocketSessionManager SessionManager { get; set; }
         private WebSocketServer WebSocketServer { get; set; }
 
+        private WebSocketServer webSocketServer;
         /// <summary>
         ///     Allows this instance to be accessed from the <see cref="Pool"/>.
         /// </summary>
@@ -30,13 +31,16 @@ namespace Neo.Core.Networking
             WebSocketServer = new WebSocketServer($"ws://{ConfigManager.Instance["server.address", "0.0.0.0"]}:{ConfigManager.Instance["server.port", "42042"]}");
             WebSocketServer.AddWebSocketService<NeoWebSocketBehaviour>("/neo");
             WebSocketServer.Start();
+            webSocketServer = new WebSocketServer($"ws://{ConfigManager.Instance["server.address", "0.0.0.0"]}:{ConfigManager.Instance["server.port", "42042"]}");
+            webSocketServer.AddWebSocketService<NeoWebSocketBehaviour>("/neo");
+            webSocketServer.Start();
         }
 
         /// <summary>
         ///     Stops the underlying <see cref="WebSocketSharp.Server.WebSocketServer"/>.
         /// </summary>
         public void Stop() {
-            WebSocketServer.Stop();
+            webSocketServer.Stop();
         }
 
         public abstract void OnConnect(Client client);
