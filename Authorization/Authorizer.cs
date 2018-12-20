@@ -63,8 +63,8 @@ namespace Neo.Core.Authorization
         public static bool IsAuthorized(string permission, params Dictionary<string, Permission>[] permissionSets) {
             var permissions = new Dictionary<string, Permission>();
 
-            // Create the final set of permissions by union all sets together
-            permissions = permissionSets.Aggregate(permissions, (current, set) => UnionPermissions(current, set));
+            // Create the final set of permissions by unioning all sets together
+            permissions = permissionSets.Aggregate(permissions, UnionPermissions);
 
             /*
              * Assemble all valid permissions by splitting the searched one and putting it back together one part a time
@@ -104,6 +104,14 @@ namespace Neo.Core.Authorization
             }
 
             return p == Permission.Allow;
+        }
+
+        public static bool IsAuthorized(this IAuthorizable authorizable, string permission) {
+            var permissionsSets = new Dictionary<string, Permission>();
+
+            switch (authorizable) {
+            case 
+            }
         }
     }
 }
