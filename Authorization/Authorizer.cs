@@ -59,5 +59,51 @@ namespace Neo.Core.Authorization
 
             return union;
         }
+
+        public static bool IsAuthorized(string permission, params Dictionary<string, Permission>[] permissionSets) {
+            var permissions = new Dictionary<string, Permission>();
+
+            // Create the final set of permissions by union all sets together
+            permissions = permissionSets.Aggregate(permissions, (current, set) => UnionPermissions(current, set));
+
+            /*
+             * Assemble all valid permissions by splitting the searched one and putting it back together one part a time
+             * For example:
+             *
+             * permission               validPermissions
+             * neo.server.edit.name     *
+             *                          neo.*
+             *                          neo.server.*
+             *                          neo.server.edit.*
+             *                          neo.server.edit.name
+             */
+            var permissionLayers = permission.Split('.');
+            var validPermissions = new List<string> {
+                "*"
+            };
+
+            var valid = "";
+            for (var l = 0; l < permissionLayers.Length - 1; l++) {
+                var layer = permissionLayers[l];
+                valid += $"{layer}.";
+                validPermissions.Add($"{valid}*");
+            }
+            validPermissions.Add(permission);
+
+            // Define the default permission if none of the sets contained any of the valid permissions
+            var p = Permission.Inherit;
+
+            // Loop through the valid permissions and overwrite p everytime a new value other than Permission.Inherit was found.
+            // This needs to be done, because explicit permissions are stronger than implicit ones. So neo.server.edit.name counts higher than neo.server.edit.*.
+            foreach (var validPermission in validPermissions) {
+                if (!permissions.ContainsKey(validPermission) || permissions[validPermission] == Permission.Inherit) {
+                    continue;
+                }
+
+                p = permissions[validPermission];
+            }
+
+            return p == Permission.Allow;
+        }
     }
 }
