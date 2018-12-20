@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
@@ -40,6 +40,8 @@ namespace Neo.Core.Config
 
         private Dictionary<string, object> configValues = new Dictionary<string, object>();
         private string filePath;
+
+        private ConfigManager() { }
 
         public TOut GetValue<TOut>(string key) {
             return (TOut) configValues[key];
