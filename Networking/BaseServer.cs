@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Neo.Core.Config;
 using Neo.Core.Shared;
 using WebSocketSharp.Server;
 
@@ -25,7 +26,7 @@ namespace Neo.Core.Networking
         ///     Applies all necessary settings and starts the underlying <see cref="WebSocketSharp.Server.WebSocketServer"/>.
         /// </summary>
         public void Start() {
-            WebSocketServer = new WebSocketServer("ws://localhost:42421");
+            WebSocketServer = new WebSocketServer($"ws://{ConfigManager.Instance["server.address", "0.0.0.0"]}:{ConfigManager.Instance["server.port", "42042"]}");
             WebSocketServer.AddWebSocketService<NeoWebSocketBehaviour>("/neo");
             WebSocketServer.Start();
         }
