@@ -7,6 +7,9 @@ namespace Neo.Core.Shared
 {
     public class Channel : IAttributable
     {
+        // TODO
+        public List<User> ActiveMembers { get; }
+
         public Dictionary<string, object> Attributes { get; set; } = new Dictionary<string, object>();
 
         public Guid InternalId { get; private set; }
@@ -16,10 +19,10 @@ namespace Neo.Core.Shared
         public Dictionary<string, Dictionary<string, Permission>> MemberPermissions { get; set; } = new Dictionary<string, Dictionary<string, Permission>>();
 
         // TODO
-        public List<Member> Members { get; }
+        public List<User> Members { get; }
 
-        public bool IsMember(Member member) {
-            return MemberIds.Contains(member.InternalId);
+        public bool IsMember(User user) {
+            return MemberIds.Contains(user.InternalId);
         }
     }
 }

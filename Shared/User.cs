@@ -8,13 +8,11 @@ namespace Neo.Core.Shared
 {
     public abstract class User : IAttributable, IAuthorizable
     {
-        // TODO
         public Channel ActiveChannel { get; }
 
         public Dictionary<string, object> Attributes { get; set; } = new Dictionary<string, object>();
-
-        // TODO
-        public List<Channel> Channels { get; }
+        
+        public List<Channel> Channels => Pool.Server.Channels.FindAll(c => c.IsMember(this));
         
         // TODO
         public Client Client { get; }

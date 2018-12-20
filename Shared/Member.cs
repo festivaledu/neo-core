@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace Neo.Core.Shared
 {
@@ -6,5 +6,7 @@ namespace Neo.Core.Shared
     {
         // TODO
         public Account Account { get; set; }
+
+        public new Guid InternalId => Account.InternalId;
     }
 }

@@ -13,6 +13,11 @@ namespace Neo.Core.Networking
     /// </summary>
     public abstract class BaseServer
     {
+        public List<Account> Accounts { get; set; } = new List<Account>();
+        public List<Channel> Channels { get; set; } = new List<Channel>();
+        public List<Group> Groups { get; set; } = new List<Group>();
+        public List<User> Users { get; set; } = new List<User>();
+
         internal List<Client> Clients { get; set; } = new List<Client>();
         // ReSharper disable once InconsistentNaming
         internal RSAParameters RSAPublicParameters { get; private set; }
