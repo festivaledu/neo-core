@@ -15,10 +15,7 @@ namespace Neo.Core.Config
             get => configValues[key];
             set {
                 configValues[key] = value;
-
-                if (!string.IsNullOrEmpty(filePath)) {
-                    Save(filePath);
-                }
+                Save(filePath);
             }
         }
 
@@ -29,10 +26,7 @@ namespace Neo.Core.Config
                 }
 
                 configValues[key] = defaultValue;
-
-                if (!string.IsNullOrEmpty(filePath)) {
-                    Save(filePath);
-                }
+                Save(filePath);
 
                 return defaultValue;
             }
@@ -53,10 +47,7 @@ namespace Neo.Core.Config
             }
 
             configValues[key] = defaultValue;
-
-            if (!string.IsNullOrEmpty(filePath)) {
-                Save(filePath);
-            }
+            Save(filePath);
 
             return defaultValue;
         }
@@ -76,15 +67,14 @@ namespace Neo.Core.Config
         }
 
         public void Save(string path) {
-            File.WriteAllText(path, JsonConvert.SerializeObject(configValues, Formatting.Indented));
+            if (!path.IsNullOrEmpty()) {
+                File.WriteAllText(path, JsonConvert.SerializeObject(configValues, Formatting.Indented));
+            }
         }
 
         public void SetValue(string key, dynamic value) {
             configValues[key] = value;
-
-            if (!string.IsNullOrEmpty(filePath)) {
-                Save(filePath);
-            }
+            Save(filePath);
         }
     }
 }
