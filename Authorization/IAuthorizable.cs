@@ -1,6 +1,9 @@
-﻿namespace Neo.Core.Authorization
+﻿using System.Collections.Generic;
+
+namespace Neo.Core.Authorization
 {
-    internal interface IAuthorizable
+    public interface IAuthorizable
     {
+        Dictionary<string, Permission> Permissions { get; set; }
     }
 }
