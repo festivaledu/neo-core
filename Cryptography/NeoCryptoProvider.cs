@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -26,6 +26,8 @@ namespace Neo.Core.Cryptography
 
         public async Task<string> AesDecryptAsync(string s, CryptographicData data) {
             var transform = aes.CreateDecryptor(data.AesKey, data.AesIV);
+        public async Task<string> AesDecryptAsync(string s, AesParameters parameters) {
+            var transform = aes.CreateDecryptor(parameters.AesKey, parameters.AesIV);
             var memoryStream = new MemoryStream(Convert.FromBase64String(s));
             var cryptoStream = new CryptoStream(memoryStream, transform, CryptoStreamMode.Read);
             var reader = new StreamReader(cryptoStream);
@@ -40,6 +42,8 @@ namespace Neo.Core.Cryptography
 
         public async Task<string> AesEncryptAsync(string s, CryptographicData data) {
             var transform = aes.CreateEncryptor(data.AesKey, data.AesIV);
+        public async Task<string> AesEncryptAsync(string s, AesParameters parameters) {
+            var transform = aes.CreateEncryptor(parameters.AesKey, parameters.AesIV);
             var memoryStream = new MemoryStream();
 
             using (var cryptoStream = new CryptoStream(memoryStream, transform, CryptoStreamMode.Write)) {
@@ -56,19 +60,24 @@ namespace Neo.Core.Cryptography
         }
 
         public CryptographicData GetRandomData() {
+        public AesParameters GetRandomData() {
             aes.GenerateKey();
             aes.GenerateIV();
 
-            return new CryptographicData(aes.Key, aes.IV);
+            return new AesParameters(aes.Key, aes.IV);
         }
 
         public string RsaDecrypt(string s, RSAParameters @params) {
             rsa.ImportParameters(@params);
+        public string RsaDecrypt(string s, RSAParameters parameters) {
+            rsa.ImportParameters(parameters);
             return Encoding.UTF8.GetString(rsa.Decrypt(Convert.FromBase64String(s), RSAEncryptionPadding.Pkcs1));
         }
 
         public string RsaEncrypt(string s, RSAParameters @params) {
             rsa.ImportParameters(@params);
+        public string RsaEncrypt(string s, RSAParameters parameters) {
+            rsa.ImportParameters(parameters);
             return Convert.ToBase64String(rsa.Encrypt(Encoding.UTF8.GetBytes(s), RSAEncryptionPadding.Pkcs1));
         }
 

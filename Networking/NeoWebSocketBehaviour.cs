@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Neo.Core.Communication;
 using Neo.Core.Cryptography;
 using Neo.Core.Shared;
@@ -44,7 +44,7 @@ namespace Neo.Core.Networking
                 var package = await client.ReadContainer(container);
 
                 if (package.Type == PackageType.Aes) {
-                    client.SetCryptographicData(JsonConvert.DeserializeObject<CryptographicData>(NeoCryptoProvider.Instance.RsaDecrypt(package.Content, Pool.Server.RSAPrivateParameters)));
+                    client.SetAesParameters(JsonConvert.DeserializeObject<AesParameters>(NeoCryptoProvider.Instance.RsaDecrypt(package.Content, Pool.Server.RSAPrivateParameters)));
                 } else {
                     Pool.Server.OnPackage(ID, package);
                 }

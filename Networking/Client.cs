@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Neo.Core.Communication;
 using Neo.Core.Cryptography;
@@ -23,7 +23,7 @@ namespace Neo.Core.Networking
         /// </summary>
         private WebSocket Socket { get; set; }
 
-        private CryptographicData cryptographicData;
+        private AesParameters aesParameters;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Client"/> class.
@@ -42,7 +42,7 @@ namespace Neo.Core.Networking
             Package package;
 
             if (data.IsEncrypted) {
-                var decrypted = await NeoCryptoProvider.Instance.AesDecryptAsync(data.Payload, cryptographicData);
+                var decrypted = await NeoCryptoProvider.Instance.AesDecryptAsync(data.Payload, aesParameters);
                 package = JsonConvert.DeserializeObject<Package>(decrypted);
             } else {
                 package = JsonConvert.DeserializeObject<Package>(data.Payload);
@@ -55,11 +55,11 @@ namespace Neo.Core.Networking
             Container container;
 
             if (encrypt) {
-                if (!cryptographicData.IsValid()) {
-                    throw new CryptographicException("No cryptographic data is set.");
+                if (!aesParameters.IsValid()) {
+                    throw new CryptographicException("No AES parameters are set.");
                 }
 
-                var encrypted = await NeoCryptoProvider.Instance.AesEncryptAsync(JsonConvert.SerializeObject(data), cryptographicData);
+                var encrypted = await NeoCryptoProvider.Instance.AesEncryptAsync(JsonConvert.SerializeObject(data), aesParameters);
                 container = new Container(true, encrypted);
             } else {
                 container = new Container(false, JsonConvert.SerializeObject(data));
@@ -68,8 +68,8 @@ namespace Neo.Core.Networking
             Socket.Send(JsonConvert.SerializeObject(container));
         }
 
-        internal void SetCryptographicData(CryptographicData data) {
-            cryptographicData = data;
+        internal void SetAesParameters(AesParameters @params) {
+            aesParameters = @params;
         }
     }
 }
