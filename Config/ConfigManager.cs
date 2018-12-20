@@ -60,7 +60,7 @@ namespace Neo.Core.Config
             }
         }
 
-        private Dictionary<string, object> configValues = new Dictionary<string, object>();
+        private SortedDictionary<string, object> configValues = new SortedDictionary<string, object>();
         private string filePath;
 
         private ConfigManager() { }
@@ -105,7 +105,7 @@ namespace Neo.Core.Config
         public void Load(string path) {
             if (File.Exists(path)) {
                 try {
-                    configValues = JsonConvert.DeserializeObject<Dictionary<string, object>>(File.ReadAllText(path));
+                    configValues = JsonConvert.DeserializeObject<SortedDictionary<string, object>>(File.ReadAllText(path));
                     filePath = path;
                 } catch {
                     throw new FormatException("This file is not a valid configuration file.");
