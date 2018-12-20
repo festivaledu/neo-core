@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Neo.Core.Communication;
 using Neo.Core.Cryptography;
@@ -38,6 +38,12 @@ namespace Neo.Core.Networking
             wssv.AddWebSocketService<NeoWebSocketBehaviour>("/neo");
         }
 
+        /// <summary>
+        ///     Reads a package asynchronously from a container.
+        /// </summary>
+        /// <param name="data">The container to read from.</param>
+        /// <returns>Returns a <see cref="Task"/> that represents the asynchronous read operation. The value of the <c>TResult</c> parameter contains the read <see cref="Package"/>.</returns>
+        /// <remarks>If the container is encrypted, the returned <see cref="Package"/> will be decrypted automatically.</remarks>
         internal async Task<Package> ReadContainer(Container data) {
             Package package;
 
@@ -51,6 +57,12 @@ namespace Neo.Core.Networking
             return package;
         }
 
+        /// <summary>
+        ///     Sends a package asynchronously through a container.
+        /// </summary>
+        /// <param name="data">The package to send.</param>
+        /// <param name="encrypt">A boolean value determining whether the package should be encrypted.</param>
+        /// <returns>Returns a <see cref="Task"/> that represents the asynchronous send operation.</returns>
         internal async Task SendPackage(Package data, bool encrypt = true) {
             Container container;
 
@@ -68,8 +80,12 @@ namespace Neo.Core.Networking
             Socket.Send(JsonConvert.SerializeObject(container));
         }
 
-        internal void SetAesParameters(AesParameters @params) {
-            aesParameters = @params;
+        /// <summary>
+        ///     Sets the <see cref="AesParameters"/> of this <see cref="Client"/>.
+        /// </summary>
+        /// <param name="parameters">The <see cref="AesParameters"/> structure to set.</param>
+        internal void SetAesParameters(AesParameters parameters) {
+            aesParameters = parameters;
         }
     }
 }

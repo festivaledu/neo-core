@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -6,8 +6,17 @@ using System.Threading.Tasks;
 
 namespace Neo.Core.Cryptography
 {
+    /// <summary>
+    ///     Provides methods for AES and RSA en/decryption and SHA hashing.
+    ///     <para>
+    ///         This class uses a thread-safe singleton lazy pattern and can only be accessed through the <see cref="Instance"/> property.
+    ///     </para>
+    /// </summary>
     public sealed class NeoCryptoProvider
     {
+        /// <summary>
+        ///     Returns the only instance of the <see cref="NeoCryptoProvider"/>.
+        /// </summary>
         public static NeoCryptoProvider Instance => instance.Value;
 
         private static readonly Lazy<NeoCryptoProvider> instance = new Lazy<NeoCryptoProvider>(() => new NeoCryptoProvider());
@@ -24,8 +33,12 @@ namespace Neo.Core.Cryptography
             sha.Dispose();
         }
 
-        public async Task<string> AesDecryptAsync(string s, CryptographicData data) {
-            var transform = aes.CreateDecryptor(data.AesKey, data.AesIV);
+        /// <summary>
+        ///     Decrypts a string asynchronously using the <see cref="Aes"/> algorithm.
+        /// </summary>
+        /// <param name="s">The string to decrypt.</param>
+        /// <param name="parameters">The <see cref="AesParameters"/> structure holding the key and initialization vector.</param>
+        /// <returns>Returns the decrypted string.</returns>
         public async Task<string> AesDecryptAsync(string s, AesParameters parameters) {
             var transform = aes.CreateDecryptor(parameters.AesKey, parameters.AesIV);
             var memoryStream = new MemoryStream(Convert.FromBase64String(s));
@@ -40,8 +53,12 @@ namespace Neo.Core.Cryptography
             return decrypted;
         }
 
-        public async Task<string> AesEncryptAsync(string s, CryptographicData data) {
-            var transform = aes.CreateEncryptor(data.AesKey, data.AesIV);
+        /// <summary>
+        ///     Encrypts a string asynchronously using the <see cref="Aes"/> algorithm.
+        /// </summary>
+        /// <param name="s">The string to encrypt.</param>
+        /// <param name="parameters">The <see cref="AesParameters"/> structure holding the key and initialization vector.</param>
+        /// <returns>Returns the encrypted string.</returns>
         public async Task<string> AesEncryptAsync(string s, AesParameters parameters) {
             var transform = aes.CreateEncryptor(parameters.AesKey, parameters.AesIV);
             var memoryStream = new MemoryStream();
@@ -59,7 +76,10 @@ namespace Neo.Core.Cryptography
             return encrypted;
         }
 
-        public CryptographicData GetRandomData() {
+        /// <summary>
+        ///     Generates a <see cref="AesParameters"/> structure with a random key and initialization vector.
+        /// </summary>
+        /// <returns>Returns the generated structure.</returns>
         public AesParameters GetRandomData() {
             aes.GenerateKey();
             aes.GenerateIV();
@@ -67,20 +87,33 @@ namespace Neo.Core.Cryptography
             return new AesParameters(aes.Key, aes.IV);
         }
 
-        public string RsaDecrypt(string s, RSAParameters @params) {
-            rsa.ImportParameters(@params);
+        /// <summary>
+        ///     Decrypts a string using the <see cref="RSA"/> algorithm.
+        /// </summary>
+        /// <param name="s">The string to decrypt.</param>
+        /// <param name="parameters">The <see cref="RSAParameters"/> structure holding the private key.</param>
+        /// <returns>Returns the decrypted string.</returns>
         public string RsaDecrypt(string s, RSAParameters parameters) {
             rsa.ImportParameters(parameters);
             return Encoding.UTF8.GetString(rsa.Decrypt(Convert.FromBase64String(s), RSAEncryptionPadding.Pkcs1));
         }
 
-        public string RsaEncrypt(string s, RSAParameters @params) {
-            rsa.ImportParameters(@params);
+        /// <summary>
+        ///     Encrypts a string using the <see cref="RSA"/> algorithm.
+        /// </summary>
+        /// <param name="s">The string to encrypt.</param>
+        /// <param name="parameters">The <see cref="RSAParameters"/> structure holding the public or private key.</param>
+        /// <returns>Returns the encrypted string.</returns>
         public string RsaEncrypt(string s, RSAParameters parameters) {
             rsa.ImportParameters(parameters);
             return Convert.ToBase64String(rsa.Encrypt(Encoding.UTF8.GetBytes(s), RSAEncryptionPadding.Pkcs1));
         }
 
+        /// <summary>
+        ///     Computes a hash value using the <see cref="SHA512"/> algorithm.
+        /// </summary>
+        /// <param name="s">The string to compose the hash value of.</param>
+        /// <returns>Returns the computed hash value.</returns>
         public byte[] Sha512ComputeHash(string s) => sha.ComputeHash(Encoding.UTF8.GetBytes(s));
     }
 }

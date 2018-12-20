@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Neo.Core.Communication;
 using Neo.Core.Cryptography;
 using Neo.Core.Shared;
