@@ -19,6 +19,8 @@ namespace Neo.Core.Shared
 
         public Dictionary<string, Permission> Permissions { get; set; } = new Dictionary<string, Permission>();
 
+        public int SortValue { get; set; }
+
         public bool IsMember(User account) {
             return MemberIds.Contains(account.InternalId);
         }
