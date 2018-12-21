@@ -38,12 +38,13 @@ namespace Neo.Core.Networking
         ///     Applies all necessary settings and starts the underlying <see cref="WebSocketServer"/>.
         /// </summary>
         public void Start() {
-            using (var rsa = new RSACryptoServiceProvider(ConfigManager.Instance["rsa.keysize", 4096])) {
+            Logger.Instance.Log(LogLevel.Info, "Generating RSA key pair...");
+            using (var rsa = new RSACryptoServiceProvider(ConfigManager.Instance.Values.RSAKeySize)) {
                 RSAPublicParameters = rsa.ExportParameters(false);
                 RSAPrivateParameters = rsa.ExportParameters(true);
             }
 
-            webSocketServer = new WebSocketServer($"ws://{ConfigManager.Instance["server.address", "0.0.0.0"]}:{ConfigManager.Instance["server.port", "42042"]}");
+            webSocketServer = new WebSocketServer($"ws://{ConfigManager.Instance.Values.ServerAddress}:{ConfigManager.Instance.Values.ServerPort}");
             webSocketServer.AddWebSocketService<NeoWebSocketBehaviour>("/neo");
             webSocketServer.Start();
         }

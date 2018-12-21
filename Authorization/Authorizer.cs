@@ -106,12 +106,12 @@ namespace Neo.Core.Authorization
             return p == Permission.Allow;
         }
 
-        public static bool IsAuthorized(this IAuthorizable authorizable, string permission) {
-            var permissionsSets = new Dictionary<string, Permission>();
+        //public static bool IsAuthorized(this IAuthorizable authorizable, string permission) {
+        //    var permissionsSets = new Dictionary<string, Permission>();
 
-            switch (authorizable) {
-            case 
-            }
-        }
+        //    switch (authorizable) {
+        //    case 
+        //    }
+        //}
     }
 }
