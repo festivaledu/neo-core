@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Security.Cryptography;
 using Neo.Core.Communication;
 using Neo.Core.Config;
@@ -38,22 +39,27 @@ namespace Neo.Core.Networking
         ///     Applies all necessary settings and starts the underlying <see cref="WebSocketServer"/>.
         /// </summary>
         public void Start() {
-            Logger.Instance.Log(LogLevel.Info, "Generating RSA key pair...");
+            Logger.Instance.Log(LogLevel.Info, $"Generating RSA key pair with a key size of {ConfigManager.Instance.Values.RSAKeySize} bytes...");
             using (var rsa = new RSACryptoServiceProvider(ConfigManager.Instance.Values.RSAKeySize)) {
                 RSAPublicParameters = rsa.ExportParameters(false);
                 RSAPrivateParameters = rsa.ExportParameters(true);
             }
+            Logger.Instance.Log(LogLevel.Ok, "RSA key pair successfully generated.");
 
+            Logger.Instance.Log(LogLevel.Info, $"Attempting to start WebSocket server on ws://{ConfigManager.Instance.Values.ServerAddress}:{ConfigManager.Instance.Values.ServerPort}...");
             webSocketServer = new WebSocketServer($"ws://{ConfigManager.Instance.Values.ServerAddress}:{ConfigManager.Instance.Values.ServerPort}");
             webSocketServer.AddWebSocketService<NeoWebSocketBehaviour>("/neo");
             webSocketServer.Start();
+            Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully started.");
         }
 
         /// <summary>
         ///     Stops the underlying <see cref="WebSocketServer"/>.
         /// </summary>
         public void Stop() {
+            Logger.Instance.Log(LogLevel.Info, $"Attempting to stop WebSocket server...");
             webSocketServer.Stop();
+            Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully stopped.");
         }
 
         public abstract void OnConnect(Client client);
