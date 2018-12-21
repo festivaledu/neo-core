@@ -6,7 +6,7 @@ using WebSocketSharp;
 namespace Neo.Core.Config
 {
     /// <summary>
-    ///     Represents a key/value config dictionary.
+    ///     Represents a single access point for all configuration values.
     ///     <para>
     ///         This class uses a thread-safe singleton lazy pattern and can only be accessed through the <see cref="Instance"/> property.
     ///     </para>
@@ -19,48 +19,8 @@ namespace Neo.Core.Config
         public static ConfigManager Instance => instance.Value;
 
         private static readonly Lazy<ConfigManager> instance = new Lazy<ConfigManager>(() => new ConfigManager());
-
-<<<<<<< Updated upstream
-        /// <summary>
-        ///     Gets an existing value from the config or sets a new one.
-        ///     <para>
-        ///         Setting a new value will override the existing one. If <see cref="Load"/> has been called at least once, the config will be saved automatically.
-        ///     </para>
-        /// </summary>
-        /// <param name="key">The key connected to the value.</param>
-        /// <returns>Returns the value connected to the <see cref="key"/>.</returns>
-        /// <exception cref="KeyNotFoundException">Thrown if the loaded config does not contain <see cref="key"/>.</exception>
-        public dynamic this[string key] {
-            get => configValues[key];
-            set {
-                configValues[key] = value;
-                Save(filePath);
-            }
-        }
-
-        /// <summary>
-        ///     Gets an existing value from the config or a default value if <see cref="key"/> doesn't exist.
-        ///     <para>
-        ///         The <see cref="defaultValue"/> will be set to the <see cref="key"/> if no value existed yet. If <see cref="Load"/> has been called at least once, the config will be saved automatically.
-        ///     </para>
-        /// </summary>
-        /// <param name="key">The key connected to the value.</param>
-        /// <param name="defaultValue">The value to return and set as the default value if no value existed yet.</param>
-        /// <returns>Returns the value connected to the <see cref="key"/> or <see cref="defaultValue"/> if no value existed yet.</returns>
-        public dynamic this[string key, dynamic defaultValue] {
-            get {
-                if (configValues.ContainsKey(key)) {
-                    return configValues[key];
-                }
-
-                configValues[key] = defaultValue;
-                Save(filePath);
-
-                return defaultValue;
-            }
-        }
-
-        public ConfigValues Values { get; set; }= new ConfigValues();
+        
+        public ConfigValues Values { get; set; } = new ConfigValues();
         private string filePath;
 
         private ConfigManager() { }
@@ -73,7 +33,7 @@ namespace Neo.Core.Config
         public void Load(string path) {
             if (File.Exists(path)) {
                 try {
-                    configValues = JsonConvert.DeserializeObject<SortedDictionary<string, object>>(File.ReadAllText(path));
+                    Values = JsonConvert.DeserializeObject<ConfigValues>(File.ReadAllText(path));
                     filePath = path;
                 } catch {
                     throw new FormatException("This file is not a valid configuration file.");
