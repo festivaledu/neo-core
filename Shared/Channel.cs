@@ -16,7 +16,7 @@ namespace Neo.Core.Shared
 
         public List<Guid> MemberIds { get; set; } = new List<Guid>();
 
-        public Dictionary<string, Dictionary<string, Permission>> MemberPermissions { get; set; } = new Dictionary<string, Dictionary<string, Permission>>();
+        public Dictionary<Guid, Dictionary<string, Permission>> MemberPermissions { get; set; } = new Dictionary<Guid, Dictionary<string, Permission>>();
 
         // TODO
         public List<User> Members { get; }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Neo.Core.Shared;
 
 namespace Neo.Core.Authorization
 {
@@ -106,12 +107,34 @@ namespace Neo.Core.Authorization
             return p == Permission.Allow;
         }
 
-        //public static bool IsAuthorized(this IAuthorizable authorizable, string permission) {
-        //    var permissionsSets = new Dictionary<string, Permission>();
+        public static bool IsAuthorized(this IAuthorizable authorizable, string permission) {
+            var permissionsSets = new List<Dictionary<string, Permission>>();
 
-        //    switch (authorizable) {
-        //    case 
-        //    }
-        //}
+            switch (authorizable) {
+            case Guest guest:
+                // TODO: Add Guest Group
+                if (guest.ActiveChannel != null) {
+                    permissionsSets.Add(guest.ActiveChannel.MemberPermissions[guest.InternalId]);
+                }
+                permissionsSets.Add(guest.Permissions);
+                break;
+            case Member member:
+                foreach (var group in member.Groups) {
+                    permissionsSets.Add(group.Permissions);
+                }
+                if (member.ActiveChannel != null) {
+                    permissionsSets.Add(member.ActiveChannel.MemberPermissions[member.InternalId]);
+                }
+                permissionsSets.Add(member.Permissions);
+                break;
+            case Group group:
+                permissionsSets.Add(group.Permissions);
+                break;
+            default:
+                return false;
+            }
+
+            return IsAuthorized(permission, permissionsSets.ToArray());
+        }
     }
 }
