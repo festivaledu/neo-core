@@ -21,8 +21,12 @@ namespace Neo.Core.Shared
 
         public int SortValue { get; set; }
 
-        public bool IsMember(User account) {
+        public bool IsMember(Account account) {
             return MemberIds.Contains(account.InternalId);
+        }
+
+        public Group() {
+            this.InternalId = Guid.NewGuid();
         }
     }
 }

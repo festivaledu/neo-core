@@ -22,5 +22,9 @@ namespace Neo.Core.Shared
         public Guid InternalId { get; private set; }
         
         public Dictionary<string, Permission> Permissions { get; set; } = new Dictionary<string, Permission>();
+
+        protected User() {
+            this.InternalId = Guid.NewGuid();
+        }
     }
 }

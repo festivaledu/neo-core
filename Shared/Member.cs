@@ -9,7 +9,7 @@ namespace Neo.Core.Shared
         // TODO
         public Account Account { get; set; }
 
-        public List<Group> Groups => Pool.Server.Groups.FindAll(g => g.IsMember(this)).OrderBy(g => g.SortValue).ToList();
+        public List<Group> Groups => Pool.Server.Groups.FindAll(g => g.IsMember(this.Account)).OrderBy(g => g.SortValue).ToList();
 
         public new Guid InternalId => Account.InternalId;
     }
