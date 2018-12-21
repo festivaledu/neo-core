@@ -7,6 +7,7 @@ namespace Neo.Core.Shared
     {
         public string Email { get; set; }
         public Guid InternalId { get; private set; }
+        public string Locale { get; set; }
         public byte[] Password { get; set; }
         
         // TODO

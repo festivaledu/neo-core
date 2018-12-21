@@ -20,6 +20,8 @@ namespace Neo.Core.Shared
         public Identity Identity { get; set; }
         
         public Guid InternalId { get; private set; }
+
+        public string Locale { get; set; }
         
         public Dictionary<string, Permission> Permissions { get; set; } = new Dictionary<string, Permission>();
     }
