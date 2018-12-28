@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Security.Cryptography;
 using Neo.Core.Communication;
 using Neo.Core.Config;

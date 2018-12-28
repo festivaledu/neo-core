@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Neo.Core.Attribution;
 using Neo.Core.Authorization;
 
@@ -13,7 +14,7 @@ namespace Neo.Core.Shared
 
         public List<Guid> MemberIds { get; set; } = new List<Guid>();
 
-        public List<Account> Members { get; }
+        public List<Account> Members => MemberIds.Select(m => Pool.Server.Accounts.Find(a => a.InternalId == m)).ToList();
 
         public string Name { get; set; }
 
