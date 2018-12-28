@@ -10,6 +10,6 @@ namespace Neo.Core.Shared
         public byte[] Password { get; set; }
         
         // TODO
-        public List<Group> Groups { get; }
+        public List<Group> Groups { get; } => P
     }
 }
