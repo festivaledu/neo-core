@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿#pragma warning disable 1998
+// ReSharper disable UnusedMember.Global
+
+using System.Threading.Tasks;
+using Neo.Core.Communication;
 using Neo.Core.Extensibility.Events;
 using Neo.Core.Shared;
 
@@ -15,8 +19,8 @@ namespace Neo.Core.Extensibility
         public virtual async Task OnConnected(ConnectEventArgs args) { }
         public virtual async Task OnDisconnected(DisconnectEventArgs args) { }
 
-        public virtual async Task OnBeforePackageReceive(Before<PackageReceiveEventArgs> args) { }
-        public virtual async Task OnPackageReceived(PackageReceiveEventArgs args) { }
+        public virtual async Task OnBeforePackageReceive(Before<ReceiveElementEventArgs<Package>> args) { }
+        public virtual async Task OnPackageReceived(ReceiveElementEventArgs<Package> args) { }
 
         public virtual async Task OnBeforeAccountCreate(Before<CreateElementEventArgs<Account>> args) { }
         public virtual async Task OnAccountCreated(CreateElementEventArgs<Account> args) { }
@@ -54,3 +58,4 @@ namespace Neo.Core.Extensibility
         public virtual async Task OnTyping(TypingEventArgs args) { }
     }
 }
+ 
