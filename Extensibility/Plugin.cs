@@ -10,6 +10,8 @@ namespace Neo.Core.Extensibility
 
         public virtual async Task OnInitialize() { }
 
+        public virtual async Task OnCustom(CustomEventArgs args) { }
+
         public virtual async Task OnBeforeAccountCreate(Before<CreateElementEventArgs<Account>> args) { }
         public virtual async Task OnAccountCreated(CreateElementEventArgs<Account> args) { }
         public virtual async Task OnBeforeChannelCreate(Before<CreateElementEventArgs<Channel>> args) { }
