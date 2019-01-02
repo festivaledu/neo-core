@@ -17,21 +17,24 @@
         ChannelEdited,
         BeforeGroupEdit,
         GroupEdited,
-        BeforeServerEdit,
-        ServerEdited,
+        BeforeIdentityEdit,
+        IdentityEdited,
 
         BeforeChannelJoin,
         ChannelJoined,
         BeforeGroupJoin,
         GroupJoined,
-        BeforeServerJoin,
-        ServerJoined,
 
         BeforeChannelLeave,
         ChannelLeft,
         BeforeGroupLeave,
         GroupLeft,
-        BeforeServerLeave,
-        ServerLeft
+
+        BeforeAccountRemove,
+        AccountRemoved,
+        BeforeChannelRemove,
+        ChannelRemoved,
+        BeforeGroupRemove,
+        GroupRemoved,
     }
 }
