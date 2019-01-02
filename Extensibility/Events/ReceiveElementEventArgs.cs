@@ -1,6 +1,6 @@
 ﻿namespace Neo.Core.Extensibility.Events
 {
-    public class CustomEventArgs
+    public class ReceiveEventArgs : ICancellableEvent
     {
         // TODO
     }

@@ -12,6 +12,12 @@ namespace Neo.Core.Extensibility
 
         public virtual async Task OnCustom(CustomEventArgs args) { }
 
+        public virtual async Task OnConnected(ConnectEventArgs args) { }
+        public virtual async Task OnDisconnected(DisconnectEventArgs args) { }
+
+        public virtual async Task OnBeforePackageReceive(Before<PackageReceiveEventArgs> args) { }
+        public virtual async Task OnPackageReceived(PackageReceiveEventArgs args) { }
+
         public virtual async Task OnBeforeAccountCreate(Before<CreateElementEventArgs<Account>> args) { }
         public virtual async Task OnAccountCreated(CreateElementEventArgs<Account> args) { }
         public virtual async Task OnBeforeChannelCreate(Before<CreateElementEventArgs<Channel>> args) { }
@@ -44,5 +50,7 @@ namespace Neo.Core.Extensibility
         public virtual async Task OnChannelRemoved(RemoveElementEventArgs<Channel> args) { }
         public virtual async Task OnBeforeGroupRemove(Before<RemoveElementEventArgs<Group>> args) { }
         public virtual async Task OnGroupRemoved(RemoveElementEventArgs<Group> args) { }
+
+        public virtual async Task OnTyping(TypingEventArgs args) { }
     }
 }

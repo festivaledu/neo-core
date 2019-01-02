@@ -4,6 +4,9 @@
     {
         Custom,
 
+        Connected,
+        Disconnected,
+
         BeforeAccountCreate,
         AccountCreated,
         BeforeChannelCreate,
@@ -29,6 +32,9 @@
         ChannelLeft,
         BeforeGroupLeave,
         GroupLeft,
+        
+        BeforePackageReceive,
+        PackageReceived,
 
         BeforeAccountRemove,
         AccountRemoved,
@@ -36,5 +42,7 @@
         ChannelRemoved,
         BeforeGroupRemove,
         GroupRemoved,
+
+        Typing,
     }
 }
