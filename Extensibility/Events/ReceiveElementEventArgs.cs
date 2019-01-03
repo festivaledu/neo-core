@@ -1,7 +1,8 @@
 ﻿namespace Neo.Core.Extensibility.Events
 {
-    public class ReceiveEventArgs : ICancellableEvent
+    public class ReceiveElementEventArgs<TElement> : ICancellableEvent
     {
         // TODO
+        public TElement Element { get; }
     }
 }

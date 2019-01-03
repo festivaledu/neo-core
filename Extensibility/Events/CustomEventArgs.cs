@@ -3,5 +3,6 @@
     public class CustomEventArgs
     {
         // TODO
+        public string Name { get; }
     }
 }
