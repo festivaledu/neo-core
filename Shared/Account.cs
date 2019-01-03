@@ -11,5 +11,9 @@ namespace Neo.Core.Shared
         
         // TODO
         public List<Group> Groups { get; }
+
+        public Account() {
+            InternalId = Guid.NewGuid();
+        }
     }
 }
