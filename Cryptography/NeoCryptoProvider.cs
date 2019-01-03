@@ -38,7 +38,7 @@ namespace Neo.Core.Cryptography
         /// </summary>
         /// <param name="s">The string to decrypt.</param>
         /// <param name="parameters">The <see cref="AesParameters"/> structure holding the key and initialization vector.</param>
-        /// <returns>Returns the decrypted string.</returns>
+        /// <returns>Returns a <see cref="Task"/> that represents the asynchronous decrypt operation. The value of the <c>TResult</c> parameter contains the decrypted <see cref="string"/>.</returns>
         public async Task<string> AesDecryptAsync(string s, AesParameters parameters) {
             var transform = aes.CreateDecryptor(parameters.AesKey, parameters.AesIV);
             var memoryStream = new MemoryStream(Convert.FromBase64String(s));
@@ -58,7 +58,7 @@ namespace Neo.Core.Cryptography
         /// </summary>
         /// <param name="s">The string to encrypt.</param>
         /// <param name="parameters">The <see cref="AesParameters"/> structure holding the key and initialization vector.</param>
-        /// <returns>Returns the encrypted string.</returns>
+        /// <returns>Returns a <see cref="Task"/> that represents the asynchronous encrypt operation. The value of the <c>TResult</c> parameter contains the encrypted <see cref="string"/>.</returns>
         public async Task<string> AesEncryptAsync(string s, AesParameters parameters) {
             var transform = aes.CreateEncryptor(parameters.AesKey, parameters.AesIV);
             var memoryStream = new MemoryStream();

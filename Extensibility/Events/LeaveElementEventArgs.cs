@@ -2,6 +2,10 @@
 
 namespace Neo.Core.Extensibility.Events
 {
+    /// <summary>
+    ///     Provides data for all leave events.
+    /// </summary>
+    /// <typeparam name="TElement">A leavable element.</typeparam>
     public class LeaveElementEventArgs<TElement> : ICancellableEvent
     {
         public User Leaver { get; }
