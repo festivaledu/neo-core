@@ -15,6 +15,7 @@
 
     public enum PackageType
     {
-        Aes
+        Debug,
+        Aes,
     }
 }
