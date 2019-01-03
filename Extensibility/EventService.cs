@@ -7,6 +7,9 @@ using Neo.Core.Extensibility.Events;
 
 namespace Neo.Core.Extensibility
 {
+    /// <summary>
+    ///     Manages the registration and invoking of events and listeners.
+    /// </summary>
     public static class EventService
     {
         private static readonly Dictionary<EventType, List<(MethodInfo Method, Plugin Plugin)>> listeners = new Dictionary<EventType, List<(MethodInfo Method, Plugin Plugin)>>();
