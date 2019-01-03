@@ -6,6 +6,12 @@ namespace Neo.Core.Authorization
 {
     public static class Authorizer
     {
+        /// <summary>
+        ///     Combines two sets of permissions.
+        /// </summary>
+        /// <param name="lowerContext">The permission set with lower valence.</param>
+        /// <param name="higherContext">The permission set with higher valence.</param>
+        /// <returns>Returns a new set of permissions created from unioning two sets.</returns>
         public static Dictionary<string, Permission> UnionPermissions(Dictionary<string, Permission> lowerContext, Dictionary<string, Permission> higherContext) {
             // Take all values from the lower context as the basis
             var union = new Dictionary<string, Permission>(lowerContext);
@@ -61,6 +67,12 @@ namespace Neo.Core.Authorization
             return union;
         }
 
+        /// <summary>
+        ///     Checks whether the permission sets grant a given permission.
+        /// </summary>
+        /// <param name="permission">The permission to validate.</param>
+        /// <param name="permissionSets">The permission sets to check.</param>
+        /// <returns>Returns <c>true</c> when the sets grant the given permission.</returns>
         public static bool IsAuthorized(string permission, params Dictionary<string, Permission>[] permissionSets) {
             var permissions = new Dictionary<string, Permission>();
 
@@ -107,6 +119,12 @@ namespace Neo.Core.Authorization
             return p == Permission.Allow;
         }
 
+        /// <summary>
+        ///     Checks whether this <see cref="IAuthorizable"/> is granted the given permission.
+        /// </summary>
+        /// <param name="authorizable">The <see cref="IAuthorizable"/> to authorize.</param>
+        /// <param name="permission">The permission to check.</param>
+        /// <returns>Returns <c>true</c> when the sets grant the given permission.</returns>
         public static bool IsAuthorized(this IAuthorizable authorizable, string permission) {
             var permissionsSets = new List<Dictionary<string, Permission>>();
 
