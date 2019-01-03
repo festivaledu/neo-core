@@ -2,6 +2,10 @@
 
 namespace Neo.Core.Extensibility.Events
 {
+    /// <summary>
+    ///     Provides data for all edit events.
+    /// </summary>
+    /// <typeparam name="TElement">An editable element.</typeparam>
     public class EditElementEventArgs<TElement> : ICancellableEvent
     {
         public User Editor { get; }
