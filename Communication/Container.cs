@@ -1,9 +1,11 @@
 ﻿namespace Neo.Core.Communication
 {
-    internal class Container
+    public class Container
     {
-        internal bool IsEncrypted { get; }
-        internal string Payload { get; set; }
+        public bool IsEncrypted { get; }
+        public string Payload { get; set; }
+
+        public Container() { }
 
         internal Container(bool encrypted, string payload) {
             this.IsEncrypted = encrypted;

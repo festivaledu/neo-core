@@ -18,7 +18,7 @@ namespace Neo.Core.Networking
         public List<Group> Groups { get; set; } = new List<Group>();
         public List<User> Users { get; set; } = new List<User>();
 
-        internal List<Client> Clients { get; set; } = new List<Client>();
+        public List<Client> Clients { get; set; } = new List<Client>();
         // ReSharper disable once InconsistentNaming
         internal RSAParameters RSAPublicParameters { get; private set; }
         // ReSharper disable once InconsistentNaming
