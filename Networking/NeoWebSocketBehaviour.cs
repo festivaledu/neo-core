@@ -46,20 +46,19 @@ namespace Neo.Core.Networking
                 return;
             }
 
-            Task.Run(async () => {
-                var client = Pool.Server.Clients.Find(c => c.ClientId == ID);
-                var package =  await client.ReadContainer(container);
+            var client = Pool.Server.Clients.Find(c => c.ClientId == ID);
+            var package = client.ReadContainer(container).Result;
 
-                if (package.Type == PackageType.Aes) {
-                    // TODO: Add RSA decryption
-                    //client.SetAesParameters(JsonConvert.DeserializeObject<AesParameters>(NeoCryptoProvider.Instance.RsaDecrypt(package.Content, Pool.Server.RSAPrivateParameters)));
+            if (package.Type == PackageType.Aes) {
+                // TODO: Add RSA decryption
+                //client.SetAesParameters(JsonConvert.DeserializeObject<AesParameters>(NeoCryptoProvider.Instance.RsaDecrypt(package.Content, Pool.Server.RSAPrivateParameters)));
 
-                    var payload = package.GetContentTypesafe<AesPackagePayload>();
-                    var parameters = new AesParameters(Convert.FromBase64String(payload.AesKey), Convert.FromBase64String(payload.AesIV));
-                } else {
-                    await Pool.Server.OnPackage(ID, package);
-                }
-            });
+                var payload = package.GetContentTypesafe<AesPackagePayload>();
+                var parameters = new AesParameters(Convert.FromBase64String(payload.AesKey), Convert.FromBase64String(payload.AesIV));
+                client.SetAesParameters(parameters);
+            } else {
+                Pool.Server.OnPackage(ID, package);
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class Container
     {
-        public bool IsEncrypted { get; }
+        public bool IsEncrypted { get; set; }
         public string Payload { get; set; }
 
         public Container() { }
