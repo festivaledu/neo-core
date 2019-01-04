@@ -16,7 +16,7 @@ namespace Neo.Core.Networking
         /// <summary>
         ///     Id used by the <see cref="WebSocketSessionManager"/> to identify the <see cref="IWebSocketSession"/> this <see cref="Socket"/> belongs to.
         /// </summary>
-        internal string ClientId { get; set; }
+        public string ClientId { get; set; }
 
         /// <summary>
         ///     <see cref="WebSocket"/> used for sending and receiving data.
