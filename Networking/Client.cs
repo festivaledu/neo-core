@@ -82,6 +82,16 @@ namespace Neo.Core.Networking
         }
 
         /// <summary>
+        ///     Sends <see cref="RSAParameters"/> synchronously.
+        /// </summary>
+        /// <param name="parameters">The parameters to send.</param>
+        // ReSharper disable once InconsistentNaming
+        public void SendRSAParameters(RSAParameters parameters) {
+            var container = new Container(false, JsonConvert.SerializeObject(new Package(PackageType.RSA, parameters), new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+            Socket.Send(JsonConvert.SerializeObject(container, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+        }
+
+        /// <summary>
         ///     Sets the <see cref="AesParameters"/> of this <see cref="Client"/>.
         /// </summary>
         /// <param name="parameters">The <see cref="AesParameters"/> structure to set.</param>
