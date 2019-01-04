@@ -10,7 +10,9 @@ namespace Neo.Core.Shared
     {
         public Dictionary<string, object> Attributes { get; set; } = new Dictionary<string, object>();
 
-        public Guid InternalId { get; private set; }
+        public string Id { get; set; }
+
+        public Guid InternalId { get; set; } = Guid.NewGuid();
 
         public List<Guid> MemberIds { get; set; } = new List<Guid>();
 
@@ -21,13 +23,5 @@ namespace Neo.Core.Shared
         public Dictionary<string, Permission> Permissions { get; set; } = new Dictionary<string, Permission>();
 
         public int SortValue { get; set; }
-
-        public bool IsMember(Account account) {
-            return MemberIds.Contains(account.InternalId);
-        }
-
-        public Group() {
-            this.InternalId = Guid.NewGuid();
-        }
     }
 }
