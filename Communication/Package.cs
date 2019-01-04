@@ -22,6 +22,7 @@ namespace Neo.Core.Communication
     public enum PackageType
     {
         Debug,
-        Aes,
+        RSA,
+        AES,
     }
 }

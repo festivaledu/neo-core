@@ -116,11 +116,11 @@ namespace Neo.Core.Extensibility.Events
         GroupLeft,
         
         /// <summary>
-        ///     This event is raised before a <see cref="Package"/> is handled by the server. This event won't be raised if the package has the type <see cref="PackageType.Aes"/>.
+        ///     This event is raised before a <see cref="Package"/> is handled by the server. This event won't be raised if the package has the type <see cref="PackageType.AES"/>.
         /// </summary>
         BeforePackageReceive,
         /// <summary>
-        ///     This event is raised after a <see cref="Package"/> was handled by the server. This event won't be raised if the package has the type <see cref="PackageType.Aes"/>.
+        ///     This event is raised after a <see cref="Package"/> was handled by the server. This event won't be raised if the package has the type <see cref="PackageType.AES"/>.
         /// </summary>
         PackageReceived,
 
