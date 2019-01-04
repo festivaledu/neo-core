@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using Neo.Core.Communication;
 using Neo.Core.Config;
 using Neo.Core.Shared;
@@ -27,11 +28,23 @@ namespace Neo.Core.Networking
 
         private WebSocketServer webSocketServer;
 
+        public abstract Task OnConnect(Client client);
+        public abstract Task OnDisconnect(string clientId, ushort code, string reason, bool wasClean);
+        public abstract Task OnError(string clientId, Exception ex, string message);
+        public abstract Task OnPackage(string clientId, Package package);
+
         /// <summary>
         ///     Allows this instance to be accessed from the <see cref="Pool"/>.
         /// </summary>
         public void Register() {
             Pool.Server = this;
+        }
+
+        public async Task SendTo(Target target, Package package) {
+            foreach (var client in Clients.FindAll(c => target.Targets.Contains(c.ClientId))) {
+                // TODO
+                await client.SendPackage(package);
+            }
         }
 
         /// <summary>
@@ -60,10 +73,5 @@ namespace Neo.Core.Networking
             webSocketServer.Stop();
             Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully stopped.");
         }
-
-        public abstract void OnConnect(Client client);
-        public abstract void OnDisconnect(string clientId, ushort code, string reason, bool wasClean);
-        public abstract void OnError(string clientId, Exception ex, string message);
-        public abstract void OnPackage(string clientId, Package package);
     }
 }
