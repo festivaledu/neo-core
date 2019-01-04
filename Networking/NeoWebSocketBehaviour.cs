@@ -14,18 +14,24 @@ namespace Neo.Core.Networking
     internal class NeoWebSocketBehaviour : WebSocketBehavior
     {
         protected override void OnOpen() {
-            Pool.Server.OnConnect(new Client(ID, Context.WebSocket));
-            Pool.Server.SessionManager = Sessions;
+            Task.Run(async () => {
+                await Pool.Server.OnConnect(new Client(ID, Context.WebSocket));
+                Pool.Server.SessionManager = Sessions;
+            });
         }
 
         protected override void OnClose(CloseEventArgs e) {
-            Pool.Server.OnDisconnect(ID, e.Code, e.Reason, e.WasClean);
-            Pool.Server.SessionManager = Sessions;
+            Task.Run(async () => {
+                await Pool.Server.OnDisconnect(ID, e.Code, e.Reason, e.WasClean);
+                Pool.Server.SessionManager = Sessions;
+            });
         }
 
         protected override void OnError(ErrorEventArgs e) {
-            Pool.Server.OnError(ID, e.Exception, e.Message);
-            Pool.Server.SessionManager = Sessions;
+            Task.Run(async () => {
+                await Pool.Server.OnError(ID, e.Exception, e.Message);
+                Pool.Server.SessionManager = Sessions;
+            });
         }
 
         protected override void OnMessage(MessageEventArgs e) {
@@ -46,7 +52,7 @@ namespace Neo.Core.Networking
                 if (package.Type == PackageType.Aes) {
                     client.SetAesParameters(JsonConvert.DeserializeObject<AesParameters>(NeoCryptoProvider.Instance.RsaDecrypt(package.Content, Pool.Server.RSAPrivateParameters)));
                 } else {
-                    Pool.Server.OnPackage(ID, package);
+                    await Pool.Server.OnPackage(ID, package);
                 }
             });
         }
