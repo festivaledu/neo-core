@@ -21,7 +21,7 @@ namespace Neo.Core.Networking
 
         public List<Client> Clients { get; set; } = new List<Client>();
         // ReSharper disable once InconsistentNaming
-        internal RSAParameters RSAPublicParameters { get; private set; }
+        public RSAParameters RSAPublicParameters { get; private set; }
         // ReSharper disable once InconsistentNaming
         internal RSAParameters RSAPrivateParameters { get; private set; }
         internal WebSocketSessionManager SessionManager { get; set; }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Neo.Core.Communication;
 using Neo.Core.Cryptography;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 
@@ -71,13 +72,23 @@ namespace Neo.Core.Networking
                     throw new CryptographicException("No AES parameters are set.");
                 }
 
-                var encrypted = await NeoCryptoProvider.Instance.AesEncryptAsync(JsonConvert.SerializeObject(data), aesParameters);
+                var encrypted = await NeoCryptoProvider.Instance.AesEncryptAsync(JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }), aesParameters);
                 container = new Container(true, encrypted);
             } else {
-                container = new Container(false, JsonConvert.SerializeObject(data));
+                container = new Container(false, JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
             }
 
-            Socket.Send(JsonConvert.SerializeObject(container));
+            Socket.Send(JsonConvert.SerializeObject(container, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+        }
+
+        /// <summary>
+        ///     Sends <see cref="RSAParameters"/> synchronously.
+        /// </summary>
+        /// <param name="parameters">The parameters to send.</param>
+        // ReSharper disable once InconsistentNaming
+        public void SendRSAParameters(RSAParameters parameters) {
+            var container = new Container(false, JsonConvert.SerializeObject(new Package(PackageType.RSA, parameters), new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+            Socket.Send(JsonConvert.SerializeObject(container, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
         }
 
         /// <summary>
