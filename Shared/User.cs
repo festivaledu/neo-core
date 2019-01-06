@@ -15,7 +15,7 @@ namespace Neo.Core.Shared
         public List<Channel> Channels => Pool.Server.Channels.FindAll(c => c.MemberIds.Contains(InternalId));
         
         // TODO
-        public Client Client { get; }
+        public Client Client { get; set; }
         
         public Identity Identity { get; set; }
 
