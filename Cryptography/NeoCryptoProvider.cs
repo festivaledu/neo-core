@@ -2,7 +2,6 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Neo.Core.Cryptography
 {
@@ -34,17 +33,17 @@ namespace Neo.Core.Cryptography
         }
 
         /// <summary>
-        ///     Decrypts a string asynchronously using the <see cref="Aes"/> algorithm.
+        ///     Decrypts a string using the <see cref="Aes"/> algorithm.
         /// </summary>
         /// <param name="s">The string to decrypt.</param>
         /// <param name="parameters">The <see cref="AesParameters"/> structure holding the key and initialization vector.</param>
-        /// <returns>Returns a <see cref="Task"/> that represents the asynchronous decrypt operation. The value of the <c>TResult</c> parameter contains the decrypted <see cref="string"/>.</returns>
-        public async Task<string> AesDecryptAsync(string s, AesParameters parameters) {
+        /// <returns>Returns the decrypted <see cref="string"/>.</returns>
+        public string AesDecrypt(string s, AesParameters parameters) {
             var transform = aes.CreateDecryptor(parameters.AesKey, parameters.AesIV);
             var memoryStream = new MemoryStream(Convert.FromBase64String(s));
             var cryptoStream = new CryptoStream(memoryStream, transform, CryptoStreamMode.Read);
             var reader = new StreamReader(cryptoStream);
-            var decrypted = await reader.ReadToEndAsync();
+            var decrypted = reader.ReadToEnd();
             reader.Dispose();
             cryptoStream.Dispose();
             memoryStream.Dispose();
@@ -54,18 +53,18 @@ namespace Neo.Core.Cryptography
         }
 
         /// <summary>
-        ///     Encrypts a string asynchronously using the <see cref="Aes"/> algorithm.
+        ///     Encrypts a string using the <see cref="Aes"/> algorithm.
         /// </summary>
         /// <param name="s">The string to encrypt.</param>
         /// <param name="parameters">The <see cref="AesParameters"/> structure holding the key and initialization vector.</param>
-        /// <returns>Returns a <see cref="Task"/> that represents the asynchronous encrypt operation. The value of the <c>TResult</c> parameter contains the encrypted <see cref="string"/>.</returns>
-        public async Task<string> AesEncryptAsync(string s, AesParameters parameters) {
+        /// <returns>Returns the encrypted <see cref="string"/>.</returns>
+        public string AesEncrypt(string s, AesParameters parameters) {
             var transform = aes.CreateEncryptor(parameters.AesKey, parameters.AesIV);
             var memoryStream = new MemoryStream();
 
             using (var cryptoStream = new CryptoStream(memoryStream, transform, CryptoStreamMode.Write)) {
                 using (var writer = new StreamWriter(cryptoStream)) {
-                    await writer.WriteAsync(s);
+                    writer.Write(s);
                 }
             }
 

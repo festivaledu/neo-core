@@ -45,11 +45,11 @@ namespace Neo.Core.Networking
         /// <param name="data">The container to read from.</param>
         /// <returns>Returns a <see cref="Task"/> that represents the asynchronous read operation. The value of the <c>TResult</c> parameter contains the read <see cref="Package"/>.</returns>
         /// <remarks>If the container is encrypted, the returned <see cref="Package"/> will be decrypted automatically.</remarks>
-        internal async Task<Package> ReadContainer(Container data) {
+        internal Package ReadContainer(Container data) {
             Package package;
 
             if (data.IsEncrypted) {
-                var decrypted = await NeoCryptoProvider.Instance.AesDecryptAsync(data.Payload, aesParameters);
+                var decrypted = NeoCryptoProvider.Instance.AesDecrypt(data.Payload, aesParameters);
                 package = JsonConvert.DeserializeObject<Package>(decrypted);
             } else {
                 package = JsonConvert.DeserializeObject<Package>(data.Payload);
@@ -64,7 +64,7 @@ namespace Neo.Core.Networking
         /// <param name="data">The package to send.</param>
         /// <param name="encrypt">A boolean value determining whether the package should be encrypted.</param>
         /// <returns>Returns a <see cref="Task"/> that represents the asynchronous send operation.</returns>
-        internal async Task SendPackage(Package data, bool encrypt = true) {
+        internal void SendPackage(Package data, bool encrypt = true) {
             Container container;
 
             if (encrypt) {
@@ -72,7 +72,7 @@ namespace Neo.Core.Networking
                     throw new CryptographicException("No AES parameters are set.");
                 }
 
-                var encrypted = await NeoCryptoProvider.Instance.AesEncryptAsync(JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }), aesParameters);
+                var encrypted = NeoCryptoProvider.Instance.AesEncrypt(JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }), aesParameters);
                 container = new Container(true, encrypted);
             } else {
                 container = new Container(false, JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));

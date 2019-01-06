@@ -40,10 +40,10 @@ namespace Neo.Core.Networking
             Pool.Server = this;
         }
 
-        public async Task SendTo(Target target, Package package) {
+        public void SendTo(Target target, Package package) {
             foreach (var client in Clients.FindAll(c => target.Targets.Contains(c.ClientId))) {
                 // TODO
-                await client.SendPackage(package);
+                client.SendPackage(package);
             }
         }
 
