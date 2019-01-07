@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Neo.Core.Communication;
 using Neo.Core.Config;
+using Neo.Core.Database;
 using Neo.Core.Shared;
 using WebSocketSharp.Server;
 
@@ -33,11 +35,11 @@ namespace Neo.Core.Networking
         public abstract Task OnError(string clientId, Exception ex, string message);
         public abstract Task OnPackage(string clientId, Package package);
 
-        /// <summary>
-        ///     Allows this instance to be accessed from the <see cref="Pool"/>.
-        /// </summary>
-        public void Register() {
+        public void Initialize(string configPath, string dataDirectoryPath) {
+            ConfigManager.Instance.Load(configPath);
             Pool.Server = this;
+            Pool.DataProvider = new JsonDataProvider(dataDirectoryPath);
+            Pool.DataProvider.Load();
         }
 
         public void SendTo(Target target, Package package) {
