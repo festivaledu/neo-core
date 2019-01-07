@@ -38,7 +38,6 @@ namespace Neo.Core.Networking
 
         public void Initialize(string configPath, string dataDirectoryPath) {
             ConfigManager.Instance.Load(configPath);
-            Logger.Instance.Log(LogLevel.Debug, "Registering server instance to pool");
             Pool.Server = this;
             dataProvider = new JsonDataProvider(this, dataDirectoryPath);
             dataProvider.Load();
@@ -55,7 +54,7 @@ namespace Neo.Core.Networking
         ///     Applies all necessary settings and starts the underlying <see cref="WebSocketServer"/>.
         /// </summary>
         public void Start() {
-            Logger.Instance.Log(LogLevel.Info, $"Generating RSA key pair with a key size of {ConfigManager.Instance.Values.RSAKeySize} bytes...");
+            Logger.Instance.Log(LogLevel.Info, $"Generating RSA key pair with a key size of {ConfigManager.Instance.Values.RSAKeySize} bytes. This may take a while...");
             using (var rsa = new RSACryptoServiceProvider(ConfigManager.Instance.Values.RSAKeySize)) {
                 RSAPublicParameters = rsa.ExportParameters(false);
                 RSAPrivateParameters = rsa.ExportParameters(true);
@@ -66,7 +65,7 @@ namespace Neo.Core.Networking
             webSocketServer = new WebSocketServer($"ws://{ConfigManager.Instance.Values.ServerAddress}:{ConfigManager.Instance.Values.ServerPort}");
             webSocketServer.AddWebSocketService<NeoWebSocketBehaviour>("/neo");
             webSocketServer.Start();
-            Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully started");
+            Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully started. Waiting for connections...");
         }
 
         /// <summary>
