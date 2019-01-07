@@ -1,5 +1,4 @@
-﻿using Neo.Core.Database;
-using Neo.Core.Networking;
+﻿using Neo.Core.Networking;
 
 namespace Neo.Core.Shared
 {

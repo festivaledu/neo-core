@@ -64,6 +64,10 @@ namespace Neo.Core.Database
             var accountsPath = new FileInfo(Path.Combine(dataPath.FullName, "accounts.json"));
             var channelsPath = new FileInfo(Path.Combine(dataPath.FullName, "channels.json"));
             var groupsPath = new FileInfo(Path.Combine(dataPath.FullName, "groups.json"));
+
+            PrepareAccounts();
+            PrepareChannels();
+            PrepareGroups();
             
             File.WriteAllText(accountsPath.FullName, JsonConvert.SerializeObject(server.Accounts, Formatting.Indented));
             File.WriteAllText(channelsPath.FullName, JsonConvert.SerializeObject(server.Channels, Formatting.Indented));

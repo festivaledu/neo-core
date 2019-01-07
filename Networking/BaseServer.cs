@@ -45,6 +45,9 @@ namespace Neo.Core.Networking
 
             // Create root account
             Accounts.Insert(0, new Account {
+                Attributes = new Dictionary<string, object> {
+                    { "instance.neo.origin", "neo.server" }
+                },
                 Email = "root@internal.neo",
                 Identity = ConfigManager.Instance.Values.RootIdentity,
                 Password = ConfigManager.Instance.Values.RootPassword,
