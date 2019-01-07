@@ -44,25 +44,25 @@ namespace Neo.Core.Authentication
             }
 
             member = new Member {
-                Account = account
+                Account = account,
+                Attributes = { ["session.neo.origin"] = "neo.client" }
             };
 
-            member.Attributes.Add("neo.session.member.origin", "neo.client");
             return AuthenticationResult.Success;
         }
 
         public static Member CreateVirtualMember(Plugin parent) {
-            var count = Pool.Server.Users.Count(u => u is Member m && m.Attributes.ContainsKey("neo.session.member.origin") && m.Attributes["neo.session.member.origin"].Equals(parent.InternalId));
+            var count = Pool.Server.Users.Count(u => u is Member m && m.Attributes.ContainsKey("instance.neo.origin") && m.Attributes["instance.neo.origin"].Equals(parent.InternalId));
 
             var account = new Account {
                 Email = $"{parent.InternalId}-{count}@plugin.neo"
             };
 
             var member = new Member {
-                Account = account
+                Account = account,
+                Attributes = { ["instance.neo.origin"] = parent.InternalId }
             };
 
-            member.Attributes.Add("neo.session.member.origin", parent.InternalId);
             return member;
         }
 

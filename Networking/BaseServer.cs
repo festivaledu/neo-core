@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Neo.Core.Authorization;
 using Neo.Core.Communication;
 using Neo.Core.Config;
+using Neo.Core.Database;
 using Neo.Core.Shared;
 using WebSocketSharp.Server;
 
@@ -26,6 +29,7 @@ namespace Neo.Core.Networking
         internal RSAParameters RSAPrivateParameters { get; private set; }
         internal WebSocketSessionManager SessionManager { get; set; }
 
+        private DataProvider dataProvider;
         private WebSocketServer webSocketServer;
 
         public abstract Task OnConnect(Client client);
@@ -33,11 +37,25 @@ namespace Neo.Core.Networking
         public abstract Task OnError(string clientId, Exception ex, string message);
         public abstract Task OnPackage(string clientId, Package package);
 
-        /// <summary>
-        ///     Allows this instance to be accessed from the <see cref="Pool"/>.
-        /// </summary>
-        public void Register() {
+        public void Initialize(string configPath, string dataDirectoryPath) {
+            ConfigManager.Instance.Load(configPath);
             Pool.Server = this;
+            dataProvider = new JsonDataProvider(this, dataDirectoryPath);
+            dataProvider.Load();
+
+            // Create root account
+            Accounts.Insert(0, new Account {
+                Attributes = new Dictionary<string, object> {
+                    { "instance.neo.origin", "neo.server" }
+                },
+                Email = "root@internal.neo",
+                Identity = ConfigManager.Instance.Values.RootIdentity,
+                Password = ConfigManager.Instance.Values.RootPassword,
+                Permissions = new Dictionary<string, Permission> {
+                    { "*", Permission.Allow }
+                }
+            });
+            Logger.Instance.Log(LogLevel.Debug, "Root account created");
         }
 
         public void SendTo(Target target, Package package) {
@@ -51,27 +69,29 @@ namespace Neo.Core.Networking
         ///     Applies all necessary settings and starts the underlying <see cref="WebSocketServer"/>.
         /// </summary>
         public void Start() {
-            Logger.Instance.Log(LogLevel.Info, $"Generating RSA key pair with a key size of {ConfigManager.Instance.Values.RSAKeySize} bytes...");
+            Logger.Instance.Log(LogLevel.Info, $"Generating RSA key pair with a key size of {ConfigManager.Instance.Values.RSAKeySize} bytes. This may take a while...");
             using (var rsa = new RSACryptoServiceProvider(ConfigManager.Instance.Values.RSAKeySize)) {
                 RSAPublicParameters = rsa.ExportParameters(false);
                 RSAPrivateParameters = rsa.ExportParameters(true);
             }
-            Logger.Instance.Log(LogLevel.Ok, "RSA key pair successfully generated.");
+            Logger.Instance.Log(LogLevel.Ok, "RSA key pair successfully generated");
 
             Logger.Instance.Log(LogLevel.Info, $"Attempting to start WebSocket server on ws://{ConfigManager.Instance.Values.ServerAddress}:{ConfigManager.Instance.Values.ServerPort}...");
             webSocketServer = new WebSocketServer($"ws://{ConfigManager.Instance.Values.ServerAddress}:{ConfigManager.Instance.Values.ServerPort}");
             webSocketServer.AddWebSocketService<NeoWebSocketBehaviour>("/neo");
             webSocketServer.Start();
-            Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully started.");
+            Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully started. Waiting for connections...");
         }
 
         /// <summary>
         ///     Stops the underlying <see cref="WebSocketServer"/>.
         /// </summary>
         public void Stop() {
-            Logger.Instance.Log(LogLevel.Info, $"Attempting to stop WebSocket server...");
+            ConfigManager.Instance.Save();
+            dataProvider.Save();
+            Logger.Instance.Log(LogLevel.Info, "Attempting to stop WebSocket server...");
             webSocketServer.Stop();
-            Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully stopped.");
+            Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully stopped");
         }
     }
 }
