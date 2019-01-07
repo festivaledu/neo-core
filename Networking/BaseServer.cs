@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Neo.Core.Authorization;
 using Neo.Core.Communication;
 using Neo.Core.Config;
 using Neo.Core.Database;
@@ -41,6 +42,17 @@ namespace Neo.Core.Networking
             Pool.Server = this;
             dataProvider = new JsonDataProvider(this, dataDirectoryPath);
             dataProvider.Load();
+
+            // Create root account
+            Accounts.Insert(0, new Account {
+                Email = "root@internal.neo",
+                Identity = ConfigManager.Instance.Values.RootIdentity,
+                Password = ConfigManager.Instance.Values.RootPassword,
+                Permissions = new Dictionary<string, Permission> {
+                    { "*", Permission.Allow }
+                }
+            });
+            Logger.Instance.Log(LogLevel.Debug, "Root account created");
         }
 
         public void SendTo(Target target, Package package) {
@@ -72,8 +84,9 @@ namespace Neo.Core.Networking
         ///     Stops the underlying <see cref="WebSocketServer"/>.
         /// </summary>
         public void Stop() {
+            ConfigManager.Instance.Save();
             dataProvider.Save();
-            Logger.Instance.Log(LogLevel.Info, $"Attempting to stop WebSocket server...");
+            Logger.Instance.Log(LogLevel.Info, "Attempting to stop WebSocket server...");
             webSocketServer.Stop();
             Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully stopped");
         }
