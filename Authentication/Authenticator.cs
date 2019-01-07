@@ -3,14 +3,14 @@ using System.Linq;
 using Neo.Core.Communication;
 using Neo.Core.Shared;
 
-namespace Neo.Core.Authentification
+namespace Neo.Core.Authentication
 {
-    public static class Authentificator
+    public static class Authenticator
     {
         private static readonly Random random = new Random();
         private const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
-        public static AuthentificationResult Authentificate(GuestLoginPayload loginData, out Guest guest) {
+        public static AuthenticationResult Authenticate(GuestLoginPayload loginData, out Guest guest) {
             do {
                 loginData.Identity.Id = $"Guest-{new string(Enumerable.Range(1, 6).Select(_ => chars[random.Next(chars.Length)]).ToArray())}";
             } while (Pool.Server.Users.Any(u => u.Identity.Id == loginData.Identity.Id));
@@ -19,26 +19,26 @@ namespace Neo.Core.Authentification
                 Identity = loginData.Identity
             };
 
-            return AuthentificationResult.Success;
+            return AuthenticationResult.Success;
         }
 
-        public static AuthentificationResult Authentificate(MemberLoginPayload loginData, out Member member) {
+        public static AuthenticationResult Authenticate(MemberLoginPayload loginData, out Member member) {
             var account = Pool.Server.Accounts.Find(a => a.Email == loginData.Email);
 
             if (account == null) {
                 member = null;
-                return AuthentificationResult.UnknownEmail;
+                return AuthenticationResult.UnknownEmail;
             }
 
             // TODO: Implement random salt
             if (!account.Password.SequenceEqual(Convert.FromBase64String(loginData.Password))) {
                 member = null;
-                return AuthentificationResult.IncorrectPassword;
+                return AuthenticationResult.IncorrectPassword;
             }
 
             if (account.Member != null) {
                 member = null;
-                return AuthentificationResult.ExistingSession;
+                return AuthenticationResult.ExistingSession;
             }
 
             member = new Member {
@@ -46,7 +46,7 @@ namespace Neo.Core.Authentification
             };
 
             member.Attributes.Add("neo.member.origin", "neo.client");
-            return AuthentificationResult.Success;
+            return AuthenticationResult.Success;
         }
     }
 }

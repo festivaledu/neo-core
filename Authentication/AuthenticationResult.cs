@@ -1,6 +1,6 @@
-﻿namespace Neo.Core.Authentification
+﻿namespace Neo.Core.Authentication
 {
-    public enum AuthentificationResult
+    public enum AuthenticationResult
     {
         Success,
         UnknownEmail,
