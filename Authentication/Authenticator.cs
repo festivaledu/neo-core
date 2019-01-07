@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 using System.Linq;
 using Neo.Core.Communication;
 using Neo.Core.Cryptography;
+using Neo.Core.Extensibility;
 using Neo.Core.Shared;
 
 namespace Neo.Core.Authentication
@@ -48,6 +49,21 @@ namespace Neo.Core.Authentication
 
             member.Attributes.Add("neo.session.member.origin", "neo.client");
             return AuthenticationResult.Success;
+        }
+
+        public static Member CreateVirtualMember(Plugin parent) {
+            var count = Pool.Server.Users.Count(u => u is Member m && m.Attributes.ContainsKey("neo.session.member.origin") && m.Attributes["neo.session.member.origin"].Equals(parent.InternalId));
+
+            var account = new Account {
+                Email = $"{parent.InternalId}-{count}@plugin.neo"
+            };
+
+            var member = new Member {
+                Account = account
+            };
+
+            member.Attributes.Add("neo.session.member.origin", parent.InternalId);
+            return member;
         }
 
         public static AuthenticationResult Register(string email, string password, out (Account account, Member member)? user) {

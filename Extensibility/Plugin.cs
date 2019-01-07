@@ -1,6 +1,7 @@
 ﻿#pragma warning disable 1998
 // ReSharper disable UnusedMember.Global
 
+using System;
 using System.Threading.Tasks;
 using Neo.Core.Communication;
 using Neo.Core.Extensibility.Events;
@@ -10,6 +11,7 @@ namespace Neo.Core.Extensibility
 {
     public abstract class Plugin
     {
+        public Guid InternalId { get; } = Guid.NewGuid();
         public abstract string Namespace { get; }
 
         public virtual async Task OnInitialize() { }
@@ -56,6 +58,11 @@ namespace Neo.Core.Extensibility
         public virtual async Task OnGroupRemoved(RemoveElementEventArgs<Group> args) { }
 
         public virtual async Task OnTyping(TypingEventArgs args) { }
+    }
+
+    public class P : Plugin
+    {
+        public override string Namespace { get; }
     }
 }
  
