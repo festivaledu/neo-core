@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Neo.Core.Communication;
 using Neo.Core.Cryptography;
@@ -46,7 +46,7 @@ namespace Neo.Core.Authentication
                 Account = account
             };
 
-            member.Attributes.Add("neo.member.origin", "neo.client");
+            member.Attributes.Add("neo.session.member.origin", "neo.client");
             return AuthenticationResult.Success;
         }
 
