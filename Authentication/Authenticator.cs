@@ -12,7 +12,7 @@ namespace Neo.Core.Authentication
         private static readonly Random random = new Random();
         private const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
-        public static AuthenticationResult Authenticate(GuestLoginPayload loginData, out Guest guest) {
+        public static AuthenticationResult Authenticate(GuestLoginPackageContent loginData, out Guest guest) {
             do {
                 loginData.Identity.Id = $"Guest-{new string(Enumerable.Range(1, 6).Select(_ => chars[random.Next(chars.Length)]).ToArray())}";
             } while (Pool.Server.Users.Any(u => u.Identity.Id == loginData.Identity.Id));
@@ -24,7 +24,7 @@ namespace Neo.Core.Authentication
             return AuthenticationResult.Success;
         }
 
-        public static AuthenticationResult Authenticate(MemberLoginPayload loginData, out Member member) {
+        public static AuthenticationResult Authenticate(MemberLoginPackageContent loginData, out Member member) {
             var account = Pool.Server.Accounts.Find(a => a.Email == loginData.Email);
 
             if (account == null) {

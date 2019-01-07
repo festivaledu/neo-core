@@ -53,7 +53,7 @@ namespace Neo.Core.Networking
                 // TODO: Add RSA decryption
                 //client.SetAesParameters(JsonConvert.DeserializeObject<AesParameters>(NeoCryptoProvider.Instance.RsaDecrypt(package.Content, Pool.Server.RSAPrivateParameters)));
 
-                var payload = package.GetContentTypesafe<AesPackagePayload>();
+                var payload = package.GetContentTypesafe<AesPackageContent>();
                 var parameters = new AesParameters(Convert.FromBase64String(payload.AesKey), Convert.FromBase64String(payload.AesIV));
                 client.SetAesParameters(parameters);
             } else {

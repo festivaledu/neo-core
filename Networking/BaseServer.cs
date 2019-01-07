@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Neo.Core.Authorization;
@@ -58,7 +57,12 @@ namespace Neo.Core.Networking
             Logger.Instance.Log(LogLevel.Debug, "Root account created");
         }
 
-        public void SendTo(Target target, Package package) {
+        /// <summary>
+        ///     Sends a <see cref="Package"/> to a <see cref="Target"/>.
+        /// </summary>
+        /// <param name="target">The recipients of the <see cref="Package"/>.</param>
+        /// <param name="package">The <see cref="Package"/> to send.</param>
+        public void SendPackageTo(Target target, Package package) {
             foreach (var client in Clients.FindAll(c => target.Targets.Contains(c.ClientId))) {
                 // TODO
                 client.SendPackage(package);
