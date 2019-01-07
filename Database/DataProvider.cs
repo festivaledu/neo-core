@@ -30,8 +30,11 @@ namespace Neo.Core.Database
         protected void PrepareChannels() {
             // TODO: Remove expired channels
 
-            // Remove all instance attributes
             foreach (var channel in server.Channels) {
+                // Remove all active members
+                channel.ActiveMemberIds.Clear();
+
+                // Remove all instance attributes
                 foreach (var attribute in channel.Attributes.Keys) {
                     if (attribute.StartsWith("instance.")) {
                         channel.Attributes.Remove(attribute);
