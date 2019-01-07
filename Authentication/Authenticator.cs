@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Neo.Core.Communication;
+using Neo.Core.Cryptography;
 using Neo.Core.Shared;
 
 namespace Neo.Core.Authentication
@@ -46,6 +47,25 @@ namespace Neo.Core.Authentication
             };
 
             member.Attributes.Add("neo.member.origin", "neo.client");
+            return AuthenticationResult.Success;
+        }
+
+        public static AuthenticationResult Register(string email, string password, out (Account account, Member member)? user) {
+            if (Pool.Server.Accounts.Any(a => a.Email == email)) {
+                user = null;
+                return AuthenticationResult.EmailInUse;
+            }
+
+            var account = new Account {
+                Email = email,
+                Password = NeoCryptoProvider.Instance.Sha512ComputeHash(password)
+            };
+
+            var member = new Member {
+                Account = account
+            };
+
+            user = (account, member);
             return AuthenticationResult.Success;
         }
     }
