@@ -28,6 +28,7 @@ namespace Neo.Core.Networking
         internal RSAParameters RSAPrivateParameters { get; private set; }
         internal WebSocketSessionManager SessionManager { get; set; }
 
+        private DataProvider dataProvider;
         private WebSocketServer webSocketServer;
 
         public abstract Task OnConnect(Client client);
@@ -38,8 +39,8 @@ namespace Neo.Core.Networking
         public void Initialize(string configPath, string dataDirectoryPath) {
             ConfigManager.Instance.Load(configPath);
             Pool.Server = this;
-            Pool.DataProvider = new JsonDataProvider(dataDirectoryPath);
-            Pool.DataProvider.Load();
+            dataProvider = new JsonDataProvider(this, dataDirectoryPath);
+            dataProvider.Load();
         }
 
         public void SendTo(Target target, Package package) {
@@ -71,6 +72,7 @@ namespace Neo.Core.Networking
         ///     Stops the underlying <see cref="WebSocketServer"/>.
         /// </summary>
         public void Stop() {
+            dataProvider.Save();
             Logger.Instance.Log(LogLevel.Info, $"Attempting to stop WebSocket server...");
             webSocketServer.Stop();
             Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully stopped.");
