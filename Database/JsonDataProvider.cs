@@ -15,6 +15,8 @@ namespace Neo.Core.Database
         }
 
         public override void Load() {
+            Logger.Instance.Log(LogLevel.Info, $"Loading data from {directoryPath} using a JsonDataProvider");
+
             var dataPath = new DirectoryInfo(directoryPath);
 
             var accountsPath = new FileInfo(Path.Combine(dataPath.FullName, "accounts.json"));
@@ -22,42 +24,32 @@ namespace Neo.Core.Database
             var groupsPath = new FileInfo(Path.Combine(dataPath.FullName, "groups.json"));
 
             if (!dataPath.Exists) {
+                Logger.Instance.Log(LogLevel.Warn, "The specified data directory doesn't exist. Creating...");
+
                 dataPath.Create();
 
                 File.WriteAllText(accountsPath.FullName, JsonConvert.SerializeObject(server.Accounts, Formatting.Indented));
                 File.WriteAllText(channelsPath.FullName, JsonConvert.SerializeObject(server.Channels, Formatting.Indented));
                 File.WriteAllText(groupsPath.FullName, JsonConvert.SerializeObject(server.Groups, Formatting.Indented));
+
+                Logger.Instance.Log(LogLevel.Ok, "Data directory successfully created");
             }
 
             if (!accountsPath.Exists || accountsPath.Length == 0) {
-                throw new FileNotFoundException("The specified folder does not contain a valid account data file.");
+                File.WriteAllText(accountsPath.FullName, JsonConvert.SerializeObject(server.Accounts, Formatting.Indented));
             }
 
             if (!channelsPath.Exists || channelsPath.Length == 0) {
-                throw new FileNotFoundException("The specified folder does not contain a valid channel data file.");
+                File.WriteAllText(channelsPath.FullName, JsonConvert.SerializeObject(server.Channels, Formatting.Indented));
             }
 
             if (!groupsPath.Exists || groupsPath.Length == 0) {
-                throw new FileNotFoundException("The specified folder does not contain a valid group data file.");
+                File.WriteAllText(groupsPath.FullName, JsonConvert.SerializeObject(server.Groups, Formatting.Indented));
             }
-
-            try {
-                server.Accounts = JsonConvert.DeserializeObject<List<Account>>(File.ReadAllText(accountsPath.FullName));
-            } catch {
-                throw new FileNotFoundException("The specified folder does not contain a valid account data file.");
-            }
-
-            try {
-                server.Channels = JsonConvert.DeserializeObject<List<Channel>>(File.ReadAllText(channelsPath.FullName));
-            } catch {
-                throw new FileNotFoundException("The specified folder does not contain a valid channel data file.");
-            }
-
-            try {
-                server.Groups = JsonConvert.DeserializeObject<List<Group>>(File.ReadAllText(groupsPath.FullName));
-            } catch {
-                throw new FileNotFoundException("The specified folder does not contain a valid group data file.");
-            }
+            
+            server.Accounts = JsonConvert.DeserializeObject<List<Account>>(File.ReadAllText(accountsPath.FullName));
+            server.Channels = JsonConvert.DeserializeObject<List<Channel>>(File.ReadAllText(channelsPath.FullName));
+            server.Groups = JsonConvert.DeserializeObject<List<Group>>(File.ReadAllText(groupsPath.FullName));
         }
 
         public override void Save() {

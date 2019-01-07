@@ -38,6 +38,7 @@ namespace Neo.Core.Networking
 
         public void Initialize(string configPath, string dataDirectoryPath) {
             ConfigManager.Instance.Load(configPath);
+            Logger.Instance.Log(LogLevel.Debug, "Registering server instance to pool");
             Pool.Server = this;
             dataProvider = new JsonDataProvider(this, dataDirectoryPath);
             dataProvider.Load();
@@ -59,13 +60,13 @@ namespace Neo.Core.Networking
                 RSAPublicParameters = rsa.ExportParameters(false);
                 RSAPrivateParameters = rsa.ExportParameters(true);
             }
-            Logger.Instance.Log(LogLevel.Ok, "RSA key pair successfully generated.");
+            Logger.Instance.Log(LogLevel.Ok, "RSA key pair successfully generated");
 
             Logger.Instance.Log(LogLevel.Info, $"Attempting to start WebSocket server on ws://{ConfigManager.Instance.Values.ServerAddress}:{ConfigManager.Instance.Values.ServerPort}...");
             webSocketServer = new WebSocketServer($"ws://{ConfigManager.Instance.Values.ServerAddress}:{ConfigManager.Instance.Values.ServerPort}");
             webSocketServer.AddWebSocketService<NeoWebSocketBehaviour>("/neo");
             webSocketServer.Start();
-            Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully started.");
+            Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully started");
         }
 
         /// <summary>
@@ -75,7 +76,7 @@ namespace Neo.Core.Networking
             dataProvider.Save();
             Logger.Instance.Log(LogLevel.Info, $"Attempting to stop WebSocket server...");
             webSocketServer.Stop();
-            Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully stopped.");
+            Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully stopped");
         }
     }
 }
