@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Neo.Core.Authorization;
@@ -84,6 +87,7 @@ namespace Neo.Core.Networking
             webSocketServer = new WebSocketServer($"ws://{ConfigManager.Instance.Values.ServerAddress}:{ConfigManager.Instance.Values.ServerPort}");
             webSocketServer.AddWebSocketService<NeoWebSocketBehaviour>("/neo");
             webSocketServer.Start();
+            Logger.Instance.Log(LogLevel.Info, $"Use {Dns.GetHostEntry(Dns.GetHostName()).AddressList.ToList().Find(ip => ip.AddressFamily == AddressFamily.InterNetwork)} to connect to this instance.", true);
             Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully started. Waiting for connections...");
         }
 
