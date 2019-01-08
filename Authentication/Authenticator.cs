@@ -67,6 +67,10 @@ namespace Neo.Core.Authentication
         }
 
         public static AuthenticationResult Register(string email, string password, out (Account account, Member member)? user) {
+            return Register(email, NeoCryptoProvider.Instance.Sha512ComputeHash(password), out user);
+        }
+
+        public static AuthenticationResult Register(string email, byte[] password, out (Account account, Member member)? user) {
             if (Pool.Server.Accounts.Any(a => a.Email == email)) {
                 user = null;
                 return AuthenticationResult.EmailInUse;
@@ -74,7 +78,7 @@ namespace Neo.Core.Authentication
 
             var account = new Account {
                 Email = email,
-                Password = NeoCryptoProvider.Instance.Sha512ComputeHash(password)
+                Password = password
             };
 
             var member = new Member {
