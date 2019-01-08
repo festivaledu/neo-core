@@ -1,6 +1,6 @@
 ﻿namespace Neo.Core.Shared
 {
-    public enum LifeSpan
+    public enum Lifespan
     {
         Custom,
         Volatile,

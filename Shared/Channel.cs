@@ -19,13 +19,13 @@ namespace Neo.Core.Shared
 
         public List<Guid> BlacklistedUserIds { get; set; } = new List<Guid>();
 
-        public TimeSpan CustomLifespan { get; set; }
+        public DateTime EndOfLifetime { get; set; }
 
         public string Id { get; set; }
 
         public Guid InternalId { get; set; } = Guid.NewGuid();
 
-        public LifeSpan Lifespan { get; set; } = LifeSpan.Temporary;
+        public Lifespan Lifetime { get; set; } = Lifespan.Temporary;
 
         public int Limit { get; set; }
 
@@ -45,5 +45,9 @@ namespace Neo.Core.Shared
         public List<Guid> WhitelistedGroupIds { get; set; } = new List<Guid>();
 
         public List<Guid> WhitelistedUserIds { get; set; } = new List<Guid>();
+
+        public List<Guid> VisibleToGroupIds { get; set; } = new List<Guid>();
+
+        public List<Guid> VisibleToUserIds { get; set; } = new List<Guid>();
     }
 }
