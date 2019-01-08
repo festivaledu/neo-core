@@ -61,5 +61,25 @@ namespace Neo.Core.Communication
         ///     The <see cref="Package"/> contains <see cref="AesParameters"/>.
         /// </summary>
         AES,
+        /// <summary>
+        ///     The <see cref="Package"/> contains a request for server meta.
+        /// </summary>
+        Meta,
+        /// <summary>
+        ///     The <see cref="Package"/> contains server meta.
+        /// </summary>
+        MetaResponse,
+        /// <summary>
+        ///     The <see cref="Package"/> contains registration information.
+        /// </summary>
+        Register,
+        /// <summary>
+        ///     The <see cref="Package"/> contains <see cref="MemberLoginPackageContent"/>.
+        /// </summary>
+        MemberLogin,
+        /// <summary>
+        ///     The <see cref="Package"/> contains <see cref="GuestLoginPackageContent"/>.
+        /// </summary>
+        GuestLogin,
     }
 }
