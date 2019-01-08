@@ -34,6 +34,8 @@ namespace Neo.Core.Shared
 
         public string Name { get; set; }
 
+        public Guid Owner { get; set; }
+
         public string Password { get; set; }
 
         public List<Guid> WhitelistedGroupIds { get; set; } = new List<Guid>();
