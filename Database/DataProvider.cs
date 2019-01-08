@@ -1,4 +1,5 @@
-﻿using Neo.Core.Networking;
+﻿using System.Linq;
+using Neo.Core.Networking;
 
 namespace Neo.Core.Database
 {
@@ -15,13 +16,15 @@ namespace Neo.Core.Database
 
         protected void PrepareAccounts() {
             // Remove all accounts that aren't created by a client (root account + virtual plugin accounts)
-            server.Accounts.RemoveAll(a => a.Attributes.ContainsKey("session.neo.origin") && a.Attributes["session.neo.origin"].ToString() != "neo.client");
+            server.Accounts.RemoveAll(a => a.Attributes.ContainsKey("session.neo.origin") && a.Attributes["session.neo.origin"].ToString() != "neo.client" || a.Attributes.ContainsKey("instance.neo.origin") && a.Attributes["instance.neo.origin"].ToString() != "neo.client");
 
             // Remove all session and instance attributes
             foreach (var account in server.Accounts) {
-                foreach (var attribute in account.Attributes.Keys) {
-                    if (attribute.StartsWith("session.") || attribute.StartsWith("instance.")) {
-                        account.Attributes.Remove(attribute);
+                for (var i = account.Attributes.Keys.Count - 1; i >= 0; i--) {
+                    var key = account.Attributes.Keys.ElementAt(i);
+
+                    if (key.StartsWith("session.") || key.StartsWith("instance.")) {
+                        account.Attributes.Remove(key);
                     }
                 }
             }
@@ -35,9 +38,11 @@ namespace Neo.Core.Database
                 channel.ActiveMemberIds.Clear();
 
                 // Remove all instance attributes
-                foreach (var attribute in channel.Attributes.Keys) {
-                    if (attribute.StartsWith("instance.")) {
-                        channel.Attributes.Remove(attribute);
+                for (var i = channel.Attributes.Keys.Count - 1; i >= 0; i--) {
+                    var key = channel.Attributes.Keys.ElementAt(i);
+
+                    if (key.StartsWith("instance.")) {
+                        channel.Attributes.Remove(key);
                     }
                 }
             }
@@ -46,9 +51,11 @@ namespace Neo.Core.Database
         protected void PrepareGroups() {
             // Remove all instance attributes
             foreach (var group in server.Groups) {
-                foreach (var attribute in group.Attributes.Keys) {
-                    if (attribute.StartsWith("instance.")) {
-                        group.Attributes.Remove(attribute);
+                for (var i = group.Attributes.Keys.Count - 1; i >= 0; i--) {
+                    var key = group.Attributes.Keys.ElementAt(i);
+
+                    if (key.StartsWith("instance.")) {
+                        group.Attributes.Remove(key);
                     }
                 }
             }
