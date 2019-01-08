@@ -15,9 +15,15 @@ namespace Neo.Core.Shared
 
         public Dictionary<string, object> Attributes { get; set; } = new Dictionary<string, object>();
 
+        public List<Guid> BlacklistedGroupIds { get; set; } = new List<Guid>();
+
+        public List<Guid> BlacklistedUserIds { get; set; } = new List<Guid>();
+
         public string Id { get; set; }
 
         public Guid InternalId { get; set; } = Guid.NewGuid();
+
+        public int Limit { get; set; }
 
         public List<Guid> MemberIds { get; set; } = new List<Guid>();
 
@@ -27,5 +33,13 @@ namespace Neo.Core.Shared
         public List<User> Members => Pool.Server.Users.FindAll(u => MemberIds.Contains(u.InternalId));
 
         public string Name { get; set; }
+
+        public Guid Owner { get; set; }
+
+        public string Password { get; set; }
+
+        public List<Guid> WhitelistedGroupIds { get; set; } = new List<Guid>();
+
+        public List<Guid> WhitelistedUserIds { get; set; } = new List<Guid>();
     }
 }
