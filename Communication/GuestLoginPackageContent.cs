@@ -2,7 +2,7 @@
 
 namespace Neo.Core.Communication
 {
-    public class GuestLoginPayload
+    public class GuestLoginPackageContent
     {
         public Identity Identity { get; set; }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Neo.Core.Attribution;
 using Neo.Core.Authorization;
+using Newtonsoft.Json;
 
 namespace Neo.Core.Shared
 {
@@ -9,6 +10,7 @@ namespace Neo.Core.Shared
     {
         public List<Guid> ActiveMemberIds { get; set; } = new List<Guid>();
 
+        [JsonIgnore]
         public List<User> ActiveMembers => Pool.Server.Users.FindAll(u => ActiveMemberIds.Contains(u.InternalId));
 
         public Dictionary<string, object> Attributes { get; set; } = new Dictionary<string, object>();
@@ -20,7 +22,8 @@ namespace Neo.Core.Shared
         public List<Guid> MemberIds { get; set; } = new List<Guid>();
 
         public Dictionary<Guid, Dictionary<string, Permission>> MemberPermissions { get; set; } = new Dictionary<Guid, Dictionary<string, Permission>>();
-        
+
+        [JsonIgnore]
         public List<User> Members => Pool.Server.Users.FindAll(u => MemberIds.Contains(u.InternalId));
 
         public string Name { get; set; }

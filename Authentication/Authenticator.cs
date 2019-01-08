@@ -12,7 +12,7 @@ namespace Neo.Core.Authentication
         private static readonly Random random = new Random();
         private const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
-        public static AuthenticationResult Authenticate(GuestLoginPayload loginData, out Guest guest) {
+        public static AuthenticationResult Authenticate(GuestLoginPackageContent loginData, out Guest guest) {
             do {
                 loginData.Identity.Id = $"Guest-{new string(Enumerable.Range(1, 6).Select(_ => chars[random.Next(chars.Length)]).ToArray())}";
             } while (Pool.Server.Users.Any(u => u.Identity.Id == loginData.Identity.Id));
@@ -24,7 +24,7 @@ namespace Neo.Core.Authentication
             return AuthenticationResult.Success;
         }
 
-        public static AuthenticationResult Authenticate(MemberLoginPayload loginData, out Member member) {
+        public static AuthenticationResult Authenticate(MemberLoginPackageContent loginData, out Member member) {
             var account = Pool.Server.Accounts.Find(a => a.Email == loginData.Email);
 
             if (account == null) {
@@ -44,29 +44,33 @@ namespace Neo.Core.Authentication
             }
 
             member = new Member {
-                Account = account
+                Account = account,
+                Attributes = { ["session.neo.origin"] = "neo.client" }
             };
 
-            member.Attributes.Add("neo.session.member.origin", "neo.client");
             return AuthenticationResult.Success;
         }
 
         public static Member CreateVirtualMember(Plugin parent) {
-            var count = Pool.Server.Users.Count(u => u is Member m && m.Attributes.ContainsKey("neo.session.member.origin") && m.Attributes["neo.session.member.origin"].Equals(parent.InternalId));
+            var count = Pool.Server.Users.Count(u => u is Member m && m.Attributes.ContainsKey("instance.neo.origin") && m.Attributes["instance.neo.origin"].Equals(parent.InternalId));
 
             var account = new Account {
                 Email = $"{parent.InternalId}-{count}@plugin.neo"
             };
 
             var member = new Member {
-                Account = account
+                Account = account,
+                Attributes = { ["instance.neo.origin"] = parent.InternalId }
             };
 
-            member.Attributes.Add("neo.session.member.origin", parent.InternalId);
             return member;
         }
 
         public static AuthenticationResult Register(string email, string password, out (Account account, Member member)? user) {
+            return Register(email, NeoCryptoProvider.Instance.Sha512ComputeHash(password), out user);
+        }
+
+        public static AuthenticationResult Register(string email, byte[] password, out (Account account, Member member)? user) {
             if (Pool.Server.Accounts.Any(a => a.Email == email)) {
                 user = null;
                 return AuthenticationResult.EmailInUse;
@@ -74,7 +78,7 @@ namespace Neo.Core.Authentication
 
             var account = new Account {
                 Email = email,
-                Password = NeoCryptoProvider.Instance.Sha512ComputeHash(password)
+                Password = password
             };
 
             var member = new Member {

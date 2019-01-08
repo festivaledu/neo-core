@@ -12,8 +12,8 @@ namespace Neo.Core.Shared
         private Logger() { }
 
         private readonly Dictionary<LogLevel, ConsoleColor> consoleColors = new Dictionary<LogLevel, ConsoleColor> {
-            { LogLevel.Debug, ConsoleColor.Cyan },
-            { LogLevel.Info, ConsoleColor.DarkCyan },
+            { LogLevel.Debug, ConsoleColor.DarkCyan },
+            { LogLevel.Info, ConsoleColor.Cyan },
             { LogLevel.Ok, ConsoleColor.Green },
             { LogLevel.Warn, ConsoleColor.Yellow },
             { LogLevel.Error, ConsoleColor.Magenta },

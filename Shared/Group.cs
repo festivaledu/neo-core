@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Neo.Core.Attribution;
 using Neo.Core.Authorization;
+using Newtonsoft.Json;
 
 namespace Neo.Core.Shared
 {
@@ -16,6 +17,7 @@ namespace Neo.Core.Shared
 
         public List<Guid> MemberIds { get; set; } = new List<Guid>();
 
+        [JsonIgnore]
         public List<Account> Members => MemberIds.Select(m => Pool.Server.Accounts.Find(a => a.InternalId == m)).ToList();
 
         public string Name { get; set; }

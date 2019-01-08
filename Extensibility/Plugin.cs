@@ -59,10 +59,5 @@ namespace Neo.Core.Extensibility
 
         public virtual async Task OnTyping(TypingEventArgs args) { }
     }
-
-    public class P : Plugin
-    {
-        public override string Namespace { get; }
-    }
 }
  

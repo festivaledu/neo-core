@@ -63,7 +63,6 @@ namespace Neo.Core.Networking
         /// </summary>
         /// <param name="data">The package to send.</param>
         /// <param name="encrypt">A boolean value determining whether the package should be encrypted.</param>
-        /// <returns>Returns a <see cref="Task"/> that represents the asynchronous send operation.</returns>
         internal void SendPackage(Package data, bool encrypt = true) {
             Container container;
 
