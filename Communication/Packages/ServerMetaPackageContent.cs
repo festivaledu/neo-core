@@ -1,6 +1,9 @@
 ﻿namespace Neo.Core.Communication.Packages
 {
-    class ServerMetaPackageContent
+    public class ServerMetaPackageContent
     {
+        public string Name { get; set; }
+        public bool GuestsAllowed { get; set; }
+        public bool RegistrationAllowed { get; set; }
     }
 }
