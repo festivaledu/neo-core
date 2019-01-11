@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+using Neo.Core.Communication.Packages;
 using Neo.Core.Cryptography;
 using Newtonsoft.Json;
 
@@ -62,11 +63,11 @@ namespace Neo.Core.Communication
         /// </summary>
         AES,
         /// <summary>
-        ///     The <see cref="Package"/> contains a request for server meta.
+        ///     The <see cref="Package"/> contains nothing but requests a <see cref="MetaResponse"/>.
         /// </summary>
         Meta,
         /// <summary>
-        ///     The <see cref="Package"/> contains server meta.
+        ///     The <see cref="Package"/> contains <see cref="ServerMetaPackageContent"/>.
         /// </summary>
         MetaResponse,
         /// <summary>

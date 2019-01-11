@@ -1,5 +1,6 @@
 ﻿using System;
 using Neo.Core.Communication;
+using Neo.Core.Communication.Packages;
 using Neo.Core.Cryptography;
 using Neo.Core.Shared;
 using Newtonsoft.Json;

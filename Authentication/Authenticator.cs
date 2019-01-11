@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Neo.Core.Communication;
+using Neo.Core.Communication.Packages;
 using Neo.Core.Cryptography;
 using Neo.Core.Extensibility;
 using Neo.Core.Shared;
