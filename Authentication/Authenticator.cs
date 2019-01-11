@@ -67,6 +67,10 @@ namespace Neo.Core.Authentication
             return member;
         }
 
+        public static AuthenticationResult Register(RegisterPackageContent registerData, out (Account account, Member member)? user) {
+            return Register(registerData.Email, registerData.Password, out user);
+        }
+
         public static AuthenticationResult Register(string email, string password, out (Account account, Member member)? user) {
             return Register(email, NeoCryptoProvider.Instance.Sha512ComputeHash(password), out user);
         }

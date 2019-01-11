@@ -71,7 +71,7 @@ namespace Neo.Core.Communication
         /// </summary>
         MetaResponse,
         /// <summary>
-        ///     The <see cref="Package"/> contains registration information.
+        ///     The <see cref="Package"/> contains <see cref="RegisterPackageContent"/>.
         /// </summary>
         Register,
         /// <summary>

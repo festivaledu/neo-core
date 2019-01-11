@@ -73,6 +73,15 @@ namespace Neo.Core.Networking
         }
 
         /// <summary>
+        ///     Sends a <see cref="Package"/> to a client.
+        /// </summary>
+        /// <param name="clientId">The recipients of the <see cref="Package"/>.</param>
+        /// <param name="package">The <see cref="Package"/> to send.</param>
+        public void SendPackageTo(string clientId, Package package) {
+            Clients.Find(c => c.ClientId == clientId)?.SendPackage(package);
+        }
+
+        /// <summary>
         ///     Applies all necessary settings and starts the underlying <see cref="WebSocketServer"/>.
         /// </summary>
         public void Start() {
