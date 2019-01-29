@@ -12,7 +12,7 @@ namespace Neo.Core.Extensibility
     /// </summary>
     public static class EventService
     {
-        private static readonly Dictionary<EventType, List<(MethodInfo Method, Plugin Plugin)>> listeners = new Dictionary<EventType, List<(MethodInfo Method, Plugin Plugin)>>();
+        private static readonly Dictionary<EventType, List<EventListener>> listeners = new Dictionary<EventType, List<EventListener>>();
 
         /// <summary>
         ///     Searches for <see cref="EventListenerAttribute"/>s and registers a listener to the given <see cref="Plugin"/>.
@@ -29,9 +29,9 @@ namespace Neo.Core.Extensibility
                 var eventType = eventMethod.GetCustomAttribute<EventListenerAttribute>().Type;
                 
                 if (!listeners.ContainsKey(eventType)) {
-                    listeners.Add(eventType, new List<(MethodInfo Method, Plugin Plugin)> { (eventMethod, plugin) });
+                    listeners.Add(eventType, new List<EventListener> { new EventListener(eventMethod, plugin) });
                 } else {
-                    listeners[eventType].Add((eventMethod, plugin));
+                    listeners[eventType].Add(new EventListener(eventMethod, plugin));
                 }
             }
         }
@@ -43,10 +43,12 @@ namespace Neo.Core.Extensibility
         /// <param name="args">The event arguments to pass.</param>
         /// <returns>Returns a <see cref="Task"/> that represents the asynchronous operation.</returns>
         public static async Task RaiseEvent(EventType type, dynamic args) {
-            foreach (var listener in listeners[type]) {
+            if (listeners.ContainsKey(type) && listeners[type] != null) {
+                foreach (var listener in listeners[type]) {
 
-                // Convert returned object back to Task to allow await
-                await (Task) listener.Method.Invoke(listener.Plugin, new[] { args });
+                    // Convert returned object back to Task to allow await
+                    await (Task) listener.Method.Invoke(listener.Plugin, new[] { args });
+                }
             }
         }
     }
