@@ -82,5 +82,7 @@ namespace Neo.Core.Communication
         ///     The <see cref="Package"/> contains <see cref="GuestLoginPackageContent"/>.
         /// </summary>
         GuestLogin,
+        Input,
+        Message,
     }
 }
