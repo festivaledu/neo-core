@@ -12,7 +12,7 @@ namespace Neo.Core.Extensibility
     /// </summary>
     public static class EventService
     {
-        private static readonly Dictionary<EventType, List<EventListener>> listeners = new Dictionary<EventType, List<EventListener>>();
+        private static readonly Dictionary<EventType, List<Listener>> listeners = new Dictionary<EventType, List<Listener>>();
 
         /// <summary>
         ///     Searches for <see cref="EventListenerAttribute"/>s and registers a listener to the given <see cref="Plugin"/>.
@@ -29,9 +29,9 @@ namespace Neo.Core.Extensibility
                 var eventType = eventMethod.GetCustomAttribute<EventListenerAttribute>().Type;
                 
                 if (!listeners.ContainsKey(eventType)) {
-                    listeners.Add(eventType, new List<EventListener> { new EventListener(eventMethod, plugin) });
+                    listeners.Add(eventType, new List<Listener> { new Listener(eventMethod, plugin) });
                 } else {
-                    listeners[eventType].Add(new EventListener(eventMethod, plugin));
+                    listeners[eventType].Add(new Listener(eventMethod, plugin));
                 }
             }
         }

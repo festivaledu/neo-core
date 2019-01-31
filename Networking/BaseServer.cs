@@ -9,6 +9,8 @@ using Neo.Core.Authorization;
 using Neo.Core.Communication;
 using Neo.Core.Config;
 using Neo.Core.Database;
+using Neo.Core.Extensibility;
+using Neo.Core.Extensibility.Events;
 using Neo.Core.Shared;
 using WebSocketSharp.Server;
 
@@ -58,6 +60,24 @@ namespace Neo.Core.Networking
                 }
             });
             Logger.Instance.Log(LogLevel.Debug, "Root account created");
+
+            // Create main channel
+            Channels.Insert(0, new Channel {
+                Attributes = new Dictionary<string, object> {
+                    { "instance.neo.origin", "neo.server" }
+                },
+                EndOfLifetime = DateTime.MaxValue,
+                Id = "main",
+                Lifetime = Lifespan.Permanent,
+                Limit = int.MaxValue,
+                Name = "Main",
+                Owner = Accounts[0].InternalId
+            });
+
+            Channels[0].MemberIds.AddRange(Accounts.Select(a => a.InternalId));
+            Logger.Instance.Log(LogLevel.Debug, "Main channel created");
+
+            EventService.RaiseEvent(EventType.ServerInitialized, this);
         }
 
         /// <summary>

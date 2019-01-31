@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using Neo.Core.Communication;
 using Neo.Core.Extensibility.Events;
+using Neo.Core.Networking;
 using Neo.Core.Shared;
 
 namespace Neo.Core.Extensibility
@@ -17,6 +18,8 @@ namespace Neo.Core.Extensibility
         public virtual async Task OnInitialize() { }
 
         public virtual async Task OnCustom(CustomEventArgs args) { }
+
+        public virtual async Task OnServerInitialized(BaseServer server) { }
 
         public virtual async Task OnConnected(ConnectEventArgs args) { }
         public virtual async Task OnDisconnected(DisconnectEventArgs args) { }

@@ -33,6 +33,9 @@ namespace Neo.Core.Database
         protected void PrepareChannels() {
             // TODO: Remove expired channels
 
+            // Remove main channel
+            server.Channels.RemoveAll(c => c.Id == "main");
+
             foreach (var channel in server.Channels) {
                 // Remove all active members
                 channel.ActiveMemberIds.Clear();

@@ -15,6 +15,11 @@ namespace Neo.Core.Extensibility.Events
         Custom,
 
         /// <summary>
+        ///     This event is raised after the <see cref="BaseServer"/> was initialized.
+        /// </summary>
+        ServerInitialized,
+
+        /// <summary>
         ///     This event is raised after a <see cref="Client"/> connected to the server.
         /// </summary>
         Connected,

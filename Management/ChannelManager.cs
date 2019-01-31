@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Neo.Core.Authorization;
+using Neo.Core.Extensibility;
 using Neo.Core.Shared;
 
 namespace Neo.Core.Management
@@ -9,6 +10,50 @@ namespace Neo.Core.Management
         private static void AddUserToChannel(User user, Channel channel) {
             channel.MemberIds.Add(user.InternalId);
             RefreshChannel(channel);
+        }
+
+        public static void CloseChannel(User user) {
+            if (user.ActiveChannel != null) {
+                var channel = user.ActiveChannel;
+                channel.ActiveMemberIds.Remove(user.InternalId);
+                RefreshChannel(channel);
+            }
+        }
+
+        public static bool CreateChannel(this Plugin plugin, Member member, Channel channel) {
+            if (Pool.Server.Channels.Any(c => c.Id == channel.Id)) {
+                return false;
+            }
+
+            channel.Attributes.Add("neo.origin", plugin.InternalId);
+            channel.Owner = member.InternalId;
+            AddUserToChannel(member, channel);
+
+            return true;
+        }
+
+        public static bool CreateChannel(this User user, Channel channel) {
+            if (Pool.Server.Channels.Any(c => c.Id == channel.Id)) {
+                return false;
+            }
+
+            // TODO: Check for rights
+
+            channel.Attributes.Add("neo.origin", "neo.client");
+            channel.Owner = user.InternalId;
+            AddUserToChannel(user, channel);
+            MoveToChannel(user, channel);
+            Pool.Server.Channels.Add(channel);
+
+            return true;
+        }
+
+        public static bool DeleteChannel(this Channel channel, User user) {
+            // TODO: Check for rights
+            RemoveChannel(channel);
+            RefreshChannel(null);
+
+            return true;
         }
 
         public static ChannelActionResult JoinChannel(this User user, Channel channel, string password = "") {
@@ -27,7 +72,7 @@ namespace Neo.Core.Management
                 }
             }
 
-            if (channel.Password != password) {
+            if (!string.IsNullOrEmpty(channel.Password) && channel.Password != password) {
                 if (user.IsAuthorized("neo.channel.join.ignorepassword")) {
                     AddUserToChannel(user, channel);
                     return ChannelActionResult.Success;
@@ -60,6 +105,11 @@ namespace Neo.Core.Management
             return ChannelActionResult.Success;
         }
 
+        public static void LeaveChannel(this User user, Channel channel) {
+            channel.MemberIds.Remove(user.InternalId);
+            RefreshChannel(channel);
+        }
+
         public static void MoveToChannel(this User user, Channel channel) {
             if (!channel.ActiveMemberIds.Contains(user.InternalId)) {
                 var currentActiveChannel = user.ActiveChannel;
@@ -90,6 +140,13 @@ namespace Neo.Core.Management
 
         public static void RefreshChannel(Channel channel) {
             // TODO: Send channel data to members
+            // If channel == null, refresh all channels
+        }
+
+        public static void RemoveChannel(Channel channel) {
+            foreach (var activeMember in channel.ActiveMembers) {
+                MoveToChannel(activeMember, Pool.Server.Channels[0]);
+            }
         }
     }
 
