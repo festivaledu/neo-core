@@ -80,7 +80,7 @@ namespace Neo.Core.Communication
         /// </summary>
         MemberLogin,
         /// <summary>
-        ///     The <see cref="Package"/> contains <see cref="GuestLoginPackageContent"/>.
+        ///     The <see cref="Package"/> contains an <see cref="Identity"/>.
         /// </summary>
         GuestLogin,
         /// <summary>

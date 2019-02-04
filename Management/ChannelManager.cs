@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Neo.Core.Authorization;
+using Neo.Core.Communication;
 using Neo.Core.Extensibility;
+using Neo.Core.Networking;
 using Neo.Core.Shared;
 
 namespace Neo.Core.Management
@@ -9,6 +12,15 @@ namespace Neo.Core.Management
     {
         private static void AddUserToChannel(User user, Channel channel) {
             channel.MemberIds.Add(user.InternalId);
+
+            // TODO: Inform about new member
+            Pool.Server.SendPackageTo(new Target().AddMany(channel), new Package(PackageType.Message, new {
+                identity = Pool.Server.Clients[0],
+                message = "Ѹ, wer bist du denn du Horst? " + user.Identity.Name,
+                timestamp = DateTime.Now,
+                messageType = "system"
+            }));
+
             RefreshChannel(channel);
         }
 
@@ -106,6 +118,7 @@ namespace Neo.Core.Management
         }
 
         public static void LeaveChannel(this User user, Channel channel) {
+            channel.ActiveMemberIds.Remove(user.InternalId);
             channel.MemberIds.Remove(user.InternalId);
             RefreshChannel(channel);
         }
@@ -123,6 +136,8 @@ namespace Neo.Core.Management
                 RefreshChannel(channel);
 
                 // TODO: Perform actual networking stuff to open new channel in the client
+
+
             }
         }
 

@@ -41,6 +41,10 @@ namespace Neo.Core.Networking
         public abstract Task OnError(string clientId, Exception ex, string message);
         public abstract Task OnPackage(string clientId, Package package);
 
+        protected User GetUser(string clientId) {
+            return Users.Find(u => u.Client.ClientId == clientId);
+        }
+
         public void Initialize(string configPath, string dataDirectoryPath) {
             ConfigManager.Instance.Load(configPath);
             Pool.Server = this;
@@ -74,7 +78,7 @@ namespace Neo.Core.Networking
                 Owner = Accounts[0].InternalId
             });
 
-            Channels[0].MemberIds.AddRange(Accounts.Select(a => a.InternalId));
+            Channels[0].MemberIds.AddRange(Accounts.FindAll(a => a.Email != "root@internal.neo").Select(a => a.InternalId));
             Logger.Instance.Log(LogLevel.Debug, "Main channel created");
 
             EventService.RaiseEvent(EventType.ServerInitialized, this);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Neo.Core.Communication;
 using Neo.Core.Communication.Packages;
 using Neo.Core.Cryptography;
 using Neo.Core.Extensibility;
@@ -13,13 +12,13 @@ namespace Neo.Core.Authentication
         private static readonly Random random = new Random();
         private const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
-        public static AuthenticationResult Authenticate(GuestLoginPackageContent loginData, out Guest guest) {
+        public static AuthenticationResult Authenticate(Identity loginData, out Guest guest) {
             do {
-                loginData.Identity.Id = $"Guest-{new string(Enumerable.Range(1, 6).Select(_ => chars[random.Next(chars.Length)]).ToArray())}";
-            } while (Pool.Server.Users.Any(u => u.Identity.Id == loginData.Identity.Id));
+                loginData.Id = $"Guest-{new string(Enumerable.Range(1, 6).Select(_ => chars[random.Next(chars.Length)]).ToArray())}";
+            } while (Pool.Server.Users.Any(u => u.Identity.Id == loginData.Id));
 
             guest = new Guest {
-                Identity = loginData.Identity
+                Identity = loginData
             };
 
             return AuthenticationResult.Success;
