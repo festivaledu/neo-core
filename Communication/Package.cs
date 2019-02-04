@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using Neo.Core.Communication.Packages;
 using Neo.Core.Cryptography;
+using Neo.Core.Shared;
 using Newtonsoft.Json;
 
 namespace Neo.Core.Communication
@@ -82,6 +83,10 @@ namespace Neo.Core.Communication
         ///     The <see cref="Package"/> contains <see cref="GuestLoginPackageContent"/>.
         /// </summary>
         GuestLogin,
+        /// <summary>
+        ///     The <see cref="Package"/> contains a status message and an <see cref="Identity"/> if the login was successful.
+        /// </summary>
+        LoginResponse,
         Input,
         Message,
     }
