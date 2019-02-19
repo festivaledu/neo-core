@@ -61,6 +61,9 @@ namespace Neo.Core.Extensibility
         public virtual async Task OnGroupRemoved(RemoveElementEventArgs<Group> args) { }
 
         public virtual async Task OnTyping(TypingEventArgs args) { }
+
+        public virtual async Task OnBeforeInput(Before<InputEventArgs> args) { }
+        public virtual async Task OnInput(InputEventArgs args) { }
     }
 }
  

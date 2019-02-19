@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -45,7 +46,7 @@ namespace Neo.Core.Networking
             return Users.Find(u => u.Client.ClientId == clientId);
         }
 
-        public void Initialize(string configPath, string dataDirectoryPath) {
+        public void Initialize(string configPath, string dataDirectoryPath, string pluginDirectoryPath) {
             ConfigManager.Instance.Load(configPath);
             Pool.Server = this;
             dataProvider = new JsonDataProvider(this, dataDirectoryPath);
@@ -80,6 +81,10 @@ namespace Neo.Core.Networking
 
             Channels[0].MemberIds.AddRange(Accounts.FindAll(a => a.Email != "root@internal.neo").Select(a => a.InternalId));
             Logger.Instance.Log(LogLevel.Debug, "Main channel created");
+
+            foreach (var pluginFile in new DirectoryInfo(pluginDirectoryPath).EnumerateFiles("*.dll")) {
+                PluginLoader.InitializePlugin(pluginFile.FullName);
+            }
 
             EventService.RaiseEvent(EventType.ServerInitialized, this);
         }

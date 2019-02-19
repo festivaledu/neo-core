@@ -158,5 +158,14 @@ namespace Neo.Core.Extensibility.Events
         ///     This event is raised when a <see cref="User"/> is typing.
         /// </summary>
         Typing,
+
+        /// <summary>
+        ///     This event is raised before a <see cref="User"/> sent an input.
+        /// </summary>
+        BeforeInput,
+        /// <summary>
+        ///     This event is raised after a <see cref="User"/> sent an input.
+        /// </summary>
+        Input,
     }
 }
