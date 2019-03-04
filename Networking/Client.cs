@@ -22,7 +22,7 @@ namespace Neo.Core.Networking
         /// <summary>
         ///     <see cref="WebSocket"/> used for sending and receiving data.
         /// </summary>
-        private WebSocket Socket { get; set; }
+        public WebSocket Socket { get; set; }
 
         private AesParameters aesParameters;
 

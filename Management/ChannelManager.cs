@@ -2,6 +2,8 @@
 using System.Linq;
 using Neo.Core.Authorization;
 using Neo.Core.Communication;
+using Neo.Core.Communication.Packages;
+using Neo.Core.Config;
 using Neo.Core.Extensibility;
 using Neo.Core.Networking;
 using Neo.Core.Shared;
@@ -14,21 +16,16 @@ namespace Neo.Core.Management
             channel.MemberIds.Add(user.InternalId);
 
             // TODO: Inform about new member
-            Pool.Server.SendPackageTo(new Target().AddMany(channel), new Package(PackageType.Message, new {
-                identity = Pool.Server.Clients[0],
-                message = "Ѹ, wer bist du denn du Horst? " + user.Identity.Name,
-                timestamp = DateTime.Now,
-                messageType = "system"
-            }));
+            Pool.Server.SendPackageTo(new Target().AddMany(channel), new Package(PackageType.Message, MessagePackageContent.GetSystemMessage(user.Identity.Name + " ist dem Channel beigetreten.")));
 
-            RefreshChannel(channel);
+            RefreshChannels();
         }
 
         public static void CloseChannel(User user) {
             if (user.ActiveChannel != null) {
                 var channel = user.ActiveChannel;
                 channel.ActiveMemberIds.Remove(user.InternalId);
-                RefreshChannel(channel);
+                RefreshChannels();
             }
         }
 
@@ -63,7 +60,7 @@ namespace Neo.Core.Management
         public static bool DeleteChannel(this Channel channel, User user) {
             // TODO: Check for rights
             RemoveChannel(channel);
-            RefreshChannel(null);
+            RefreshChannels();
 
             return true;
         }
@@ -120,7 +117,7 @@ namespace Neo.Core.Management
         public static void LeaveChannel(this User user, Channel channel) {
             channel.ActiveMemberIds.Remove(user.InternalId);
             channel.MemberIds.Remove(user.InternalId);
-            RefreshChannel(channel);
+            RefreshChannels();
         }
 
         public static void MoveToChannel(this User user, Channel channel) {
@@ -129,11 +126,10 @@ namespace Neo.Core.Management
 
                 if (currentActiveChannel != null) {
                     user.ActiveChannel.ActiveMemberIds.Remove(user.InternalId);
-                    RefreshChannel(currentActiveChannel);
                 }
                 
                 channel.ActiveMemberIds.Add(user.InternalId);
-                RefreshChannel(channel);
+                RefreshChannels();
 
                 // TODO: Perform actual networking stuff to open new channel in the client
 
@@ -153,9 +149,9 @@ namespace Neo.Core.Management
             return ChannelActionResult.Success;
         }
 
-        public static void RefreshChannel(Channel channel) {
+        public static void RefreshChannels() {
             // TODO: Send channel data to members
-            // If channel == null, refresh all channels
+            Pool.Server.SendPackageTo(Target.All, new Package(PackageType.ChannelListUpdate, Pool.Server.Channels));
         }
 
         public static void RemoveChannel(Channel channel) {

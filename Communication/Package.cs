@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using Neo.Core.Communication.Packages;
 using Neo.Core.Cryptography;
+using Neo.Core.Networking;
 using Neo.Core.Shared;
 using Newtonsoft.Json;
 
@@ -89,5 +90,11 @@ namespace Neo.Core.Communication
         LoginResponse,
         Input,
         Message,
+        /// <summary>
+        ///     The <see cref="Package"/> contains nothing but informs the server that the <see cref="Client"/> has finished rendering.
+        /// </summary>
+        LoginFinished,
+        ChannelListUpdate,
+        UserListUpdate,
     }
 }
