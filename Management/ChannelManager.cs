@@ -50,9 +50,9 @@ namespace Neo.Core.Management
 
             channel.Attributes.Add("neo.origin", "neo.client");
             channel.Owner = user.InternalId;
+            Pool.Server.Channels.Add(channel);
             AddUserToChannel(user, channel);
             MoveToChannel(user, channel);
-            Pool.Server.Channels.Add(channel);
 
             return true;
         }
@@ -132,8 +132,8 @@ namespace Neo.Core.Management
                 RefreshChannels();
 
                 // TODO: Perform actual networking stuff to open new channel in the client
-
-
+                
+                user.ToTarget().SendPackageTo(new Package(PackageType.EnterChannelResponse, channel));
             }
         }
 

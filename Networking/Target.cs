@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Neo.Core.Communication;
 using Neo.Core.Shared;
 
 namespace Neo.Core.Networking
@@ -130,6 +131,10 @@ namespace Neo.Core.Networking
         public Target RemoveMany(params User[] users) {
             targets.RemoveAll(t => users.Select(u => u.Client.ClientId).Contains(t));
             return this;
+        }
+
+        public void SendPackageTo(Package package) {
+            Pool.Server.SendPackageTo(this, package);
         }
     }
 }

@@ -22,6 +22,7 @@ namespace Neo.Core.Networking
         /// <summary>
         ///     <see cref="WebSocket"/> used for sending and receiving data.
         /// </summary>
+        [JsonIgnore]
         public WebSocket Socket { get; set; }
 
         private AesParameters aesParameters;
@@ -71,13 +72,16 @@ namespace Neo.Core.Networking
                     throw new CryptographicException("No AES parameters are set.");
                 }
 
-                var encrypted = NeoCryptoProvider.Instance.AesEncrypt(JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }), aesParameters);
+                var dataJson = JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+                var encrypted = NeoCryptoProvider.Instance.AesEncrypt(dataJson, aesParameters);
                 container = new Container(true, encrypted);
             } else {
-                container = new Container(false, JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+                var dataJson = JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+                container = new Container(false, dataJson);
             }
 
-            Socket.Send(JsonConvert.SerializeObject(container, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+            var containerJson = JsonConvert.SerializeObject(container, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+            Socket.Send(containerJson);
         }
 
         /// <summary>

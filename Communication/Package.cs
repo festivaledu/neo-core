@@ -95,6 +95,9 @@ namespace Neo.Core.Communication
         /// </summary>
         LoginFinished,
         ChannelListUpdate,
+        GroupListUpdate,
         UserListUpdate,
+        EnterChannel,
+        EnterChannelResponse,
     }
 }
