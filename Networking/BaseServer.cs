@@ -82,6 +82,18 @@ namespace Neo.Core.Networking
             Channels[0].MemberIds.AddRange(Accounts.FindAll(a => a.Email != "root@internal.neo").Select(a => a.InternalId));
             Logger.Instance.Log(LogLevel.Debug, "Main channel created");
 
+            Groups.Insert(0, new Group {
+                Attributes = new Dictionary<string, object> {
+                    { "instance.neo.grouptype", "guest" }
+                },
+                Id = "guests",
+                Name = "Gäste",
+                Permissions = new Dictionary<string, Permission> {
+                    { "neo.*", Permission.Allow }
+                },
+                SortValue = 0,
+            });
+
             foreach (var pluginFile in new DirectoryInfo(pluginDirectoryPath).EnumerateFiles("*.dll")) {
                 PluginLoader.InitializePlugin(pluginFile.FullName);
             }

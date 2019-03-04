@@ -130,7 +130,7 @@ namespace Neo.Core.Authorization
 
             switch (authorizable) {
             case Guest guest:
-                // TODO: Add Guest Group
+                permissionsSets.Add(Pool.Server.Groups[0].Permissions);
                 if (guest.ActiveChannel != null) {
                     permissionsSets.Add(guest.ActiveChannel.MemberPermissions[guest.InternalId]);
                 }
