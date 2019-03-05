@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Neo.Core.Authorization;
 using Neo.Core.Communication;
 using Neo.Core.Config;
+using Neo.Core.Cryptography;
 using Neo.Core.Database;
 using Neo.Core.Extensibility;
 using Neo.Core.Extensibility.Events;
@@ -82,17 +83,26 @@ namespace Neo.Core.Networking
             Channels[0].MemberIds.AddRange(Accounts.FindAll(a => a.Email != "root@internal.neo").Select(a => a.InternalId));
             Logger.Instance.Log(LogLevel.Debug, "Main channel created");
 
-            Groups.Insert(0, new Group {
-                Attributes = new Dictionary<string, object> {
-                    { "instance.neo.grouptype", "guest" }
-                },
-                Id = "guests",
-                Name = "Gäste",
-                Permissions = new Dictionary<string, Permission> {
-                    { "neo.*", Permission.Allow }
-                },
-                SortValue = 0,
-            });
+            var existingGuestGroup = Groups.Find(g => g.Attributes.ContainsKey("neo.grouptype") && g.Attributes["neo.grouptype"].ToString() == "guest");
+            if (existingGuestGroup != null) {
+                Groups.Remove(existingGuestGroup);
+                Groups.Insert(0, existingGuestGroup);
+            } else {
+                Groups.Insert(0, new Group {
+                    Attributes = new Dictionary<string, object> {
+                        { "neo.grouptype", "guest" }
+                    },
+                    Id = "guests",
+                    Name = "Gäste",
+                    Permissions = new Dictionary<string, Permission> {
+                        // TODO: Fix default guest group rights
+                        { "neo.*", Permission.Allow }
+                    },
+                    SortValue = 0,
+                });
+                Logger.Instance.Log(LogLevel.Debug, "No guest group existed. Guest group created");
+            }
+
 
             foreach (var pluginFile in new DirectoryInfo(pluginDirectoryPath).EnumerateFiles("*.dll")) {
                 PluginLoader.InitializePlugin(pluginFile.FullName);
