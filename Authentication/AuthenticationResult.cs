@@ -3,7 +3,7 @@
     public enum AuthenticationResult
     {
         Success,
-        UnknownEmail,
+        UnknownUser,
         IncorrectPassword,
         ExistingSession,
         EmailInUse,

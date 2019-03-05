@@ -25,21 +25,20 @@ namespace Neo.Core.Authentication
         }
 
         public static AuthenticationResult Authenticate(MemberLoginPackageContent loginData, out Member member) {
-            var account = Pool.Server.Accounts.Find(a => a.Email == loginData.Email);
+            var account = Pool.Server.Accounts.Find(a => a.Email == loginData.User || a.Identity.Id == loginData.User);
+
+            member = null;
 
             if (account == null) {
-                member = null;
-                return AuthenticationResult.UnknownEmail;
+                return AuthenticationResult.UnknownUser;
             }
 
             // TODO: Implement random salt
             if (!account.Password.SequenceEqual(Convert.FromBase64String(loginData.Password))) {
-                member = null;
                 return AuthenticationResult.IncorrectPassword;
             }
 
             if (account.Member != null) {
-                member = null;
                 return AuthenticationResult.ExistingSession;
             }
 

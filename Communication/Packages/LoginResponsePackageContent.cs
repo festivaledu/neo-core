@@ -20,7 +20,7 @@ namespace Neo.Core.Communication.Packages
             return new LoginResponsePackageContent(1, null);
         }
 
-        public static LoginResponsePackageContent GetWrongPassword() {
+        public static LoginResponsePackageContent GetIncorrectPassword() {
             return new LoginResponsePackageContent(2, null);
         }
 
