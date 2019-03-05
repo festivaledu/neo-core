@@ -137,7 +137,7 @@ namespace Neo.Core.Authorization
                 permissionsSets.Add(guest.Permissions);
                 break;
             case Member member:
-                foreach (var group in member.Groups) {
+                foreach (var group in member.Groups.OrderBy(g => g.SortValue)) {
                     permissionsSets.Add(group.Permissions);
                 }
                 if (member.ActiveChannel != null) {
