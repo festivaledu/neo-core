@@ -1,22 +1,39 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
+using Neo.Core.Communication;
 using Neo.Core.Communication.Packages;
+using Neo.Core.Networking;
+using Newtonsoft.Json;
 
 namespace Neo.Core.Config
 {
     public static class SettingsProvider
     {
-        public static OpenSettingsResponsePackageContent OpenSettings(string settings) {
+        public static bool EditSettings(string scope, dynamic model) {
+            if (scope == "server") {
+                ConfigManager.Instance.Values = JsonConvert.DeserializeObject<ConfigValues>(JsonConvert.SerializeObject(model));
+                ConfigManager.Instance.Save();
+
+                Target.All.SendPackageTo(new Package(PackageType.MetaResponse, new ServerMetaPackageContent {
+                    GuestsAllowed = ConfigManager.Instance.Values.GuestsAllowed,
+                    Name = ConfigManager.Instance.Values.ServerName,
+                    RegistrationAllowed = ConfigManager.Instance.Values.RegistrationAllowed
+                }));
+            }
+            
+            return true;
+        }
+
+        public static OpenSettingsResponsePackageContent OpenSettings(string scope) {
             OpenSettingsResponsePackageContent response = null;
 
-            if (settings == "server") {
-                var scope = ConfigManager.Instance.Values;
-                var scopeType = typeof(ConfigValues);
+            if (scope == "server") {
+                var model = ConfigManager.Instance.Values;
+                var modelType = typeof(ConfigValues);
 
-                response = new OpenSettingsResponsePackageContent(scope);
+                response = new OpenSettingsResponsePackageContent(model);
 
-                var properties = scopeType.GetProperties().ToList().FindAll(pi => pi.GetCustomAttribute<EditablePropertyAttribute>() != null);
+                var properties = modelType.GetProperties().ToList().FindAll(pi => pi.GetCustomAttribute<EditablePropertyAttribute>() != null);
                 foreach (var property in properties) {
                     response.Titles.Add(property.Name.ToLower(), property.GetCustomAttribute<EditablePropertyAttribute>().Title);
                 }
