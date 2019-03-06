@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Neo.Core.Authorization;
 using Neo.Core.Communication;
 using Neo.Core.Config;
-using Neo.Core.Cryptography;
 using Neo.Core.Database;
 using Neo.Core.Extensibility;
 using Neo.Core.Extensibility.Events;
@@ -100,9 +99,29 @@ namespace Neo.Core.Networking
                     },
                     SortValue = 0,
                 });
-                Logger.Instance.Log(LogLevel.Debug, "No guest group existed. Guest group created");
+                Logger.Instance.Log(LogLevel.Debug, "No guest group existed. Default guest group created");
             }
-            
+
+            var existingUserGroup = Groups.Find(g => g.Attributes.ContainsKey("neo.grouptype") && g.Attributes["neo.grouptype"].ToString() == "user");
+            if (existingUserGroup != null) {
+                Groups.Remove(existingUserGroup);
+                Groups.Insert(1, existingUserGroup);
+            } else {
+                Groups.Insert(1, new Group {
+                    Attributes = new Dictionary<string, object> {
+                        { "neo.grouptype", "user" }
+                    },
+                    Id = "users",
+                    Name = "Benutzer",
+                    Permissions = new Dictionary<string, Permission> {
+                        // TODO: Fix default user group rights
+                        { "neo.*", Permission.Allow }
+                    },
+                    SortValue = 1,
+                });
+                Logger.Instance.Log(LogLevel.Debug, "No user group existed. Default user group created");
+            }
+
             foreach (var pluginFile in new DirectoryInfo(pluginDirectoryPath).EnumerateFiles("*.dll")) {
                 PluginLoader.InitializePlugin(pluginFile.FullName);
             }
