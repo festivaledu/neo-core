@@ -6,14 +6,16 @@ namespace Neo.Core.Communication.Packages
     {
         public int Status { get; }
         public Identity Identity { get; }
+        public Account Account { get; }
 
-        public LoginResponsePackageContent(int status, Identity identity) {
+        public LoginResponsePackageContent(int status, Identity identity, Account account = null) {
             this.Status = status;
             this.Identity = identity;
+            this.Account = account;
         }
 
-        public static LoginResponsePackageContent GetSuccessful(Identity identity) {
-            return new LoginResponsePackageContent(0, identity);
+        public static LoginResponsePackageContent GetSuccessful(Identity identity, Account account = null) {
+            return new LoginResponsePackageContent(0, identity, account);
         }
 
         public static LoginResponsePackageContent GetUnknownUser() {

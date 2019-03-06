@@ -27,6 +27,8 @@ namespace Neo.Core.Networking
         public List<Group> Groups { get; set; } = new List<Group>();
         public List<User> Users { get; set; } = new List<User>();
 
+        public DataProvider DataProvider { get; set; }
+
         public List<Client> Clients { get; set; } = new List<Client>();
         // ReSharper disable once InconsistentNaming
         public RSAParameters RSAPublicParameters { get; private set; }
@@ -34,7 +36,6 @@ namespace Neo.Core.Networking
         internal RSAParameters RSAPrivateParameters { get; private set; }
         internal WebSocketSessionManager SessionManager { get; set; }
 
-        protected DataProvider dataProvider;
         private WebSocketServer webSocketServer;
 
         public abstract Task OnConnect(Client client);
@@ -49,8 +50,8 @@ namespace Neo.Core.Networking
         public void Initialize(string configPath, string dataDirectoryPath, string pluginDirectoryPath) {
             ConfigManager.Instance.Load(configPath);
             Pool.Server = this;
-            dataProvider = new JsonDataProvider(this, dataDirectoryPath);
-            dataProvider.Load();
+            DataProvider = new JsonDataProvider(this, dataDirectoryPath);
+            DataProvider.Load();
 
             // Create root account
             Accounts.Insert(0, new Account {
@@ -99,7 +100,7 @@ namespace Neo.Core.Networking
                     },
                     SortValue = 0,
                 });
-                dataProvider.Save();
+                DataProvider.Save();
                 Logger.Instance.Log(LogLevel.Debug, "No guest group existed. Default guest group created");
             }
 
@@ -120,7 +121,7 @@ namespace Neo.Core.Networking
                     },
                     SortValue = 1,
                 });
-                dataProvider.Save();
+                DataProvider.Save();
                 Logger.Instance.Log(LogLevel.Debug, "No user group existed. Default user group created");
             }
 
@@ -176,7 +177,7 @@ namespace Neo.Core.Networking
         /// </summary>
         public void Stop() {
             ConfigManager.Instance.Save();
-            dataProvider.Save();
+            DataProvider.Save();
             Logger.Instance.Log(LogLevel.Info, "Attempting to stop WebSocket server...");
             webSocketServer.Stop();
             Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully stopped");
