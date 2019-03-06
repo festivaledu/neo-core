@@ -34,7 +34,7 @@ namespace Neo.Core.Networking
         internal RSAParameters RSAPrivateParameters { get; private set; }
         internal WebSocketSessionManager SessionManager { get; set; }
 
-        private DataProvider dataProvider;
+        protected DataProvider dataProvider;
         private WebSocketServer webSocketServer;
 
         public abstract Task OnConnect(Client client);
@@ -99,6 +99,7 @@ namespace Neo.Core.Networking
                     },
                     SortValue = 0,
                 });
+                dataProvider.Save();
                 Logger.Instance.Log(LogLevel.Debug, "No guest group existed. Default guest group created");
             }
 
@@ -119,6 +120,7 @@ namespace Neo.Core.Networking
                     },
                     SortValue = 1,
                 });
+                dataProvider.Save();
                 Logger.Instance.Log(LogLevel.Debug, "No user group existed. Default user group created");
             }
 

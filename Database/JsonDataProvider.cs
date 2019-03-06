@@ -69,9 +69,9 @@ namespace Neo.Core.Database
             PrepareChannels();
             PrepareGroups();
             
-            File.WriteAllText(accountsPath.FullName, JsonConvert.SerializeObject(server.Accounts, Formatting.Indented));
-            File.WriteAllText(channelsPath.FullName, JsonConvert.SerializeObject(server.Channels, Formatting.Indented));
-            File.WriteAllText(groupsPath.FullName, JsonConvert.SerializeObject(server.Groups, Formatting.Indented));
+            File.WriteAllText(accountsPath.FullName, JsonConvert.SerializeObject(accounts, Formatting.Indented));
+            File.WriteAllText(channelsPath.FullName, JsonConvert.SerializeObject(channels, Formatting.Indented));
+            File.WriteAllText(groupsPath.FullName, JsonConvert.SerializeObject(groups, Formatting.Indented));
 
             Logger.Instance.Log(LogLevel.Ok, "Data successfully saved");
         }
