@@ -3,6 +3,7 @@ using System.Reflection;
 using Neo.Core.Communication;
 using Neo.Core.Communication.Packages;
 using Neo.Core.Networking;
+using Neo.Core.Shared;
 using Newtonsoft.Json;
 
 namespace Neo.Core.Config
@@ -19,6 +20,16 @@ namespace Neo.Core.Config
                     Name = ConfigManager.Instance.Values.ServerName,
                     RegistrationAllowed = ConfigManager.Instance.Values.RegistrationAllowed
                 }));
+            } else if (scope == "account") {
+                Account account = JsonConvert.DeserializeObject<Account>(JsonConvert.SerializeObject(model));
+                var index = Pool.Server.Accounts.FindIndex(a => a.InternalId.Equals(account.InternalId));
+
+                if (index == -1) {
+                    return false;
+                }
+
+                Pool.Server.Accounts[index] = account;
+                Pool.Server.DataProvider.Save();
             }
             
             return true;
