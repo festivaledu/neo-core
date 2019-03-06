@@ -102,8 +102,7 @@ namespace Neo.Core.Networking
                 });
                 Logger.Instance.Log(LogLevel.Debug, "No guest group existed. Guest group created");
             }
-
-
+            
             foreach (var pluginFile in new DirectoryInfo(pluginDirectoryPath).EnumerateFiles("*.dll")) {
                 PluginLoader.InitializePlugin(pluginFile.FullName);
             }

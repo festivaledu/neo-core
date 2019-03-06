@@ -27,5 +27,13 @@ namespace Neo.Core.Communication.Packages
         public static LoginResponsePackageContent GetUnauthorized() {
             return new LoginResponsePackageContent(3, null);
         }
+
+        public static LoginResponsePackageContent GetIdInUse() {
+            return new LoginResponsePackageContent(4, null);
+        }
+
+        public static LoginResponsePackageContent GetEmailInUse() {
+            return new LoginResponsePackageContent(5, null);
+        }
     }
 }

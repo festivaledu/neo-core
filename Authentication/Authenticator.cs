@@ -66,22 +66,28 @@ namespace Neo.Core.Authentication
         }
 
         public static AuthenticationResult Register(RegisterPackageContent registerData, out (Account account, Member member)? user) {
-            return Register(registerData.Email, registerData.Password, out user);
+            return Register(registerData.Name, registerData.Id, registerData.Email, registerData.Password, out user);
         }
 
-        public static AuthenticationResult Register(string email, string password, out (Account account, Member member)? user) {
-            return Register(email, NeoCryptoProvider.Instance.Sha512ComputeHash(password), out user);
+        public static AuthenticationResult Register(string name, string id, string email, string password, out (Account account, Member member)? user) {
+            return Register(name, id, email, NeoCryptoProvider.Instance.Sha512ComputeHash(password), out user);
         }
 
-        public static AuthenticationResult Register(string email, byte[] password, out (Account account, Member member)? user) {
+        public static AuthenticationResult Register(string name, string id, string email, byte[] password, out (Account account, Member member)? user) {
             if (Pool.Server.Accounts.Any(a => a.Email == email)) {
                 user = null;
                 return AuthenticationResult.EmailInUse;
             }
 
+            if (Pool.Server.Accounts.Any(a => a.Identity.Id == id)) {
+                user = null;
+                return AuthenticationResult.IdInUse;
+            }
+
             var account = new Account {
                 Email = email,
-                Password = password
+                Password = password,
+                Identity = new Identity { Id = id, Name = name }
             };
 
             var member = new Member {

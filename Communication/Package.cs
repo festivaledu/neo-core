@@ -99,5 +99,11 @@ namespace Neo.Core.Communication
         UserListUpdate,
         EnterChannel,
         EnterChannelResponse,
+        GetSettings,
+        GetSettingsResponse,
+        OpenSettings,
+        OpenSettingsResponse,
+        EditSettings,
+        EditSettingsResponse
     }
 }

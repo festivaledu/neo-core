@@ -6,6 +6,7 @@
         UnknownUser,
         IncorrectPassword,
         ExistingSession,
+        IdInUse,
         EmailInUse,
     }
 }
