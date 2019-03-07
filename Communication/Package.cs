@@ -104,6 +104,8 @@ namespace Neo.Core.Communication
         OpenSettings,
         OpenSettingsResponse,
         EditSettings,
-        EditSettingsResponse
+        EditSettingsResponse,
+        EditProfile,
+        EditProfileResponse
     }
 }
