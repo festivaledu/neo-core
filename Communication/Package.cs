@@ -106,6 +106,7 @@ namespace Neo.Core.Communication
         EditSettings,
         EditSettingsResponse,
         EditProfile,
-        EditProfileResponse
+        EditProfileResponse,
+        KnownPermissionsUpdate,
     }
 }

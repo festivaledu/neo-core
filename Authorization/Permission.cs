@@ -1,8 +1,12 @@
-﻿namespace Neo.Core.Authorization
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace Neo.Core.Authorization
 {
     /// <summary>
     ///     Specifies whether a permission is granted.
     /// </summary>
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum Permission
     {
         /// <summary>

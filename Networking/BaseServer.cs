@@ -28,6 +28,16 @@ namespace Neo.Core.Networking
         public List<Group> Groups { get; set; } = new List<Group>();
         public List<User> Users { get; set; } = new List<User>();
 
+        public Dictionary<string, string> KnownPermissions { get; set; } = new Dictionary<string, string> {
+            { "neo.channel.join.$", "Channel betreten" },
+            { "neo.channel.join.ignoreblacklist", "Channel trotz Blacklist betreten" },
+            { "neo.channel.join.ignorelimit", "Channel trotz Limit betreten" },
+            { "neo.channel.join.ignorepassword", "Channel trotz Passwort betreten" },
+            { "neo.channel.join.ignorewhitelist", "Channel trotz Whitelist betreten" },
+            { "neo.global.read", "Nachrichten lesen" },
+            { "neo.global.write", "Nachrichten schreiben" },
+        };
+
         public DataProvider DataProvider { get; set; }
 
         public List<Client> Clients { get; set; } = new List<Client>();
