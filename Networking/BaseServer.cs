@@ -89,7 +89,7 @@ namespace Neo.Core.Networking
                     Attributes = new Dictionary<string, object> {
                         { "neo.grouptype", "admin" }
                     },
-                    Id = "admin",
+                    Id = "admins",
                     Name = "Administratoren",
                     Permissions = new Dictionary<string, Permission> {
                         // TODO: Fix default admin group rights

@@ -74,6 +74,10 @@ namespace Neo.Core.Database
                         group.Attributes.Remove(key);
                     }
                 }
+
+                if (group.Attributes.ContainsKey("neo.grouptype") && group.Attributes["neo.grouptype"].ToString() == "guest") {
+                    group.MemberIds.Clear();
+                }
             }
 
             groups = groups.OrderBy(g => g.SortValue).ToList();
