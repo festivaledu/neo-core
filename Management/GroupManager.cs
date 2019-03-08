@@ -8,7 +8,6 @@ namespace Neo.Core.Management
     {
         public static void AddGuestToGroup(Guest guest) {
             GetGuestGroup().MemberIds.Add(guest.InternalId);
-            Pool.Server.DataProvider.Save();
             RefreshGroups();
         }
 
@@ -32,6 +31,11 @@ namespace Neo.Core.Management
 
         public static void RefreshGroups() {
             Target.All.SendPackageTo(new Package(PackageType.GroupListUpdate, Pool.Server.Groups));
+        }
+
+        public static void RemoveGuestFromGroup(Guest guest) {
+            GetGuestGroup().MemberIds.Remove(guest.InternalId);
+            RefreshGroups();
         }
 
         public static void RemoveMemberFromGroup(Member member, Group group) {
