@@ -2,6 +2,7 @@
 using System.Reflection;
 using Neo.Core.Communication;
 using Neo.Core.Communication.Packages;
+using Neo.Core.Management;
 using Neo.Core.Networking;
 using Neo.Core.Shared;
 using Newtonsoft.Json;
@@ -30,6 +31,17 @@ namespace Neo.Core.Config
 
                 Pool.Server.Accounts[index] = account;
                 Pool.Server.DataProvider.Save();
+            } else if (scope == "group") {
+                Group group = JsonConvert.DeserializeObject<Group>(JsonConvert.SerializeObject(model));
+                var index = Pool.Server.Groups.FindIndex(g => g.InternalId.Equals(group.InternalId));
+
+                if (index == -1) {
+                    return false;
+                }
+
+                Pool.Server.Groups[index] = group;
+                Pool.Server.DataProvider.Save();
+                GroupManager.RefreshGroups();
             }
             
             return true;
