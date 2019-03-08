@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Neo.Core.Management;
 using Neo.Core.Shared;
 
 namespace Neo.Core.Authorization
@@ -130,7 +131,7 @@ namespace Neo.Core.Authorization
 
             switch (authorizable) {
             case Guest guest:
-                permissionsSets.Add(Pool.Server.Groups[0].Permissions);
+                permissionsSets.Add(GroupManager.GetGuestGroup().Permissions);
                 if (guest.ActiveChannel != null) {
                     permissionsSets.Add(guest.ActiveChannel.MemberPermissions[guest.InternalId]);
                 }

@@ -7,7 +7,7 @@ namespace Neo.Core.Management
     public static class GroupManager
     {
         public static void AddGuestToGroup(Guest guest) {
-            Pool.Server.Groups[0].MemberIds.Add(guest.InternalId);
+            GetGuestGroup().MemberIds.Add(guest.InternalId);
             Pool.Server.DataProvider.Save();
             RefreshGroups();
         }
@@ -16,6 +16,18 @@ namespace Neo.Core.Management
             group.MemberIds.Add(member.InternalId);
             Pool.Server.DataProvider.Save();
             RefreshGroups();
+        }
+
+        public static Group GetAdminGroup() {
+            return Pool.Server.Groups.Find(g => g.Attributes.ContainsKey("neo.grouptype") && g.Attributes["neo.grouptype"].ToString() == "admin");
+        }
+
+        public static Group GetGuestGroup() {
+            return Pool.Server.Groups.Find(g => g.Attributes.ContainsKey("neo.grouptype") && g.Attributes["neo.grouptype"].ToString() == "guest");
+        }
+
+        public static Group GetUserGroup() {
+            return Pool.Server.Groups.Find(g => g.Attributes.ContainsKey("neo.grouptype") && g.Attributes["neo.grouptype"].ToString() == "user");
         }
 
         public static void RefreshGroups() {

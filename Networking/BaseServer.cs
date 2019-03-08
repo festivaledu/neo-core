@@ -12,6 +12,7 @@ using Neo.Core.Config;
 using Neo.Core.Database;
 using Neo.Core.Extensibility;
 using Neo.Core.Extensibility.Events;
+using Neo.Core.Management;
 using Neo.Core.Shared;
 using WebSocketSharp.Server;
 
@@ -82,34 +83,26 @@ namespace Neo.Core.Networking
 
             Channels[0].MemberIds.AddRange(Accounts.FindAll(a => a.Email != "root@internal.neo").Select(a => a.InternalId));
             Logger.Instance.Log(LogLevel.Debug, "Main channel created");
-
-            var existingGuestGroup = Groups.Find(g => g.Attributes.ContainsKey("neo.grouptype") && g.Attributes["neo.grouptype"].ToString() == "guest");
-            if (existingGuestGroup != null) {
-                Groups.Remove(existingGuestGroup);
-                Groups.Insert(0, existingGuestGroup);
-            } else {
-                Groups.Insert(0, new Group {
+            
+            if (GroupManager.GetAdminGroup() == null) {
+                Groups.Add(new Group {
                     Attributes = new Dictionary<string, object> {
-                        { "neo.grouptype", "guest" }
+                        { "neo.grouptype", "admin" }
                     },
-                    Id = "guests",
-                    Name = "Gäste",
+                    Id = "admin",
+                    Name = "Administratoren",
                     Permissions = new Dictionary<string, Permission> {
-                        // TODO: Fix default guest group rights
+                        // TODO: Fix default admin group rights
                         { "neo.*", Permission.Allow }
                     },
-                    SortValue = 0,
+                    SortValue = 999,
                 });
                 DataProvider.Save();
-                Logger.Instance.Log(LogLevel.Debug, "No guest group existed. Default guest group created");
+                Logger.Instance.Log(LogLevel.Debug, "No admin group existed. Default admin group created");
             }
 
-            var existingUserGroup = Groups.Find(g => g.Attributes.ContainsKey("neo.grouptype") && g.Attributes["neo.grouptype"].ToString() == "user");
-            if (existingUserGroup != null) {
-                Groups.Remove(existingUserGroup);
-                Groups.Insert(1, existingUserGroup);
-            } else {
-                Groups.Insert(1, new Group {
+            if (GroupManager.GetGuestGroup() == null) {
+                Groups.Add(new Group {
                     Attributes = new Dictionary<string, object> {
                         { "neo.grouptype", "user" }
                     },
@@ -123,6 +116,23 @@ namespace Neo.Core.Networking
                 });
                 DataProvider.Save();
                 Logger.Instance.Log(LogLevel.Debug, "No user group existed. Default user group created");
+            }
+
+            if (GroupManager.GetGuestGroup() == null) {
+                Groups.Add(new Group {
+                    Attributes = new Dictionary<string, object> {
+                        { "neo.grouptype", "guest" }
+                    },
+                    Id = "guests",
+                    Name = "Gäste",
+                    Permissions = new Dictionary<string, Permission> {
+                        // TODO: Fix default guest group rights
+                        { "neo.*", Permission.Allow }
+                    },
+                    SortValue = 0,
+                });
+                DataProvider.Save();
+                Logger.Instance.Log(LogLevel.Debug, "No guest group existed. Default guest group created");
             }
 
             foreach (var pluginFile in new DirectoryInfo(pluginDirectoryPath).EnumerateFiles("*.dll")) {
