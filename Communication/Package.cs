@@ -108,5 +108,7 @@ namespace Neo.Core.Communication
         EditProfile,
         EditProfileResponse,
         KnownPermissionsUpdate,
+        DisconnectReason,
+        CreatePunishment,
     }
 }
