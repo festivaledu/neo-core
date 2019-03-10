@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Neo.Core.Authorization;
 using Neo.Core.Communication;
 using Neo.Core.Networking;
@@ -29,6 +30,24 @@ namespace Neo.Core.Management
             // TODO: Check permissions
 
             Pool.Server.Groups.Add(group);
+            RefreshGroups();
+
+            return GroupActionResult.Success;
+        }
+
+        public static GroupActionResult DeleteGroup(Group group) {
+            // TODO: Check permissions
+
+            var members = group.Members.Select(a => a.InternalId);
+
+            Pool.Server.Groups.Remove(group);
+
+            members.Select(m => Pool.Server.Accounts.Find(a => a.InternalId == m)).ToList().ForEach(a => {
+                if (a.Groups.Count == 0) {
+                    GetUserGroup().MemberIds.Add(a.InternalId);
+                }
+            });
+
             RefreshGroups();
 
             return GroupActionResult.Success;

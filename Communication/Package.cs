@@ -115,6 +115,8 @@ namespace Neo.Core.Communication
         Mention,
         CreateGroup,
         CreateGroupResponse,
-        GrantedPermissionsUpdate
+        GrantedPermissionsUpdate,
+        DeleteGroup,
+        DeleteGroupResponse
     }
 }
