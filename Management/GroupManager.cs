@@ -1,6 +1,9 @@
-﻿using Neo.Core.Communication;
+﻿using System.Linq;
+using Neo.Core.Communication;
 using Neo.Core.Networking;
 using Neo.Core.Shared;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Neo.Core.Management
 {
@@ -15,6 +18,19 @@ namespace Neo.Core.Management
             group.MemberIds.Add(member.InternalId);
             Pool.Server.DataProvider.Save();
             RefreshGroups();
+        }
+
+        public static GroupActionResult CreateGroup(Group group) {
+            if (Pool.Server.Groups.Any(g => g.Id == group.Id)) {
+                return GroupActionResult.IdInUse;
+            }
+
+            // TODO: Check permissions
+
+            Pool.Server.Groups.Add(group);
+            RefreshGroups();
+
+            return GroupActionResult.Success;
         }
 
         public static Group GetAdminGroup() {
@@ -43,5 +59,13 @@ namespace Neo.Core.Management
             Pool.Server.DataProvider.Save();
             RefreshGroups();
         }
+    }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum GroupActionResult
+    {
+        Success,
+        NotAllowed,
+        IdInUse,
     }
 }

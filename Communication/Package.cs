@@ -113,5 +113,7 @@ namespace Neo.Core.Communication
         AccountListUpdate,
         CreateChannel,
         Mention,
+        CreateGroup,
+        CreateGroupResponse
     }
 }
