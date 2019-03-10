@@ -5,6 +5,7 @@ using Neo.Core.Attribution;
 using Neo.Core.Authorization;
 using Neo.Core.Communication;
 using Neo.Core.Communication.Packages;
+using Neo.Core.Config;
 using Neo.Core.Networking;
 using Newtonsoft.Json;
 
@@ -73,9 +74,13 @@ namespace Neo.Core.Shared
                 new Target(sender).SendPackageTo(new Package(PackageType.Message, sent));
             }
 
-            Messages.Add(received);
+            SaveMessage(received);
+        }
 
-            if (Messages.Count > 50) {
+        public void SaveMessage(MessagePackageContent message) {
+            Messages.Add(message);
+
+            if (Messages.Count > ConfigManager.Instance.Values.MessageHistoryLimit) {
                 Messages.RemoveAt(0);
             }
         }

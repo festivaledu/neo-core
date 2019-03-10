@@ -19,7 +19,12 @@ namespace Neo.Core.Management
             channel.MemberIds.Add(user.InternalId);
 
             // TODO: Inform about new member
-            Pool.Server.SendPackageTo(new Target().AddMany(channel), new Package(PackageType.Message, MessagePackageContent.GetSystemMessage(user.Identity.Name + " ist dem Channel beigetreten.", channel.InternalId)));
+            var message = MessagePackageContent.GetSystemMessage(user.Identity.Name + " ist dem Channel beigetreten.", channel.InternalId);
+            Pool.Server.SendPackageTo(new Target().AddMany(channel), new Package(PackageType.Message, message));
+
+            if (ConfigManager.Instance.Values.SaveSystemMessages) {
+                channel.SaveMessage(message);
+            }
 
             RefreshChannels();
         }
