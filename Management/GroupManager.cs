@@ -22,21 +22,25 @@ namespace Neo.Core.Management
             RefreshGroups();
         }
 
-        public static GroupActionResult CreateGroup(Group group) {
+        public static GroupActionResult CreateGroup(Group group, User creator) {
+            if (!creator.IsAuthorized("neo.group.create")) {
+                return GroupActionResult.NotAllowed;
+            }
+
             if (Pool.Server.Groups.Any(g => g.Id == group.Id)) {
                 return GroupActionResult.IdInUse;
             }
-
-            // TODO: Check permissions
-
+            
             Pool.Server.Groups.Add(group);
             RefreshGroups();
 
             return GroupActionResult.Success;
         }
 
-        public static GroupActionResult DeleteGroup(Group group) {
-            // TODO: Check permissions
+        public static GroupActionResult DeleteGroup(Group group, User deletor) {
+            if (!deletor.IsAuthorized("neo.group.delete")) {
+                return GroupActionResult.NotAllowed;
+            }
 
             var members = group.Members.Select(a => a.InternalId);
 

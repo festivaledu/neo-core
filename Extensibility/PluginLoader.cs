@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Neo.Core.Extensibility
 {
+    // TODO: Add docs
     public static class PluginLoader
     {
         public static List<Plugin> Plugins { get; } = new List<Plugin>();

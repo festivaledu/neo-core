@@ -11,7 +11,6 @@ namespace Neo.Core.Management
         }
 
         public static void RefreshUsers() {
-            // TODO: Send user data to members
             Pool.Server.SendPackageTo(Target.All, new Package(PackageType.UserListUpdate, Pool.Server.Users));
         }
     }

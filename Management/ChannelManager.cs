@@ -18,8 +18,7 @@ namespace Neo.Core.Management
     {
         private static void AddUserToChannel(User user, Channel channel) {
             channel.MemberIds.Add(user.InternalId);
-
-            // TODO: Inform about new member
+            
             var message = MessagePackageContent.GetSystemMessage(user.Identity.Name + " ist dem Channel beigetreten.", channel.InternalId);
             Pool.Server.SendPackageTo(new Target().AddMany(channel), new Package(PackageType.Message, message));
 
@@ -54,8 +53,10 @@ namespace Neo.Core.Management
             if (Pool.Server.Channels.Any(c => c.Id == channel.Id)) {
                 return false;
             }
-
-            // TODO: Check for rights
+            
+            if (!user.IsAuthorized("neo.channel.create")) {
+                return false;
+            }
 
             channel.Attributes.Add("neo.origin", "neo.client");
             channel.Owner = user.InternalId;
@@ -70,7 +71,11 @@ namespace Neo.Core.Management
         }
 
         public static bool DeleteChannel(this Channel channel, User user) {
-            // TODO: Check for rights
+
+            if (!user.IsAuthorized("neo.channel.delete")) {
+                return false;
+            }
+
             RemoveChannel(channel);
             RefreshChannels();
 
@@ -146,8 +151,7 @@ namespace Neo.Core.Management
                 
                 channel.ActiveMemberIds.Add(user.InternalId);
                 RefreshChannels();
-
-                // TODO: Perform actual networking stuff to open new channel in the client
+                
                 
                 user.ToTarget().SendPackageTo(new Package(PackageType.EnterChannelResponse, new EnterChannelResponsePackageContent(ChannelActionResult.Success, channel)));
             }
@@ -166,7 +170,6 @@ namespace Neo.Core.Management
         }
 
         public static void RefreshChannels() {
-            // TODO: Send channel data to members
 
             var channels = JsonConvert.DeserializeObject<List<Channel>>(JsonConvert.SerializeObject(Pool.Server.Channels));
             channels.ForEach(c => c.Password = !string.IsNullOrEmpty(c.Password) ? "true" : null);

@@ -29,6 +29,8 @@ namespace Neo.Core.Networking
         public List<User> Users { get; set; } = new List<User>();
 
         public Dictionary<string, string> KnownPermissions { get; set; } = new Dictionary<string, string> {
+            { "neo.channel.create", "Channel erstellen" },
+            { "neo.channel.delete", "Channel löschen" },
             { "neo.channel.join.$", "Channel betreten" },
             { "neo.channel.join.ignoreblacklist", "Channel trotz Blacklist betreten" },
             { "neo.channel.join.ignorelimit", "Channel trotz Limit betreten" },
@@ -36,6 +38,10 @@ namespace Neo.Core.Networking
             { "neo.channel.join.ignorewhitelist", "Channel trotz Whitelist betreten" },
             { "neo.global.read", "Nachrichten lesen" },
             { "neo.global.write", "Nachrichten schreiben" },
+            { "neo.group.create", "Gruppe erstellen" },
+            { "neo.group.delete", "Gruppe löschen" },
+            { "neo.moderate.ban", "Benutzer bannen" },
+            { "neo.moderate.kick", "Benutzer kicken" },
         };
 
         public DataProvider DataProvider { get; set; }
@@ -163,7 +169,6 @@ namespace Neo.Core.Networking
         /// <param name="package">The <see cref="Package"/> to send.</param>
         public void SendPackageTo(Target target, Package package) {
             foreach (var client in Clients.FindAll(c => target.Targets.Contains(c.ClientId))) {
-                // TODO
                 client.SendPackage(package);
             }
         }

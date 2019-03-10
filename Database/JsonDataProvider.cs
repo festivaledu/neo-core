@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 
 namespace Neo.Core.Database
 {
+    // TODO: Add docs
     public sealed class JsonDataProvider : DataProvider
     {
         private readonly string directoryPath;

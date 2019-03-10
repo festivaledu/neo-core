@@ -9,14 +9,23 @@ using Newtonsoft.Json;
 
 namespace Neo.Core.Config
 {
+    /// <summary>
+    ///     Provides methods for editing settings.
+    /// </summary>
     public static class SettingsProvider
     {
+        /// <summary>
+        ///     Applies the given model on a scope.
+        /// </summary>
+        /// <param name="scope">The scope to apply the model on.</param>
+        /// <param name="model">The model to apply.</param>
+        /// <returns>Returns <c>true</c> when the model was applied successfully, otherwise <c>false</c>.</returns>
         public static bool EditSettings(string scope, dynamic model) {
             if (scope == "server") {
                 ConfigManager.Instance.Values = JsonConvert.DeserializeObject<ConfigValues>(JsonConvert.SerializeObject(model));
                 ConfigManager.Instance.Save();
 
-                Target.All.SendPackageTo(new Package(PackageType.MetaResponse, new ServerMetaPackageContent {
+                Target.All.SendPackageTo(new Package(PackageType.MetaResponse, new ServerMetaResponsePackageContent {
                     GuestsAllowed = ConfigManager.Instance.Values.GuestsAllowed,
                     Name = ConfigManager.Instance.Values.ServerName,
                     RegistrationAllowed = ConfigManager.Instance.Values.RegistrationAllowed
@@ -62,6 +71,11 @@ namespace Neo.Core.Config
             return true;
         }
 
+        /// <summary>
+        ///     Creates a <see cref="OpenSettingsResponsePackageContent"/> with the model for a given scope to edit.
+        /// </summary>
+        /// <param name="scope">The scope to create a model for.</param>
+        /// <returns>Returns the created content.</returns>
         public static OpenSettingsResponsePackageContent OpenSettings(string scope) {
             OpenSettingsResponsePackageContent response = null;
 

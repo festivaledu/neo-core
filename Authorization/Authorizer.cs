@@ -5,6 +5,9 @@ using Neo.Core.Shared;
 
 namespace Neo.Core.Authorization
 {
+    /// <summary>
+    ///     Provides methods to authorize users.
+    /// </summary>
     public static class Authorizer
     {
         /// <summary>
@@ -99,9 +102,11 @@ namespace Neo.Core.Authorization
             var valid = "";
             for (var l = 0; l < permissionLayers.Length - 1; l++) {
                 var layer = permissionLayers[l];
+
                 valid += $"{layer}.";
                 validPermissions.Add($"{valid}*");
             }
+
             validPermissions.Add(permission);
 
             // Define the default permission if none of the sets contained any of the valid permissions
@@ -132,22 +137,27 @@ namespace Neo.Core.Authorization
             switch (authorizable) {
             case Guest guest:
                 permissionsSets.Add(GroupManager.GetGuestGroup().Permissions);
+
                 if (guest.ActiveChannel != null && guest.ActiveChannel.MemberPermissions.ContainsKey(guest.InternalId)) {
                     permissionsSets.Add(guest.ActiveChannel.MemberPermissions[guest.InternalId]);
                 }
+
                 permissionsSets.Add(guest.Permissions);
+
                 break;
             case Member member:
-                foreach (var group in member.Groups.OrderBy(g => g.SortValue)) {
-                    permissionsSets.Add(group.Permissions);
-                }
+                permissionsSets.AddRange(member.Groups.OrderBy(g => g.SortValue).Select(@group => @group.Permissions));
+
                 if (member.ActiveChannel != null && member.ActiveChannel.MemberPermissions.ContainsKey(member.InternalId)) {
                     permissionsSets.Add(member.ActiveChannel.MemberPermissions[member.InternalId]);
                 }
+
                 permissionsSets.Add(member.Permissions);
+
                 break;
             case Group group:
                 permissionsSets.Add(group.Permissions);
+
                 break;
             default:
                 return false;
@@ -156,25 +166,34 @@ namespace Neo.Core.Authorization
             return IsAuthorized(permission, permissionsSets.ToArray());
         }
 
+        /// <summary>
+        ///     Returns all permissions granted to the authorizable instance.
+        /// </summary>
+        /// <param name="authorizable">The instance to get all granted permissions from.</param>
+        /// <returns>Returns all granted permissions.</returns>
         public static Dictionary<string, Permission> GetAllPermissons(this IAuthorizable authorizable) {
             var permissionsSets = new List<Dictionary<string, Permission>>();
 
             switch (authorizable) {
             case Guest guest:
                 permissionsSets.Add(GroupManager.GetGuestGroup().Permissions);
+
                 if (guest.ActiveChannel != null && guest.ActiveChannel.MemberPermissions.ContainsKey(guest.InternalId)) {
                     permissionsSets.Add(guest.ActiveChannel.MemberPermissions[guest.InternalId]);
                 }
+
                 permissionsSets.Add(guest.Permissions);
+
                 break;
             case Member member:
-                foreach (var group in member.Groups.OrderBy(g => g.SortValue)) {
-                    permissionsSets.Add(group.Permissions);
-                }
+                permissionsSets.AddRange(member.Groups.OrderBy(g => g.SortValue).Select(@group => @group.Permissions));
+
                 if (member.ActiveChannel != null && member.ActiveChannel.MemberPermissions.ContainsKey(member.InternalId)) {
                     permissionsSets.Add(member.ActiveChannel.MemberPermissions[member.InternalId]);
                 }
+
                 permissionsSets.Add(member.Permissions);
+
                 break;
             default:
                 return new Dictionary<string, Permission>();

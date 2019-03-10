@@ -44,7 +44,6 @@ namespace Neo.Core.Networking
             var package = client.ReadContainer(container);
 
             if (package.Type == PackageType.AES) {
-                // TODO: Add RSA decryption
                 //client.SetAesParameters(JsonConvert.DeserializeObject<AesParameters>(NeoCryptoProvider.Instance.RsaDecrypt(package.Content, Pool.Server.RSAPrivateParameters)));
 
                 var payload = package.GetContentTypesafe<AesPackageContent>();

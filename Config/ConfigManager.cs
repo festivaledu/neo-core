@@ -20,6 +20,9 @@ namespace Neo.Core.Config
 
         private static readonly Lazy<ConfigManager> instance = new Lazy<ConfigManager>(() => new ConfigManager());
         
+        /// <summary>
+        ///     The values of the current config.
+        /// </summary>
         public ConfigValues Values { get; set; } = new ConfigValues();
         private string filePath;
 

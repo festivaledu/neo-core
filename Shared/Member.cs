@@ -6,7 +6,6 @@ namespace Neo.Core.Shared
 {
     public class Member : User
     {
-        // TODO
         public Account Account { get; set; }
 
         public override Dictionary<string, object> Attributes {

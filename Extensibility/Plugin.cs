@@ -10,6 +10,7 @@ using Neo.Core.Shared;
 
 namespace Neo.Core.Extensibility
 {
+    // TODO: Add docs
     public abstract class Plugin
     {
         public Guid InternalId { get; } = Guid.NewGuid();
