@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Neo.Core.Authorization;
 using Neo.Core.Communication;
 using Neo.Core.Networking;
 using Neo.Core.Shared;
@@ -47,6 +48,10 @@ namespace Neo.Core.Management
 
         public static void RefreshGroups() {
             Target.All.SendPackageTo(new Package(PackageType.GroupListUpdate, Pool.Server.Groups));
+
+            Pool.Server.Users.ForEach(u => {
+                u.ToTarget().SendPackageTo(new Package(PackageType.GrantedPermissionsUpdate, u.GetAllPermissons()));
+            });
         }
 
         public static void RemoveGuestFromGroup(Guest guest) {

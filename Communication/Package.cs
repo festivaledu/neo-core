@@ -114,6 +114,7 @@ namespace Neo.Core.Communication
         CreateChannel,
         Mention,
         CreateGroup,
-        CreateGroupResponse
+        CreateGroupResponse,
+        GrantedPermissionsUpdate
     }
 }

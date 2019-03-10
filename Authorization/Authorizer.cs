@@ -155,5 +155,32 @@ namespace Neo.Core.Authorization
 
             return IsAuthorized(permission, permissionsSets.ToArray());
         }
+
+        public static Dictionary<string, Permission> GetAllPermissons(this IAuthorizable authorizable) {
+            var permissionsSets = new List<Dictionary<string, Permission>>();
+
+            switch (authorizable) {
+            case Guest guest:
+                permissionsSets.Add(GroupManager.GetGuestGroup().Permissions);
+                if (guest.ActiveChannel != null && guest.ActiveChannel.MemberPermissions.ContainsKey(guest.InternalId)) {
+                    permissionsSets.Add(guest.ActiveChannel.MemberPermissions[guest.InternalId]);
+                }
+                permissionsSets.Add(guest.Permissions);
+                break;
+            case Member member:
+                foreach (var group in member.Groups.OrderBy(g => g.SortValue)) {
+                    permissionsSets.Add(group.Permissions);
+                }
+                if (member.ActiveChannel != null && member.ActiveChannel.MemberPermissions.ContainsKey(member.InternalId)) {
+                    permissionsSets.Add(member.ActiveChannel.MemberPermissions[member.InternalId]);
+                }
+                permissionsSets.Add(member.Permissions);
+                break;
+            default:
+                return new Dictionary<string, Permission>();
+            }
+
+            return permissionsSets.Aggregate(new Dictionary<string, Permission>(), UnionPermissions);
+        }
     }
 }
