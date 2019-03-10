@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Neo.Core.Authorization;
 using Neo.Core.Communication;
@@ -7,6 +8,8 @@ using Neo.Core.Config;
 using Neo.Core.Extensibility;
 using Neo.Core.Networking;
 using Neo.Core.Shared;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Neo.Core.Management
 {
@@ -136,7 +139,7 @@ namespace Neo.Core.Management
 
                 // TODO: Perform actual networking stuff to open new channel in the client
                 
-                user.ToTarget().SendPackageTo(new Package(PackageType.EnterChannelResponse, channel));
+                user.ToTarget().SendPackageTo(new Package(PackageType.EnterChannelResponse, new EnterChannelResponsePackageContent(ChannelActionResult.Success, channel)));
             }
         }
 
@@ -154,7 +157,11 @@ namespace Neo.Core.Management
 
         public static void RefreshChannels() {
             // TODO: Send channel data to members
-            Pool.Server.SendPackageTo(Target.All, new Package(PackageType.ChannelListUpdate, Pool.Server.Channels));
+
+            var channels = JsonConvert.DeserializeObject<List<Channel>>(JsonConvert.SerializeObject(Pool.Server.Channels));
+            channels.ForEach(c => c.Password = !string.IsNullOrEmpty(c.Password) ? "true" : null);
+
+            Pool.Server.SendPackageTo(Target.All, new Package(PackageType.ChannelListUpdate, channels));
         }
 
         public static void RemoveChannel(Channel channel) {
@@ -164,6 +171,7 @@ namespace Neo.Core.Management
         }
     }
 
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum ChannelActionResult
     {
         Success,
