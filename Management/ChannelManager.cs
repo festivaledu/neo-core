@@ -170,7 +170,6 @@ namespace Neo.Core.Management
         }
 
         public static void RefreshChannels() {
-
             var channels = JsonConvert.DeserializeObject<List<Channel>>(JsonConvert.SerializeObject(Pool.Server.Channels));
             channels.ForEach(c => c.Password = !string.IsNullOrEmpty(c.Password) ? "true" : null);
 
