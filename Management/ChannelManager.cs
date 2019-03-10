@@ -51,6 +51,9 @@ namespace Neo.Core.Management
             channel.Attributes.Add("neo.origin", "neo.client");
             channel.Owner = user.InternalId;
             Pool.Server.Channels.Add(channel);
+
+            RefreshChannels();
+
             AddUserToChannel(user, channel);
             MoveToChannel(user, channel);
 
@@ -90,7 +93,7 @@ namespace Neo.Core.Management
                 return ChannelActionResult.IncorrectPassword;
             }
 
-            if (channel.MemberIds.Count >= channel.Limit) {
+            if (channel.MemberIds.Count >= channel.Limit && channel.Limit > -1) {
                 if (user.IsAuthorized("neo.channel.join.ignorelimit")) {
                     AddUserToChannel(user, channel);
                     return ChannelActionResult.Success;

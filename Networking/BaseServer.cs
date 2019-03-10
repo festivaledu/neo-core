@@ -86,7 +86,7 @@ namespace Neo.Core.Networking
                 EndOfLifetime = DateTime.MaxValue,
                 Id = "main",
                 Lifetime = Lifespan.Permanent,
-                Limit = int.MaxValue,
+                Limit = -1,
                 Name = "Main",
                 Owner = Accounts[0].InternalId
             });

@@ -84,12 +84,12 @@ namespace Neo.Core.Networking
         }
 
         /// <summary>
-        ///     Adds all members of a <see cref="Channel"/> as recipients to the list of recipients.
+        ///     Adds all active members of a <see cref="Channel"/> as recipients to the list of recipients.
         /// </summary>
-        /// <param name="channel">The <see cref="Channel"/> whose members should be added.</param>
+        /// <param name="channel">The <see cref="Channel"/> whose active members should be added.</param>
         /// <returns>Returns itself to allow chaining.</returns>
         public Target AddMany(Channel channel) {
-            targets.AddRange(channel.Members.Select(m => m.Client.ClientId));
+            targets.AddRange(channel.ActiveMembers.Select(m => m.Client.ClientId));
             return this;
         }
 

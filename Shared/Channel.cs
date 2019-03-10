@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Neo.Core.Attribution;
 using Neo.Core.Authorization;
+using Neo.Core.Communication;
+using Neo.Core.Communication.Packages;
+using Neo.Core.Networking;
 using Newtonsoft.Json;
 
 namespace Neo.Core.Shared
@@ -36,6 +40,8 @@ namespace Neo.Core.Shared
         [JsonIgnore]
         public List<User> Members => Pool.Server.Users.FindAll(u => MemberIds.Contains(u.InternalId));
 
+        public List<MessagePackageContent> Messages { get; set; } = new List<MessagePackageContent>();
+
         public string Name { get; set; }
 
         public Guid Owner { get; set; }
@@ -51,5 +57,27 @@ namespace Neo.Core.Shared
         public List<Guid> VisibleToGroupIds { get; set; } = new List<Guid>();
 
         public List<Guid> VisibleToUserIds { get; set; } = new List<Guid>();
+
+        public void AddMessage(User sender, string message) {
+            var received = MessagePackageContent.GetReceivedMessage(sender.InternalId, sender.Identity, message, InternalId);
+            var sent = MessagePackageContent.GetSentMessage(sender.InternalId, sender.Identity, message, InternalId);
+
+            if (message.Contains('@')) {
+                var mentions = message.Split(' ').ToList().Where(s => s.StartsWith('@') && Pool.Server.Users.Any(u => u.Identity.Id == s.Substring(1))).Select(s => s.Substring(1)).Distinct().ToList();
+                new Target().AddMany(Pool.Server.Users.FindAll(u => mentions.Contains(u.Identity.Id)).ToArray()).SendPackageTo(new Package(PackageType.Mention, received));
+            }
+
+            new Target().AddMany(this).Remove(sender).SendPackageTo(new Package(PackageType.Message, received));
+
+            if (sender.ActiveChannel == this) {
+                new Target(sender).SendPackageTo(new Package(PackageType.Message, sent));
+            }
+
+            Messages.Add(received);
+
+            if (Messages.Count > 50) {
+                Messages.RemoveAt(0);
+            }
+        }
     }
 }

@@ -132,7 +132,7 @@ namespace Neo.Core.Authorization
             switch (authorizable) {
             case Guest guest:
                 permissionsSets.Add(GroupManager.GetGuestGroup().Permissions);
-                if (guest.ActiveChannel != null) {
+                if (guest.ActiveChannel != null && guest.ActiveChannel.MemberPermissions.ContainsKey(guest.InternalId)) {
                     permissionsSets.Add(guest.ActiveChannel.MemberPermissions[guest.InternalId]);
                 }
                 permissionsSets.Add(guest.Permissions);
@@ -141,7 +141,7 @@ namespace Neo.Core.Authorization
                 foreach (var group in member.Groups.OrderBy(g => g.SortValue)) {
                     permissionsSets.Add(group.Permissions);
                 }
-                if (member.ActiveChannel != null) {
+                if (member.ActiveChannel != null && member.ActiveChannel.MemberPermissions.ContainsKey(member.InternalId)) {
                     permissionsSets.Add(member.ActiveChannel.MemberPermissions[member.InternalId]);
                 }
                 permissionsSets.Add(member.Permissions);
