@@ -25,7 +25,7 @@ namespace Neo.Core.Database
             accounts = server.Accounts.Select(_ => JsonConvert.DeserializeObject<Account>(JsonConvert.SerializeObject(_))).ToList();
 
             // Remove all accounts that aren't created by a client (root account + virtual plugin accounts)
-            accounts.RemoveAll(a => a.Attributes.ContainsKey("session.neo.origin") && a.Attributes["session.neo.origin"].ToString() != "neo.client" || a.Attributes.ContainsKey("instance.neo.origin") && a.Attributes["instance.neo.origin"].ToString() != "neo.client");
+            //accounts.RemoveAll(a => a.Attributes.ContainsKey("session.neo.origin") && a.Attributes["session.neo.origin"].ToString() != "neo.client" || a.Attributes.ContainsKey("instance.neo.origin") && a.Attributes["instance.neo.origin"].ToString() != "neo.client");
 
             // Remove all session and instance attributes
             foreach (var account in accounts) {
@@ -45,7 +45,7 @@ namespace Neo.Core.Database
             // TODO: Remove expired channels
 
             // Remove main channel
-            channels.RemoveAll(c => c.Id == "main");
+            //channels.RemoveAll(c => c.Attributes.ContainsKey("neo.channeltype") && c.Attributes["neo.channeltype"].ToString() == "main");
 
             foreach (var channel in channels) {
                 // Remove all active members
