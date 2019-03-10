@@ -147,6 +147,7 @@ namespace Neo.Core.Authorization
                 break;
             case Member member:
                 permissionsSets.AddRange(member.Groups.OrderBy(g => g.SortValue).Select(@group => @group.Permissions));
+                permissionsSets.AddRange(Pool.Server.Groups.FindAll(g => g.SortValue <= member.Groups.Select(_ => _.SortValue).Min()).OrderBy(g => g.SortValue).Select(@group => @group.Permissions));
 
                 if (member.ActiveChannel != null && member.ActiveChannel.MemberPermissions.ContainsKey(member.InternalId)) {
                     permissionsSets.Add(member.ActiveChannel.MemberPermissions[member.InternalId]);
