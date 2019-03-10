@@ -65,9 +65,10 @@ namespace Neo.Core.Networking
             DataProvider.Load();
 
             // Create root account
-            Accounts.Insert(0, new Account {
+            Accounts.Add(new Account {
                 Attributes = new Dictionary<string, object> {
-                    { "instance.neo.origin", "neo.server" }
+                    { "instance.neo.origin", "neo.server" },
+                    { "neo.usertype", "root" }
                 },
                 Email = "root@internal.neo",
                 Identity = ConfigManager.Instance.Values.RootIdentity,
@@ -81,17 +82,18 @@ namespace Neo.Core.Networking
             // Create main channel
             Channels.Insert(0, new Channel {
                 Attributes = new Dictionary<string, object> {
-                    { "instance.neo.origin", "neo.server" }
+                    { "instance.neo.origin", "neo.server" },
+                    { "neo.channeltype", "main" }
                 },
                 EndOfLifetime = DateTime.MaxValue,
                 Id = "main",
                 Lifetime = Lifespan.Permanent,
                 Limit = -1,
                 Name = "Main",
-                Owner = Accounts[0].InternalId
+                Owner = UserManager.GetRoot().InternalId
             });
 
-            Channels[0].MemberIds.AddRange(Accounts.FindAll(a => a.Email != "root@internal.neo").Select(a => a.InternalId));
+            ChannelManager.GetMainChannel().MemberIds.AddRange(Accounts.FindAll(a => a.Email != "root@internal.neo").Select(a => a.InternalId));
             Logger.Instance.Log(LogLevel.Debug, "Main channel created");
             
             if (GroupManager.GetAdminGroup() == null) {

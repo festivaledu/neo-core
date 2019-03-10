@@ -76,6 +76,10 @@ namespace Neo.Core.Management
             return true;
         }
 
+        public static Channel GetMainChannel() {
+            return Pool.Server.Channels.Find(c => c.Attributes.ContainsKey("neo.channeltype") && c.Attributes["neo.channeltype"].ToString() == "main");
+        }
+
         public static ChannelActionResult JoinChannel(this User user, Channel channel, string password = "") {
             if (!user.IsAuthorized("neo.channel.join.$")) {
                 return ChannelActionResult.NotAllowed;
@@ -171,7 +175,7 @@ namespace Neo.Core.Management
 
         public static void RemoveChannel(Channel channel) {
             foreach (var activeMember in channel.ActiveMembers) {
-                MoveToChannel(activeMember, Pool.Server.Channels[0]);
+                MoveToChannel(activeMember, GetMainChannel());
             }
         }
     }
