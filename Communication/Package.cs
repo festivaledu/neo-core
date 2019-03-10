@@ -110,5 +110,8 @@ namespace Neo.Core.Communication
         KnownPermissionsUpdate,
         DisconnectReason,
         CreatePunishment,
+        AccountListUpdate,
+        CreateChannel,
+        Mention,
     }
 }
