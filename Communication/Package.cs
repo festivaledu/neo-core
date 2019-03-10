@@ -117,6 +117,8 @@ namespace Neo.Core.Communication
         CreateGroupResponse,
         GrantedPermissionsUpdate,
         DeleteGroup,
-        DeleteGroupResponse
+        DeleteGroupResponse,
+        DeleteChannel,
+        DeleteChannelResponse
     }
 }

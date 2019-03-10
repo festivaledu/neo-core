@@ -5,6 +5,7 @@ using Neo.Core.Authorization;
 using Neo.Core.Communication;
 using Neo.Core.Communication.Packages;
 using Neo.Core.Config;
+using Neo.Core.Database;
 using Neo.Core.Extensibility;
 using Neo.Core.Networking;
 using Neo.Core.Shared;
@@ -177,6 +178,9 @@ namespace Neo.Core.Management
             foreach (var activeMember in channel.ActiveMembers) {
                 MoveToChannel(activeMember, GetMainChannel());
             }
+
+            Pool.Server.Channels.Remove(channel);
+            Pool.Server.DataProvider.Save();
         }
     }
 
