@@ -42,6 +42,21 @@ namespace Neo.Core.Config
                 Pool.Server.Groups[index] = group;
                 Pool.Server.DataProvider.Save();
                 GroupManager.RefreshGroups();
+            } else if (scope == "channel") {
+                Channel channel = JsonConvert.DeserializeObject<Channel>(JsonConvert.SerializeObject(model));
+                var index = Pool.Server.Channels.FindIndex(c => c.InternalId.Equals(channel.InternalId));
+
+                if (index == -1) {
+                    return false;
+                }
+
+                if (channel.Password == "true") {
+                    channel.Password = Pool.Server.Channels[index].Password;
+                }
+
+                Pool.Server.Channels[index] = channel;
+                Pool.Server.DataProvider.Save();
+                ChannelManager.RefreshChannels();
             }
             
             return true;
