@@ -119,6 +119,7 @@ namespace Neo.Core.Communication
         DeleteGroup,
         DeleteGroupResponse,
         DeleteChannel,
-        DeleteChannelResponse
+        DeleteChannelResponse,
+        DeletePunishment
     }
 }
