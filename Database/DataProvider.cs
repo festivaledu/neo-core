@@ -81,7 +81,7 @@ namespace Neo.Core.Database
                 }
             }
 
-            groups = groups.OrderBy(g => g.SortValue).ToList();
+            groups = groups.OrderBy(_ => _.SortValue).ToList();
         }
     }
 }

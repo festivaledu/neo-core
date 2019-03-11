@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Neo.Core.Authorization;
 using Neo.Core.Communication;
+using Neo.Core.Communication.Packages;
 using Neo.Core.Networking;
 using Neo.Core.Shared;
 using Newtonsoft.Json;
@@ -34,7 +35,7 @@ namespace Neo.Core.Management
 
             RefreshGroups();
         }
-
+        
         // TODO: Add docs
         public static GroupActionResult CreateGroup(Group group, User creator) {
             if (!creator.IsAuthorized("neo.group.create")) {

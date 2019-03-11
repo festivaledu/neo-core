@@ -90,7 +90,7 @@ namespace Neo.Core.Authentication
         /// <param name="registerData">The data sent by the client.</param>
         /// <param name="user">The user created by this method.</param>
         /// <returns>Returns the result of this action.</returns>
-        public static AuthenticationResult Register(RegisterPackageContent registerData, out (Account account, Member member)? user) {
+        public static AuthenticationResult Register(RegisterPackageContent registerData, out (Account Account, Member Member)? user) {
             return Register(registerData.Name, registerData.Id, registerData.Email, registerData.Password, out user);
         }
 
@@ -103,7 +103,7 @@ namespace Neo.Core.Authentication
         /// <param name="password">The password of the new member.</param>
         /// <param name="user">The user created by this method.</param>
         /// <returns>Returns the result of this action.</returns>
-        public static AuthenticationResult Register(string name, string id, string email, string password, out (Account account, Member member)? user) {
+        public static AuthenticationResult Register(string name, string id, string email, string password, out (Account Account, Member Member)? user) {
             return Register(name, id, email, NeoCryptoProvider.Instance.Sha512ComputeHash(password), out user);
         }
 
@@ -116,7 +116,7 @@ namespace Neo.Core.Authentication
         /// <param name="password">The password of the new member.</param>
         /// <param name="user">The user created by this method.</param>
         /// <returns>Returns the result of this action.</returns>
-        public static AuthenticationResult Register(string name, string id, string email, byte[] password, out (Account account, Member member)? user) {
+        public static AuthenticationResult Register(string name, string id, string email, byte[] password, out (Account Account, Member Member)? user) {
             if (Pool.Server.Accounts.Any(a => a.Email == email)) {
                 user = null;
                 return AuthenticationResult.EmailInUse;

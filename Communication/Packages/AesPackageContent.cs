@@ -13,6 +13,7 @@
         /// <summary>
         ///     The aes iv of the client.
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public string AesIV { get; set; }
     }
 }

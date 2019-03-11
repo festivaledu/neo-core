@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Reflection;
+using Neo.Core.Authorization;
 using Neo.Core.Communication;
 using Neo.Core.Communication.Packages;
 using Neo.Core.Management;
@@ -19,8 +20,13 @@ namespace Neo.Core.Config
         /// </summary>
         /// <param name="scope">The scope to apply the model on.</param>
         /// <param name="model">The model to apply.</param>
+        /// <param name="user">The <see cref="User"/> editing the settings.</param>
         /// <returns>Returns <c>true</c> when the model was applied successfully, otherwise <c>false</c>.</returns>
-        public static bool EditSettings(string scope, dynamic model) {
+        public static bool EditSettings(string scope, dynamic model, User user) {
+            if (!user.IsAuthorized($"neo.{scope}.edit")) {
+                return false;
+            }
+
             if (scope == "server") {
                 ConfigManager.Instance.Values = JsonConvert.DeserializeObject<ConfigValues>(JsonConvert.SerializeObject(model));
                 ConfigManager.Instance.Save();
@@ -32,7 +38,7 @@ namespace Neo.Core.Config
                 }));
             } else if (scope == "account") {
                 Account account = JsonConvert.DeserializeObject<Account>(JsonConvert.SerializeObject(model));
-                var index = Pool.Server.Accounts.FindIndex(a => a.InternalId.Equals(account.InternalId));
+                var index = Pool.Server.Accounts.FindIndex(_ => _.InternalId.Equals(account.InternalId));
 
                 if (index == -1) {
                     return false;
@@ -42,7 +48,7 @@ namespace Neo.Core.Config
                 Pool.Server.DataProvider.Save();
             } else if (scope == "group") {
                 Group group = JsonConvert.DeserializeObject<Group>(JsonConvert.SerializeObject(model));
-                var index = Pool.Server.Groups.FindIndex(g => g.InternalId.Equals(group.InternalId));
+                var index = Pool.Server.Groups.FindIndex(_ => _.InternalId.Equals(group.InternalId));
 
                 if (index == -1) {
                     return false;
@@ -53,7 +59,7 @@ namespace Neo.Core.Config
                 GroupManager.RefreshGroups();
             } else if (scope == "channel") {
                 Channel channel = JsonConvert.DeserializeObject<Channel>(JsonConvert.SerializeObject(model));
-                var index = Pool.Server.Channels.FindIndex(c => c.InternalId.Equals(channel.InternalId));
+                var index = Pool.Server.Channels.FindIndex(_ => _.InternalId.Equals(channel.InternalId));
 
                 if (index == -1) {
                     return false;

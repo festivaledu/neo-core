@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Neo.Core.Communication;
+using Neo.Core.Communication.Packages;
 using Neo.Core.Cryptography;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;

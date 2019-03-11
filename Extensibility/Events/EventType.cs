@@ -1,5 +1,6 @@
 ﻿using System;
 using Neo.Core.Communication;
+using Neo.Core.Communication.Packages;
 using Neo.Core.Networking;
 using Neo.Core.Shared;
 
@@ -28,6 +29,18 @@ namespace Neo.Core.Extensibility.Events
         ///     This event is raised after a <see cref="Client"/> disconnected from the server.
         /// </summary>
         Disconnected,
+        /// <summary>
+        ///     This event is raised after a <see cref="User"/> joined the server.
+        /// </summary>
+        ServerJoined,
+        /// <summary>
+        ///     This event is raised after a <see cref="User"/> finished the login.
+        /// </summary>
+        Login,
+        /// <summary>
+        ///     This event is raised after a <see cref="User"/> left the server.
+        /// </summary>
+        ServerLeft,
 
         /// <summary>
         ///     This event is raised before a new <see cref="Account"/> is created.

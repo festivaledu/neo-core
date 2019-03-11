@@ -34,6 +34,9 @@ namespace Neo.Core.Extensibility
 
         public virtual async Task OnConnected(ConnectEventArgs args) { }
         public virtual async Task OnDisconnected(DisconnectEventArgs args) { }
+        public virtual async Task OnServerJoined(JoinElementEventArgs<BaseServer> args) { }
+        public virtual async Task OnLogin(LoginEventArgs args) { }
+        public virtual async Task OnServerLeft(LeaveElementEventArgs<BaseServer> args) { }
 
         public virtual async Task OnBeforePackageReceive(Before<ReceiveElementEventArgs<Package>> args) { }
         public virtual async Task OnPackageReceived(ReceiveElementEventArgs<Package> args) { }

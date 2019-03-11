@@ -138,9 +138,9 @@ namespace Neo.Core.Authorization
             case Guest guest:
                 permissionsSets.Add(GroupManager.GetGuestGroup().Permissions);
 
-                if (guest.ActiveChannel != null && guest.ActiveChannel.MemberPermissions.ContainsKey(guest.InternalId)) {
-                    permissionsSets.Add(guest.ActiveChannel.MemberPermissions[guest.InternalId]);
-                }
+                //if (guest.ActiveChannel != null && guest.ActiveChannel.MemberPermissions.ContainsKey(guest.InternalId)) {
+                //    permissionsSets.Add(guest.ActiveChannel.MemberPermissions[guest.InternalId]);
+                //}
 
                 permissionsSets.Add(guest.Permissions);
 
@@ -149,9 +149,9 @@ namespace Neo.Core.Authorization
                 permissionsSets.AddRange(member.Groups.OrderBy(g => g.SortValue).Select(@group => @group.Permissions));
                 permissionsSets.AddRange(Pool.Server.Groups.FindAll(g => g.SortValue <= member.Groups.Select(_ => _.SortValue).Min()).OrderBy(g => g.SortValue).Select(@group => @group.Permissions));
 
-                if (member.ActiveChannel != null && member.ActiveChannel.MemberPermissions.ContainsKey(member.InternalId)) {
-                    permissionsSets.Add(member.ActiveChannel.MemberPermissions[member.InternalId]);
-                }
+                //if (member.ActiveChannel != null && member.ActiveChannel.MemberPermissions.ContainsKey(member.InternalId)) {
+                //    permissionsSets.Add(member.ActiveChannel.MemberPermissions[member.InternalId]);
+                //}
 
                 permissionsSets.Add(member.Permissions);
 
@@ -179,9 +179,9 @@ namespace Neo.Core.Authorization
             case Guest guest:
                 permissionsSets.Add(GroupManager.GetGuestGroup().Permissions);
 
-                if (guest.ActiveChannel != null && guest.ActiveChannel.MemberPermissions.ContainsKey(guest.InternalId)) {
-                    permissionsSets.Add(guest.ActiveChannel.MemberPermissions[guest.InternalId]);
-                }
+                //if (guest.ActiveChannel != null && guest.ActiveChannel.MemberPermissions.ContainsKey(guest.InternalId)) {
+                //    permissionsSets.Add(guest.ActiveChannel.MemberPermissions[guest.InternalId]);
+                //}
 
                 permissionsSets.Add(guest.Permissions);
 
@@ -189,9 +189,9 @@ namespace Neo.Core.Authorization
             case Member member:
                 permissionsSets.AddRange(member.Groups.OrderBy(g => g.SortValue).Select(@group => @group.Permissions));
 
-                if (member.ActiveChannel != null && member.ActiveChannel.MemberPermissions.ContainsKey(member.InternalId)) {
-                    permissionsSets.Add(member.ActiveChannel.MemberPermissions[member.InternalId]);
-                }
+                //if (member.ActiveChannel != null && member.ActiveChannel.MemberPermissions.ContainsKey(member.InternalId)) {
+                //    permissionsSets.Add(member.ActiveChannel.MemberPermissions[member.InternalId]);
+                //}
 
                 permissionsSets.Add(member.Permissions);
 

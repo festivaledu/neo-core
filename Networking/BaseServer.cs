@@ -206,9 +206,9 @@ namespace Neo.Core.Networking
         }
 
         /// <summary>
-        ///     Sends a <see cref="Package" /> to a <see cref="Target" />.
+        ///     Sends a <see cref="Package"/> to a <see cref="Target"/>.
         /// </summary>
-        /// <param name="target">The recipients of the <see cref="Package" />.</param>
+        /// <param name="target">The recipients of the <see cref="Package"/>.</param>
         /// <param name="package">The <see cref="Package" /> to send.</param>
         public void SendPackageTo(Target target, Package package) {
             foreach (var client in Clients.FindAll(c => target.Targets.Contains(c.ClientId))) {
@@ -219,14 +219,23 @@ namespace Neo.Core.Networking
         /// <summary>
         ///     Sends a <see cref="Package" /> to a client.
         /// </summary>
-        /// <param name="clientId">The recipients of the <see cref="Package" />.</param>
+        /// <param name="client">The client of the recipient of the <see cref="Package"/>.</param>
         /// <param name="package">The <see cref="Package" /> to send.</param>
-        public void SendPackageTo(string clientId, Package package) {
-            Clients.Find(c => c.ClientId == clientId)?.SendPackage(package);
+        public void SendPackageTo(Client client, Package package) {
+            SendPackageTo(client.ClientId, package);
         }
 
         /// <summary>
-        ///     Applies all necessary settings and starts the underlying <see cref="WebSocketServer" />.
+        ///     Sends a <see cref="Package" /> to a client.
+        /// </summary>
+        /// <param name="clientId">The client id of the recipient of the <see cref="Package"/>.</param>
+        /// <param name="package">The <see cref="Package" /> to send.</param>
+        public void SendPackageTo(string clientId, Package package) {
+            Clients.Find(_ => _.ClientId == clientId)?.SendPackage(package);
+        }
+
+        /// <summary>
+        ///     Applies all necessary settings and starts the underlying <see cref="WebSocketServer"/>.
         /// </summary>
         public void Start() {
             //Logger.Instance.Log(LogLevel.Info, $"Generating RSA key pair with a key size of {ConfigManager.Instance.Values.RSAKeySize} bytes. This may take a while...");
@@ -247,7 +256,7 @@ namespace Neo.Core.Networking
         }
 
         /// <summary>
-        ///     Stops the underlying <see cref="WebSocketServer" />.
+        ///     Stops the underlying <see cref="WebSocketServer"/>.
         /// </summary>
         public void Stop() {
             ConfigManager.Instance.Save();

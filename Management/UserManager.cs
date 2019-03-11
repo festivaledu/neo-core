@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Neo.Core.Communication;
+using Neo.Core.Communication.Packages;
 using Neo.Core.Networking;
 using Neo.Core.Shared;
 using Newtonsoft.Json;
