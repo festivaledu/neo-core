@@ -137,6 +137,7 @@ namespace Neo.Core.Authorization
             switch (authorizable) {
             case Guest guest:
                 permissionsSets.Add(GroupManager.GetGuestGroup().Permissions);
+                permissionsSets.AddRange(Pool.Server.Groups.FindAll(@group => @group.SortValue <= GroupManager.GetGuestGroup().SortValue).OrderBy(_ => _.SortValue).Select(_ => _.Permissions));
 
                 //if (guest.ActiveChannel != null && guest.ActiveChannel.MemberPermissions.ContainsKey(guest.InternalId)) {
                 //    permissionsSets.Add(guest.ActiveChannel.MemberPermissions[guest.InternalId]);
@@ -146,8 +147,8 @@ namespace Neo.Core.Authorization
 
                 break;
             case Member member:
-                permissionsSets.AddRange(member.Groups.OrderBy(g => g.SortValue).Select(@group => @group.Permissions));
-                permissionsSets.AddRange(Pool.Server.Groups.FindAll(g => g.SortValue <= member.Groups.Select(_ => _.SortValue).Min()).OrderBy(g => g.SortValue).Select(@group => @group.Permissions));
+                permissionsSets.AddRange(member.Groups.OrderBy(_ => _.SortValue).Select(_ => _.Permissions));
+                permissionsSets.AddRange(Pool.Server.Groups.FindAll(@group => @group.SortValue <= member.Groups.Select(_ => _.SortValue).Min()).OrderBy(_ => _.SortValue).Select(_ => _.Permissions));
 
                 //if (member.ActiveChannel != null && member.ActiveChannel.MemberPermissions.ContainsKey(member.InternalId)) {
                 //    permissionsSets.Add(member.ActiveChannel.MemberPermissions[member.InternalId]);
@@ -178,6 +179,7 @@ namespace Neo.Core.Authorization
             switch (authorizable) {
             case Guest guest:
                 permissionsSets.Add(GroupManager.GetGuestGroup().Permissions);
+                permissionsSets.AddRange(Pool.Server.Groups.FindAll(@group => @group.SortValue <= GroupManager.GetGuestGroup().SortValue).OrderBy(_ => _.SortValue).Select(_ => _.Permissions));
 
                 //if (guest.ActiveChannel != null && guest.ActiveChannel.MemberPermissions.ContainsKey(guest.InternalId)) {
                 //    permissionsSets.Add(guest.ActiveChannel.MemberPermissions[guest.InternalId]);
@@ -187,7 +189,8 @@ namespace Neo.Core.Authorization
 
                 break;
             case Member member:
-                permissionsSets.AddRange(member.Groups.OrderBy(g => g.SortValue).Select(@group => @group.Permissions));
+                permissionsSets.AddRange(member.Groups.OrderBy(_ => _.SortValue).Select(_ => _.Permissions));
+                permissionsSets.AddRange(Pool.Server.Groups.FindAll(@group => @group.SortValue <= member.Groups.Select(_ => _.SortValue).Min()).OrderBy(_ => _.SortValue).Select(_ => _.Permissions));
 
                 //if (member.ActiveChannel != null && member.ActiveChannel.MemberPermissions.ContainsKey(member.InternalId)) {
                 //    permissionsSets.Add(member.ActiveChannel.MemberPermissions[member.InternalId]);

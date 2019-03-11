@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using Neo.Core.Authorization;
 using Neo.Core.Cryptography;
+using Neo.Core.Extensibility.Events;
 using Neo.Core.Networking;
 using Neo.Core.Shared;
 
@@ -166,5 +167,9 @@ namespace Neo.Core.Communication.Packages
         ///     The <see cref="Package"/> contains <see cref="AvatarPackageContent"/>.
         /// </summary>
         SetAvatar,
+        /// <summary>
+        ///     The <see cref="Package"/> contains <see cref="CustomEventArgs"/>.
+        /// </summary>
+        CustomEvent,
     }
 }

@@ -58,12 +58,11 @@ namespace Neo.Core.Management
                 return false;
             }
 
-            channel.Attributes.Add("neo.origin", plugin.InternalId);
+            channel.Attributes.Add("neo.origin", plugin.Namespace);
             channel.Owner = member.InternalId;
+            Pool.Server.Channels.Add(channel);
 
-            // TODO: Maybe add the channel to the server list?
-
-            AddUserToChannel(member, channel);
+            RefreshChannels();
 
             return true;
         }
@@ -190,10 +189,14 @@ namespace Neo.Core.Management
         /// </summary>
         /// <param name="user">The <see cref="User"/> to move.</param>
         /// <param name="channel">The <see cref="Channel"/> to move the <see cref="User"/> to.</param>
-        public static void MoveToChannel(this User user, Channel channel) {
+        /// <param name="noEvent">Whether this action should trigger events or not.</param>
+        public static void MoveToChannel(this User user, Channel channel, bool noEvents = false) {
             if (!channel.ActiveMemberIds.Contains(user.InternalId)) {
                 var beforeChannelJoinEvent = new Before<JoinElementEventArgs<Channel>>(new JoinElementEventArgs<Channel>(user, channel));
-                EventService.RaiseEvent(EventType.BeforeChannelJoin, beforeChannelJoinEvent);
+
+                if (!noEvents) {
+                    EventService.RaiseEvent(EventType.BeforeChannelJoin, beforeChannelJoinEvent);
+                }
 
                 if (!beforeChannelJoinEvent.Cancel) {
                     var currentActiveChannel = user.ActiveChannel;
@@ -206,7 +209,9 @@ namespace Neo.Core.Management
                     channel.ActiveMemberIds.Add(user.InternalId);
                     RefreshChannels();
 
-                    EventService.RaiseEvent(EventType.ChannelJoined, new JoinElementEventArgs<Channel>(user, channel));
+                    if (!noEvents) {
+                        EventService.RaiseEvent(EventType.ChannelJoined, new JoinElementEventArgs<Channel>(user, channel));
+                    }
 
                     user.ToTarget().SendPackage(new Package(PackageType.EnterChannelResponse, new EnterChannelResponsePackageContent(ChannelActionResult.Success, channel)));
                 }

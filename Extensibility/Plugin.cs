@@ -26,7 +26,8 @@ namespace Neo.Core.Extensibility
         public abstract string Namespace { get; }
 
 
-        public virtual async Task OnInitialize() { }
+        public virtual async Task OnInitialize(string storagePath) { }
+        public virtual async Task OnDispose() { }
 
         public virtual async Task OnCustom(CustomEventArgs args) { }
 

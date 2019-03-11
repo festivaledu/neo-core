@@ -39,7 +39,7 @@ namespace Neo.Core.Extensibility
 
                     EventService.RegisterListeners(type, plugin);
 
-                    plugin.OnInitialize();
+                    plugin.OnInitialize(Path.Combine(Path.GetDirectoryName(path), plugin.Namespace));
 
                     Plugins.Add(plugin);
                 }

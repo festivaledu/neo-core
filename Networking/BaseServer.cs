@@ -259,6 +259,8 @@ namespace Neo.Core.Networking
         ///     Stops the underlying <see cref="WebSocketServer"/>.
         /// </summary>
         public void Stop() {
+            PluginLoader.Plugins.ForEach(_ => _.OnDispose());
+
             ConfigManager.Instance.Save();
             DataProvider.Save();
 
