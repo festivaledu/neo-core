@@ -23,6 +23,7 @@ namespace Neo.Core.Networking
     /// </summary>
     public abstract class BaseServer
     {
+        private WebSocketServer webSocketServer;
         public List<Account> Accounts { get; set; } = new List<Account>();
         public List<Channel> Channels { get; set; } = new List<Channel>();
         public List<Group> Groups { get; set; } = new List<Group>();
@@ -41,19 +42,19 @@ namespace Neo.Core.Networking
             { "neo.group.create", "Gruppe erstellen" },
             { "neo.group.delete", "Gruppe löschen" },
             { "neo.moderate.ban", "Benutzer bannen" },
-            { "neo.moderate.kick", "Benutzer kicken" },
+            { "neo.moderate.kick", "Benutzer kicken" }
         };
 
         public DataProvider DataProvider { get; set; }
 
         public List<Client> Clients { get; set; } = new List<Client>();
+
         // ReSharper disable once InconsistentNaming
         public RSAParameters RSAPublicParameters { get; private set; }
+
         // ReSharper disable once InconsistentNaming
         internal RSAParameters RSAPrivateParameters { get; private set; }
         internal WebSocketSessionManager SessionManager { get; set; }
-
-        private WebSocketServer webSocketServer;
 
         public abstract Task OnConnect(Client client);
         public abstract Task OnDisconnect(string clientId, ushort code, string reason, bool wasClean);
@@ -115,7 +116,7 @@ namespace Neo.Core.Networking
                         // TODO: Fix default admin group rights
                         { "neo.*", Permission.Allow }
                     },
-                    SortValue = 999,
+                    SortValue = 999
                 });
                 DataProvider.Save();
                 Logger.Instance.Log(LogLevel.Debug, "No admin group existed. Default admin group created");
@@ -132,7 +133,7 @@ namespace Neo.Core.Networking
                         // TODO: Fix default user group rights
                         { "neo.*", Permission.Allow }
                     },
-                    SortValue = 1,
+                    SortValue = 1
                 });
                 DataProvider.Save();
                 Logger.Instance.Log(LogLevel.Debug, "No user group existed. Default user group created");
@@ -149,41 +150,39 @@ namespace Neo.Core.Networking
                         // TODO: Fix default guest group rights
                         { "neo.*", Permission.Allow }
                     },
-                    SortValue = 0,
+                    SortValue = 0
                 });
                 DataProvider.Save();
                 Logger.Instance.Log(LogLevel.Debug, "No guest group existed. Default guest group created");
             }
 
-            foreach (var pluginFile in new DirectoryInfo(pluginDirectoryPath).EnumerateFiles("*.dll")) {
+            foreach (var pluginFile in new DirectoryInfo(pluginDirectoryPath).EnumerateFiles("*.dll"))
                 PluginLoader.InitializePlugin(pluginFile.FullName);
-            }
 
             EventService.RaiseEvent(EventType.ServerInitialized, this);
         }
 
         /// <summary>
-        ///     Sends a <see cref="Package"/> to a <see cref="Target"/>.
+        ///     Sends a <see cref="Package" /> to a <see cref="Target" />.
         /// </summary>
-        /// <param name="target">The recipients of the <see cref="Package"/>.</param>
-        /// <param name="package">The <see cref="Package"/> to send.</param>
+        /// <param name="target">The recipients of the <see cref="Package" />.</param>
+        /// <param name="package">The <see cref="Package" /> to send.</param>
         public void SendPackageTo(Target target, Package package) {
-            foreach (var client in Clients.FindAll(c => target.Targets.Contains(c.ClientId))) {
+            foreach (var client in Clients.FindAll(c => target.Targets.Contains(c.ClientId)))
                 client.SendPackage(package);
-            }
         }
 
         /// <summary>
-        ///     Sends a <see cref="Package"/> to a client.
+        ///     Sends a <see cref="Package" /> to a client.
         /// </summary>
-        /// <param name="clientId">The recipients of the <see cref="Package"/>.</param>
-        /// <param name="package">The <see cref="Package"/> to send.</param>
+        /// <param name="clientId">The recipients of the <see cref="Package" />.</param>
+        /// <param name="package">The <see cref="Package" /> to send.</param>
         public void SendPackageTo(string clientId, Package package) {
             Clients.Find(c => c.ClientId == clientId)?.SendPackage(package);
         }
 
         /// <summary>
-        ///     Applies all necessary settings and starts the underlying <see cref="WebSocketServer"/>.
+        ///     Applies all necessary settings and starts the underlying <see cref="WebSocketServer" />.
         /// </summary>
         public void Start() {
             //Logger.Instance.Log(LogLevel.Info, $"Generating RSA key pair with a key size of {ConfigManager.Instance.Values.RSAKeySize} bytes. This may take a while...");
@@ -202,7 +201,7 @@ namespace Neo.Core.Networking
         }
 
         /// <summary>
-        ///     Stops the underlying <see cref="WebSocketServer"/>.
+        ///     Stops the underlying <see cref="WebSocketServer" />.
         /// </summary>
         public void Stop() {
             ConfigManager.Instance.Save();
