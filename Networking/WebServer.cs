@@ -92,6 +92,7 @@ namespace Neo.Core.Networking
         private Thread thread;
         private string rootDirectory;
         private HttpListener listener;
+        private CancellationTokenSource cancellationTokenSource;
 
 
         /// <summary>
@@ -122,13 +123,20 @@ namespace Neo.Core.Networking
         ///     Stops the server and aborts all threads.
         /// </summary>
         public void Stop() {
-            thread.Abort();
+            cancellationTokenSource.Cancel();
+
+            //thread.Abort();
+
             listener.Stop();
+
+            cancellationTokenSource.Dispose();
         }
 
-        private void Listen() {
+        private void Listen(object obj) {
             listener = new HttpListener();
             listener.Prefixes.Add($"http://*:{Port}/");
+
+            var token = (CancellationToken) obj;
 
             try {
                 listener.Start();
@@ -138,6 +146,10 @@ namespace Neo.Core.Networking
             }
 
             while (true) {
+                if (token.IsCancellationRequested) {
+                    return;
+                }
+
                 try {
                     var context = listener.GetContext();
                     Process(context);
@@ -192,8 +204,12 @@ namespace Neo.Core.Networking
         private void Initialize(string path, int port) {
             rootDirectory = path;
             Port = port;
-            thread = new Thread(Listen);
-            thread.Start();
+
+            cancellationTokenSource = new CancellationTokenSource();
+            ThreadPool.QueueUserWorkItem(Listen, cancellationTokenSource.Token);
+
+            //thread = new Thread(Listen);
+            //thread.Start();
         }
     }
 }
