@@ -56,6 +56,8 @@ namespace Neo.Core.Networking
         internal RSAParameters RSAPrivateParameters { get; private set; }
         internal WebSocketSessionManager SessionManager { get; set; }
 
+        protected string dataPath;
+
         public abstract Task OnConnect(Client client);
         public abstract Task OnDisconnect(string clientId, ushort code, string reason, bool wasClean);
         public abstract Task OnError(string clientId, Exception ex, string message);
@@ -68,6 +70,7 @@ namespace Neo.Core.Networking
         public void Initialize(string configPath, string dataDirectoryPath, string pluginDirectoryPath) {
             ConfigManager.Instance.Load(configPath);
             Pool.Server = this;
+            this.dataPath = dataDirectoryPath;
             DataProvider = new JsonDataProvider(this, dataDirectoryPath);
             DataProvider.Load();
 

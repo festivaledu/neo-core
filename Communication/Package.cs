@@ -203,6 +203,10 @@ namespace Neo.Core.Communication
         /// <summary>
         ///     The <see cref="Package"/> contains a <see cref="Guid"/> of the <see cref="Account"/> to unban.
         /// </summary>
-        DeletePunishment
+        DeletePunishment,
+        /// <summary>
+        ///     The <see cref="Package"/> contains <see cref="AvatarPackageContent"/>.
+        /// </summary>
+        SetAvatar,
     }
 }

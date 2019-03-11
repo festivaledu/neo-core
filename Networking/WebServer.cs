@@ -141,6 +141,7 @@ namespace Neo.Core.Networking
             try {
                 listener.Start();
             } catch {
+                Logger.Instance.Log(LogLevel.Error, "WebServer couldn't be started. Make sure you are running in high priviledged mode.");
                 Logger.Instance.Log(LogLevel.Error, "Error starting WebServer on :" + Port + ". Avatars won't be available.");
                 return;
             }
