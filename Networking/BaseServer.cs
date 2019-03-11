@@ -77,7 +77,7 @@ namespace Neo.Core.Networking
 
         private WebSocketServer webSocketServer;
 
-        public abstract Task OnConnect(Client client);
+        public abstract Task OnConnect(Client client, WebSocketSessionManager sessions);
         public abstract Task OnDisconnect(string clientId, ushort code, string reason, bool wasClean);
         public abstract Task OnError(string clientId, Exception ex, string message);
         public abstract Task OnPackage(string clientId, Package package);

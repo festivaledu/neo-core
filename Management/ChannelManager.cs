@@ -6,6 +6,7 @@ using Neo.Core.Communication;
 using Neo.Core.Communication.Packages;
 using Neo.Core.Config;
 using Neo.Core.Extensibility;
+using Neo.Core.Extensibility.Events;
 using Neo.Core.Networking;
 using Neo.Core.Shared;
 using Newtonsoft.Json;
@@ -25,7 +26,7 @@ namespace Neo.Core.Management
         /// <param name="channel">The <see cref="Channel"/> to add the <see cref="User"/> to.</param>
         private static void AddUserToChannel(User user, Channel channel) {
             channel.MemberIds.Add(user.InternalId);
-            
+
             var message = MessagePackageContent.GetSystemMessage(user.Identity.Name + " ist dem Channel beigetreten.", channel.InternalId);
             new Target().AddMany(channel).SendPackage(new Package(PackageType.Message, message));
 
@@ -59,7 +60,7 @@ namespace Neo.Core.Management
 
             channel.Attributes.Add("neo.origin", plugin.InternalId);
             channel.Owner = member.InternalId;
-            
+
             // TODO: Maybe add the channel to the server list?
 
             AddUserToChannel(member, channel);
@@ -77,7 +78,7 @@ namespace Neo.Core.Management
             if (Pool.Server.Channels.Any(_ => _.Id == channel.Id)) {
                 return false;
             }
-            
+
             if (!user.IsAuthorized("neo.channel.create")) {
                 return false;
             }
@@ -171,9 +172,17 @@ namespace Neo.Core.Management
 
         // TODO: Add docs
         public static void LeaveChannel(this User user, Channel channel) {
-            channel.ActiveMemberIds.Remove(user.InternalId);
-            channel.MemberIds.Remove(user.InternalId);
-            RefreshChannels();
+            var beforeChannelLeaveEvent = new Before<LeaveElementEventArgs<Channel>>(new LeaveElementEventArgs<Channel>(user, channel));
+            EventService.RaiseEvent(EventType.BeforeChannelLeave, beforeChannelLeaveEvent);
+
+            if (!beforeChannelLeaveEvent.Cancel) {
+                channel.ActiveMemberIds.Remove(user.InternalId);
+                channel.MemberIds.Remove(user.InternalId);
+
+                RefreshChannels();
+
+                EventService.RaiseEvent(EventType.ChannelLeft, new LeaveElementEventArgs<Channel>(user, channel));
+            }
         }
 
         /// <summary>
@@ -183,16 +192,24 @@ namespace Neo.Core.Management
         /// <param name="channel">The <see cref="Channel"/> to move the <see cref="User"/> to.</param>
         public static void MoveToChannel(this User user, Channel channel) {
             if (!channel.ActiveMemberIds.Contains(user.InternalId)) {
-                var currentActiveChannel = user.ActiveChannel;
+                var beforeChannelJoinEvent = new Before<JoinElementEventArgs<Channel>>(new JoinElementEventArgs<Channel>(user, channel));
+                EventService.RaiseEvent(EventType.BeforeChannelJoin, beforeChannelJoinEvent);
 
-                if (currentActiveChannel != null) {
-                    user.ActiveChannel.ActiveMemberIds.Remove(user.InternalId);
+                if (!beforeChannelJoinEvent.Cancel) {
+                    var currentActiveChannel = user.ActiveChannel;
+
+                    if (currentActiveChannel != null) {
+                        user.LeaveChannel(user.ActiveChannel);
+                        // user.ActiveChannel.ActiveMemberIds.Remove(user.InternalId);
+                    }
+
+                    channel.ActiveMemberIds.Add(user.InternalId);
+                    RefreshChannels();
+
+                    EventService.RaiseEvent(EventType.ChannelJoined, new JoinElementEventArgs<Channel>(user, channel));
+
+                    user.ToTarget().SendPackage(new Package(PackageType.EnterChannelResponse, new EnterChannelResponsePackageContent(ChannelActionResult.Success, channel)));
                 }
-                
-                channel.ActiveMemberIds.Add(user.InternalId);
-                RefreshChannels();
-                
-                user.ToTarget().SendPackage(new Package(PackageType.EnterChannelResponse, new EnterChannelResponsePackageContent(ChannelActionResult.Success, channel)));
             }
         }
 
@@ -210,8 +227,9 @@ namespace Neo.Core.Management
                     return result;
                 }
             }
-               
+
             MoveToChannel(user, channel);
+
             return ChannelActionResult.Success;
         }
 

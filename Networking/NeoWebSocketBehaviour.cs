@@ -15,7 +15,7 @@ namespace Neo.Core.Networking
     internal class NeoWebSocketBehaviour : WebSocketBehavior
     {
         protected override void OnOpen() {
-            Pool.Server.OnConnect(new Client(ID, Context.WebSocket));
+            Pool.Server.OnConnect(new Client(ID, Context.WebSocket), Sessions);
             Pool.Server.SessionManager = Sessions;
         }
 

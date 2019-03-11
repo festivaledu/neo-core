@@ -2,6 +2,8 @@
 using Neo.Core.Authorization;
 using Neo.Core.Communication;
 using Neo.Core.Communication.Packages;
+using Neo.Core.Extensibility;
+using Neo.Core.Extensibility.Events;
 using Neo.Core.Networking;
 using Neo.Core.Shared;
 using Newtonsoft.Json;
@@ -19,9 +21,16 @@ namespace Neo.Core.Management
         /// </summary>
         /// <param name="guest">The <see cref="Guest"/> to add.</param>
         public static void AddGuestToGroup(Guest guest) {
-            GetGuestGroup().MemberIds.Add(guest.InternalId);
+            var beforeGroupJoinEvent = new Before<JoinElementEventArgs<Group>>(new JoinElementEventArgs<Group>(guest, GetGuestGroup()));
+            EventService.RaiseEvent(EventType.BeforeGroupJoin, beforeGroupJoinEvent);
 
-            RefreshGroups();
+            if (!beforeGroupJoinEvent.Cancel) {
+                GetGuestGroup().MemberIds.Add(guest.InternalId);
+
+                RefreshGroups();
+
+                EventService.RaiseEvent(EventType.GroupJoined, new JoinElementEventArgs<Group>(guest, GetGuestGroup()));
+            }
         }
 
         /// <summary>
@@ -30,12 +39,19 @@ namespace Neo.Core.Management
         /// <param name="member">The <see cref="Member"/> to add.</param>
         /// <param name="group">The <see cref="Group"/> to add the <see cref="Member"/> to.</param>
         public static void AddMemberToGroup(Member member, Group group) {
-            group.MemberIds.Add(member.InternalId);
-            Pool.Server.DataProvider.Save();
+            var beforeGroupJoinEvent = new Before<JoinElementEventArgs<Group>>(new JoinElementEventArgs<Group>(member, group));
+            EventService.RaiseEvent(EventType.BeforeGroupJoin, beforeGroupJoinEvent);
 
-            RefreshGroups();
+            if (!beforeGroupJoinEvent.Cancel) {
+                group.MemberIds.Add(member.InternalId);
+                Pool.Server.DataProvider.Save();
+
+                RefreshGroups();
+
+                EventService.RaiseEvent(EventType.GroupJoined, new JoinElementEventArgs<Group>(member, group));
+            }
         }
-        
+
         // TODO: Add docs
         public static GroupActionResult CreateGroup(Group group, User creator) {
             if (!creator.IsAuthorized("neo.group.create")) {
@@ -45,7 +61,7 @@ namespace Neo.Core.Management
             if (Pool.Server.Groups.Any(_ => _.Id == group.Id)) {
                 return GroupActionResult.IdInUse;
             }
-            
+
             Pool.Server.Groups.Add(group);
             RefreshGroups();
 
@@ -111,9 +127,16 @@ namespace Neo.Core.Management
         /// </summary>
         /// <param name="guest">The <see cref="Guest"/> to remove.</param>
         public static void RemoveGuestFromGroup(Guest guest) {
-            GetGuestGroup().MemberIds.Remove(guest.InternalId);
+            var beforeGroupLeaveEvent = new Before<LeaveElementEventArgs<Group>>(new LeaveElementEventArgs<Group>(guest, GetGuestGroup()));
+            EventService.RaiseEvent(EventType.BeforeGroupLeave, beforeGroupLeaveEvent);
 
-            RefreshGroups();
+            if (!beforeGroupLeaveEvent.Cancel) {
+                GetGuestGroup().MemberIds.Remove(guest.InternalId);
+
+                RefreshGroups();
+
+                EventService.RaiseEvent(EventType.GroupLeft, new LeaveElementEventArgs<Group>(guest, GetGuestGroup()));
+            }
         }
 
         /// <summary>
@@ -122,10 +145,17 @@ namespace Neo.Core.Management
         /// <param name="member">The <see cref="Member"/> to remove.</param>
         /// <param name="group">The <see cref="Group"/> to remove the <see cref="Member"/> from.</param>
         public static void RemoveMemberFromGroup(Member member, Group group) {
-            group.MemberIds.Remove(member.InternalId);
-            Pool.Server.DataProvider.Save();
+            var beforeGroupLeaveEvent = new Before<LeaveElementEventArgs<Group>>(new LeaveElementEventArgs<Group>(member, group));
+            EventService.RaiseEvent(EventType.BeforeGroupLeave, beforeGroupLeaveEvent);
 
-            RefreshGroups();
+            if (!beforeGroupLeaveEvent.Cancel) {
+                group.MemberIds.Remove(member.InternalId);
+                Pool.Server.DataProvider.Save();
+
+                RefreshGroups();
+
+                EventService.RaiseEvent(EventType.GroupLeft, new LeaveElementEventArgs<Group>(member, group));
+            }
         }
     }
 
