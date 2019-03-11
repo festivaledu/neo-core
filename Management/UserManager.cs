@@ -6,21 +6,34 @@ using Newtonsoft.Json;
 
 namespace Neo.Core.Management
 {
+    /// <summary>
+    ///     Provides methods to manage <see cref="User"/>s.
+    /// </summary>
     public static class UserManager
     {
+        /// <summary>
+        ///     Returns the root <see cref="Account"/>.
+        /// </summary>
+        /// <returns>Returns the root <see cref="Account"/>.</returns>
         public static Account GetRoot() {
-            return Pool.Server.Accounts.Find(g => g.Attributes.ContainsKey("neo.usertype") && g.Attributes["neo.usertype"].ToString() == "root");
+            return Pool.Server.Accounts.Find(_ => _.Attributes.ContainsKey("neo.usertype") && _.Attributes["neo.usertype"].ToString() == "root");
         }
 
+        /// <summary>
+        ///     Updates the list of <see cref="Account"/>s for each connected <see cref="User"/>.
+        /// </summary>
         public static void RefreshAccounts() {
             var accounts = JsonConvert.DeserializeObject<List<Account>>(JsonConvert.SerializeObject(Pool.Server.Accounts));
-            accounts.ForEach(a => a.Password = null);
+            accounts.ForEach(_ => _.Password = null);
 
-            Pool.Server.SendPackageTo(Target.All, new Package(PackageType.AccountListUpdate, accounts));
+            Target.All.SendPackage(new Package(PackageType.AccountListUpdate, accounts));
         }
 
+        /// <summary>
+        ///     Updates the list of <see cref="User"/>s for each connected <see cref="User"/>.
+        /// </summary>
         public static void RefreshUsers() {
-            Pool.Server.SendPackageTo(Target.All, new Package(PackageType.UserListUpdate, Pool.Server.Users));
+            Target.All.SendPackage(new Package(PackageType.UserListUpdate, Pool.Server.Users));
         }
     }
 }

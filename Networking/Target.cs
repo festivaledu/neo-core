@@ -22,6 +22,7 @@ namespace Neo.Core.Networking
 
         private List<string> targets = new List<string>();
 
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="Target"/> class.
         /// </summary>
@@ -43,6 +44,7 @@ namespace Neo.Core.Networking
             targets.Add(user.Client.ClientId);
         }
 
+        
         /// <summary>
         ///     Adds a recipient to the list of recipients.
         /// </summary>
@@ -133,7 +135,11 @@ namespace Neo.Core.Networking
             return this;
         }
 
-        public void SendPackageTo(Package package) {
+        /// <summary>
+        ///     Sends a <see cref="Package"/> to all recipients.
+        /// </summary>
+        /// <param name="package">The <see cref="Package"/> to send.</param>
+        public void SendPackage(Package package) {
             Pool.Server.SendPackageTo(this, package);
         }
     }

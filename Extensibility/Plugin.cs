@@ -10,11 +10,21 @@ using Neo.Core.Shared;
 
 namespace Neo.Core.Extensibility
 {
-    // TODO: Add docs
+    /// <summary>
+    ///     Represents the base class for an extensible component.
+    /// </summary>
     public abstract class Plugin
     {
+        /// <summary>
+        ///     The unique id used to identify this <see cref="Plugin"/>.
+        /// </summary>
         public Guid InternalId { get; } = Guid.NewGuid();
+
+        /// <summary>
+        ///     The namespace of this <see cref="Plugin"/>.
+        /// </summary>
         public abstract string Namespace { get; }
+
 
         public virtual async Task OnInitialize() { }
 
@@ -61,6 +71,7 @@ namespace Neo.Core.Extensibility
         public virtual async Task OnBeforeGroupRemove(Before<RemoveElementEventArgs<Group>> args) { }
         public virtual async Task OnGroupRemoved(RemoveElementEventArgs<Group> args) { }
 
+        [Obsolete]
         public virtual async Task OnTyping(TypingEventArgs args) { }
 
         public virtual async Task OnBeforeInput(Before<InputEventArgs> args) { }

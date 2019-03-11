@@ -25,7 +25,7 @@ namespace Neo.Core.Config
                 ConfigManager.Instance.Values = JsonConvert.DeserializeObject<ConfigValues>(JsonConvert.SerializeObject(model));
                 ConfigManager.Instance.Save();
 
-                Target.All.SendPackageTo(new Package(PackageType.MetaResponse, new ServerMetaResponsePackageContent {
+                Target.All.SendPackage(new Package(PackageType.MetaResponse, new ServerMetaResponsePackageContent {
                     GuestsAllowed = ConfigManager.Instance.Values.GuestsAllowed,
                     Name = ConfigManager.Instance.Values.ServerName,
                     RegistrationAllowed = ConfigManager.Instance.Values.RegistrationAllowed

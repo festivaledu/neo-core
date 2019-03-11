@@ -148,13 +148,13 @@ namespace Neo.Core.Shared
 
             if (message.Contains('@')) {
                 var mentions = message.Split(' ').ToList().Where(s => s.StartsWith('@') && Pool.Server.Users.Any(u => u.Identity.Id == s.Substring(1))).Select(s => s.Substring(1)).Distinct().ToList();
-                new Target().AddMany(Pool.Server.Users.FindAll(u => mentions.Contains(u.Identity.Id)).ToArray()).SendPackageTo(new Package(PackageType.Mention, received));
+                new Target().AddMany(Pool.Server.Users.FindAll(u => mentions.Contains(u.Identity.Id)).ToArray()).SendPackage(new Package(PackageType.Mention, received));
             }
 
-            new Target().AddMany(this).Remove(sender).SendPackageTo(new Package(PackageType.Message, received));
+            new Target().AddMany(this).Remove(sender).SendPackage(new Package(PackageType.Message, received));
 
             if (sender.ActiveChannel == this) {
-                new Target(sender).SendPackageTo(new Package(PackageType.Message, sent));
+                new Target(sender).SendPackage(new Package(PackageType.Message, sent));
             }
 
             SaveMessage(received);

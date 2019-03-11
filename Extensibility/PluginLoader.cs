@@ -3,16 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Neo.Core.Extensibility
 {
-    // TODO: Add docs
+    /// <summary>
+    ///     Provides methods to load <see cref="Plugin"/>s.
+    /// </summary>
     public static class PluginLoader
     {
+        /// <summary>
+        ///     Contains all loaded <see cref="Plugin"/>s.
+        /// </summary>
         public static List<Plugin> Plugins { get; } = new List<Plugin>();
 
-        public static async Task InitializePlugin(string path) {
+        /// <summary>
+        ///     Loads and initializes a <see cref="Plugin"/>.
+        /// </summary>
+        /// <param name="path">The path to the <see cref="Plugin"/>.</param>
+        public static void InitializePlugin(string path) {
             if (File.Exists(path) && new FileInfo(path).Extension == ".dll") {
                 Assembly.LoadFile(path);
                 var assemblyTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).Where(t => typeof(Plugin).IsAssignableFrom(t) && t.IsClass).ToArray();
@@ -24,14 +32,14 @@ namespace Neo.Core.Extensibility
 
                     var plugin = (Plugin) Activator.CreateInstance(type);
                     
-                    if (Plugins.Any(p => p.Namespace == plugin.Namespace)) {
+                    if (Plugins.Any(_ => _.Namespace == plugin.Namespace)) {
                         plugin = null;
                         continue;
                     }
 
                     EventService.RegisterListeners(type, plugin);
 
-                    await plugin.OnInitialize();
+                    plugin.OnInitialize();
 
                     Plugins.Add(plugin);
                 }

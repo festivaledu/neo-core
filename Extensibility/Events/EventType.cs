@@ -1,4 +1,5 @@
-﻿using Neo.Core.Communication;
+﻿using System;
+using Neo.Core.Communication;
 using Neo.Core.Networking;
 using Neo.Core.Shared;
 
@@ -157,6 +158,7 @@ namespace Neo.Core.Extensibility.Events
         /// <summary>
         ///     This event is raised when a <see cref="User"/> is typing.
         /// </summary>
+        [Obsolete]
         Typing,
 
         /// <summary>

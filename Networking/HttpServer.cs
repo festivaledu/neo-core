@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -9,10 +8,11 @@ using Neo.Core.Shared;
 
 namespace Neo.Core.Networking
 {
-    public class WebServer
+    /// <summary>
+    ///     Represents a server used to handle all HTTP communication.
+    /// </summary>
+    public class HttpServer
     {
-        public int Port { get; private set; }
-
         private static readonly IDictionary<string, string> mimeTypeMappings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) {
             #region Extension to MIME type list
             { ".asf", "video/x-ms-asf" },
@@ -82,54 +82,53 @@ namespace Neo.Core.Networking
             #endregion
         };
 
+        /// <summary>
+        ///     The port this <see cref="HttpServer"/> is listening on.
+        /// </summary>
+        public int Port { get; private set; }
+
         private readonly string[] indexFiles = {
             "index.html",
             "index.htm",
             "default.html",
             "default.htm"
         };
-
-        private Thread thread;
+        
         private string rootDirectory;
         private HttpListener listener;
         private CancellationTokenSource cancellationTokenSource;
 
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="WebServer"/> class.
+        ///     Initializes a new instance of the <see cref="HttpServer"/> class.
         /// </summary>
-        /// <param name="path">Directory path to serve.</param>
+        /// <param name="path">Path of the directory to serve.</param>
         /// <param name="port">Port to listen on.</param>
-        public WebServer(string path, int port) {
+        public HttpServer(string path, int port) {
             this.Initialize(path, port);
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="WebServer"/> class.
+        ///     Initializes a new instance of the <see cref="HttpServer"/> class.
         /// </summary>
-        /// <param name="path">Directory path to serve.</param>
-        public WebServer(string path) {
+        /// <param name="path">Path of the directory to serve.</param>
+        public HttpServer(string path) {
             var l = new TcpListener(IPAddress.Loopback, 0);
+
             l.Start();
-
             var port = ((IPEndPoint) l.LocalEndpoint).Port;
-
             l.Stop();
 
             this.Initialize(path, port);
         }
 
-        /// <summary>
-        ///     Stops the server and aborts all threads.
-        /// </summary>
-        public void Stop() {
-            cancellationTokenSource.Cancel();
+        
+        private void Initialize(string path, int port) {
+            rootDirectory = path;
+            Port = port;
 
-            //thread.Abort();
-
-            listener.Stop();
-
-            cancellationTokenSource.Dispose();
+            cancellationTokenSource = new CancellationTokenSource();
+            ThreadPool.QueueUserWorkItem(Listen, cancellationTokenSource.Token);
         }
 
         private void Listen(object obj) {
@@ -141,8 +140,9 @@ namespace Neo.Core.Networking
             try {
                 listener.Start();
             } catch {
-                Logger.Instance.Log(LogLevel.Error, "WebServer couldn't be started. Make sure you are running in high priviledged mode.");
-                Logger.Instance.Log(LogLevel.Error, "Error starting WebServer on :" + Port + ". Avatars won't be available.");
+                // TODO: Improve Log Messages
+                Logger.Instance.Log(LogLevel.Error, "HttpServer couldn't be started. Make sure you are running in high priviledged mode.");
+                Logger.Instance.Log(LogLevel.Error, "Error starting HttpServer on :" + Port + ". Avatars won't be available.");
                 return;
             }
 
@@ -175,20 +175,20 @@ namespace Neo.Core.Networking
 
             if (File.Exists(filename)) {
                 try {
-                    var input = new FileStream(filename, FileMode.Open);
+                    var stream = new FileStream(filename, FileMode.Open);
                     
                     context.Response.ContentType = mimeTypeMappings.TryGetValue(Path.GetExtension(filename), out var mime) ? mime : "application/octet-stream";
-                    context.Response.ContentLength64 = input.Length;
+                    context.Response.ContentLength64 = stream.Length;
                     context.Response.AddHeader("Date", DateTime.Now.ToString("r"));
                     context.Response.AddHeader("Last-Modified", File.GetLastWriteTime(filename).ToString("r"));
 
                     var buffer = new byte[1024 * 16];
                     int nbytes;
-                    while ((nbytes = input.Read(buffer, 0, buffer.Length)) > 0) {
+                    while ((nbytes = stream.Read(buffer, 0, buffer.Length)) > 0) {
                         context.Response.OutputStream.Write(buffer, 0, nbytes);
                     }
 
-                    input.Close();
+                    stream.Close();
 
                     context.Response.StatusCode = (int) HttpStatusCode.OK;
                     context.Response.OutputStream.Flush();
@@ -202,15 +202,13 @@ namespace Neo.Core.Networking
             context.Response.OutputStream.Close();
         }
 
-        private void Initialize(string path, int port) {
-            rootDirectory = path;
-            Port = port;
-
-            cancellationTokenSource = new CancellationTokenSource();
-            ThreadPool.QueueUserWorkItem(Listen, cancellationTokenSource.Token);
-
-            //thread = new Thread(Listen);
-            //thread.Start();
+        /// <summary>
+        ///     Stops this <see cref="HttpServer"/>.
+        /// </summary>
+        public void Stop() {
+            cancellationTokenSource.Cancel();
+            listener.Stop();
+            cancellationTokenSource.Dispose();
         }
     }
 }

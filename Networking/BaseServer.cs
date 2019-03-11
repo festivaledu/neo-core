@@ -23,10 +23,29 @@ namespace Neo.Core.Networking
     /// </summary>
     public abstract class BaseServer
     {
-        private WebSocketServer webSocketServer;
+        /// <summary>
+        ///     Contains all known <see cref="Account"/>s.
+        /// </summary>
         public List<Account> Accounts { get; set; } = new List<Account>();
+
+        /// <summary>
+        ///     Contains all known <see cref="Channel"/>s.
+        /// </summary>
         public List<Channel> Channels { get; set; } = new List<Channel>();
+
+        /// <summary>
+        ///     Contains all connected <see cref="Client"/>s.
+        /// </summary>
+        public List<Client> Clients { get; set; } = new List<Client>();
+
+        /// <summary>
+        ///     Contains all known <see cref="Group"/>s.
+        /// </summary>
         public List<Group> Groups { get; set; } = new List<Group>();
+
+        /// <summary>
+        ///     Contains all connected <see cref="User"/>s.
+        /// </summary>
         public List<User> Users { get; set; } = new List<User>();
 
         public Dictionary<string, string> KnownPermissions { get; set; } = new Dictionary<string, string> {
@@ -46,9 +65,7 @@ namespace Neo.Core.Networking
         };
 
         public DataProvider DataProvider { get; set; }
-
-        public List<Client> Clients { get; set; } = new List<Client>();
-
+        
         // ReSharper disable once InconsistentNaming
         public RSAParameters RSAPublicParameters { get; private set; }
 
@@ -58,15 +75,37 @@ namespace Neo.Core.Networking
 
         protected string dataPath;
 
+        private WebSocketServer webSocketServer;
+
         public abstract Task OnConnect(Client client);
         public abstract Task OnDisconnect(string clientId, ushort code, string reason, bool wasClean);
         public abstract Task OnError(string clientId, Exception ex, string message);
         public abstract Task OnPackage(string clientId, Package package);
 
+        /// <summary>
+        ///     Returns the associated <see cref="User"/> to a <see cref="Client"/>.
+        /// </summary>
+        /// <param name="client">The <see cref="Client"/> to get the <see cref="User"/> from.</param>
+        /// <returns>Returns the <see cref="User"/>.</returns>
+        protected User GetUser(Client client) {
+            return GetUser(client.ClientId);
+        }
+
+        /// <summary>
+        ///     Returns the associated <see cref="User"/> to a <see cref="Client"/>.
+        /// </summary>
+        /// <param name="clientId">The internal id of the <see cref="Client"/> to get the <see cref="User"/> from.</param>
+        /// <returns>Returns the <see cref="User"/>.</returns>
         protected User GetUser(string clientId) {
             return Users.Find(u => u.Client.ClientId == clientId);
         }
 
+        /// <summary>
+        ///     Initializes this <see cref="BaseServer"/>.
+        /// </summary>
+        /// <param name="configPath">The path to the config file.</param>
+        /// <param name="dataDirectoryPath">The path to the data directory.</param>
+        /// <param name="pluginDirectoryPath">The path to the plugins directory.</param>
         public void Initialize(string configPath, string dataDirectoryPath, string pluginDirectoryPath) {
             ConfigManager.Instance.Load(configPath);
             Pool.Server = this;
@@ -159,8 +198,9 @@ namespace Neo.Core.Networking
                 Logger.Instance.Log(LogLevel.Debug, "No guest group existed. Default guest group created");
             }
 
-            foreach (var pluginFile in new DirectoryInfo(pluginDirectoryPath).EnumerateFiles("*.dll"))
+            foreach (var pluginFile in new DirectoryInfo(pluginDirectoryPath).EnumerateFiles("*.dll")) {
                 PluginLoader.InitializePlugin(pluginFile.FullName);
+            }
 
             EventService.RaiseEvent(EventType.ServerInitialized, this);
         }
@@ -171,8 +211,9 @@ namespace Neo.Core.Networking
         /// <param name="target">The recipients of the <see cref="Package" />.</param>
         /// <param name="package">The <see cref="Package" /> to send.</param>
         public void SendPackageTo(Target target, Package package) {
-            foreach (var client in Clients.FindAll(c => target.Targets.Contains(c.ClientId)))
+            foreach (var client in Clients.FindAll(c => target.Targets.Contains(c.ClientId))) {
                 client.SendPackage(package);
+            }
         }
 
         /// <summary>
@@ -196,9 +237,11 @@ namespace Neo.Core.Networking
             //Logger.Instance.Log(LogLevel.Ok, "RSA key pair successfully generated");
 
             Logger.Instance.Log(LogLevel.Info, $"Attempting to start WebSocket server on ws://{ConfigManager.Instance.Values.ServerAddress}:{ConfigManager.Instance.Values.ServerPort}...");
+
             webSocketServer = new WebSocketServer($"ws://{ConfigManager.Instance.Values.ServerAddress}:{ConfigManager.Instance.Values.ServerPort}");
             webSocketServer.AddWebSocketService<NeoWebSocketBehaviour>("/neo");
             webSocketServer.Start();
+
             Logger.Instance.Log(LogLevel.Info, $"Use {Dns.GetHostEntry(Dns.GetHostName()).AddressList.ToList().Find(ip => ip.AddressFamily == AddressFamily.InterNetwork)} to connect to this instance.", true);
             Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully started. Waiting for connections...");
         }
@@ -209,8 +252,11 @@ namespace Neo.Core.Networking
         public void Stop() {
             ConfigManager.Instance.Save();
             DataProvider.Save();
+
             Logger.Instance.Log(LogLevel.Info, "Attempting to stop WebSocket server...");
+
             webSocketServer.Stop();
+
             Logger.Instance.Log(LogLevel.Ok, "WebSocket server successfully stopped");
         }
     }
