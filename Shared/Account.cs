@@ -39,6 +39,11 @@ namespace Neo.Core.Shared
         public Guid InternalId { get; set; } = Guid.NewGuid();
 
         /// <summary>
+        ///     Whether the associated <see cref="User"/> is online.
+        /// </summary>
+        public bool IsOnline { get; set; }
+
+        /// <summary>
         ///     The associated <see cref="Neo.Core.Shared.Member"/> of this <see cref="Account"/>. <c>null</c> if the user is offline.
         /// </summary>
         [JsonIgnore]

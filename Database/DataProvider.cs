@@ -30,6 +30,8 @@ namespace Neo.Core.Database
 
             // Remove all session and instance attributes
             foreach (var account in accounts) {
+                account.IsOnline = false;
+
                 for (var i = account.Attributes.Keys.Count - 1; i >= 0; i--) {
                     var key = account.Attributes.Keys.ElementAt(i);
 

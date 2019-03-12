@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Neo.Core.Authorization;
 using Neo.Core.Communication;
+using Neo.Core.Communication.Packages;
 using Neo.Core.Config;
 using Neo.Core.Database;
 using Neo.Core.Extensibility;
@@ -259,6 +260,8 @@ namespace Neo.Core.Networking
         ///     Stops the underlying <see cref="WebSocketServer"/>.
         /// </summary>
         public void Stop() {
+            SendPackageTo(Target.All, new Package(PackageType.DisconnectReason, "shutdown"));
+
             PluginLoader.Plugins.ForEach(_ => _.OnDispose());
 
             ConfigManager.Instance.Save();
