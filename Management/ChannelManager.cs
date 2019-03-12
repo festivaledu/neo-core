@@ -189,7 +189,7 @@ namespace Neo.Core.Management
         /// </summary>
         /// <param name="user">The <see cref="User"/> to move.</param>
         /// <param name="channel">The <see cref="Channel"/> to move the <see cref="User"/> to.</param>
-        /// <param name="noEvent">Whether this action should trigger events or not.</param>
+        /// <param name="noEvents">Whether this action should trigger events or not.</param>
         public static void MoveToChannel(this User user, Channel channel, bool noEvents = false) {
             if (!channel.ActiveMemberIds.Contains(user.InternalId)) {
                 var beforeChannelJoinEvent = new Before<JoinElementEventArgs<Channel>>(new JoinElementEventArgs<Channel>(user, channel));
@@ -202,11 +202,16 @@ namespace Neo.Core.Management
                     var currentActiveChannel = user.ActiveChannel;
 
                     if (currentActiveChannel != null) {
-                        user.LeaveChannel(user.ActiveChannel);
-                        // user.ActiveChannel.ActiveMemberIds.Remove(user.InternalId);
+                        // user.LeaveChannel(user.ActiveChannel);
+                        user.ActiveChannel.ActiveMemberIds.Remove(user.InternalId);
                     }
-
+                    
                     channel.ActiveMemberIds.Add(user.InternalId);
+
+                    // Reference issue solution
+                    var index = Pool.Server.Channels.FindIndex(_ => _.InternalId.Equals(channel.InternalId));
+                    Pool.Server.Channels[index] = channel;
+
                     RefreshChannels();
 
                     if (!noEvents) {
