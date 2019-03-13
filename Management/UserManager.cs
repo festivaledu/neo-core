@@ -25,7 +25,10 @@ namespace Neo.Core.Management
         /// </summary>
         public static void RefreshAccounts() {
             var accounts = JsonConvert.DeserializeObject<List<Account>>(JsonConvert.SerializeObject(Pool.Server.Accounts));
-            accounts.ForEach(_ => _.Password = null);
+            accounts.ForEach(_ => {
+                _.Password = null;
+                _.Identity.AvatarFileExtension = Pool.Server.AvatarServerAvailable ? _.Identity.AvatarFileExtension : "";
+            });
 
             Target.All.SendPackage(new Package(PackageType.AccountListUpdate, accounts));
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Neo.Core.Config;
+using Neo.Core.Management;
 using Neo.Core.Shared;
 
 namespace Neo.Core.Communication.Packages
@@ -89,7 +90,7 @@ namespace Neo.Core.Communication.Packages
         /// <param name="channelId">The internal id of the channel this message belongs to.</param>
         /// <returns>Returns the created content.</returns>
         public static MessagePackageContent GetSystemMessage(string message, Guid channelId) {
-            return new MessagePackageContent(Guid.Empty, ConfigManager.Instance.Values.RootIdentity, message, DateTime.Now, "system", channelId);
+            return new MessagePackageContent(Guid.Empty, UserManager.GetRoot().Identity, message, DateTime.Now, "system", channelId);
         }
     }
 }

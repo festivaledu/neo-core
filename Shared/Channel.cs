@@ -35,12 +35,14 @@ namespace Neo.Core.Shared
         /// <summary>
         ///     Contains the internal ids of all groups that are not allowed to enter this <see cref="Channel"/>.
         /// </summary>
+        [JsonIgnore]
         [Obsolete]
         public List<Guid> BlacklistedGroupIds { get; set; } = new List<Guid>();
 
         /// <summary>
         ///     Contains the internal ids of all users who are not allowed to enter this <see cref="Channel"/>.
         /// </summary>
+        [JsonIgnore]
         [Obsolete]
         public List<Guid> BlacklistedUserIds { get; set; } = new List<Guid>();
 
@@ -78,6 +80,7 @@ namespace Neo.Core.Shared
         /// <summary>
         ///     The permissions assigned to the individual members of this <see cref="Channel"/>.
         /// </summary>
+        [JsonIgnore]
         [Obsolete]
         public Dictionary<Guid, Dictionary<string, Permission>> MemberPermissions { get; set; } = new Dictionary<Guid, Dictionary<string, Permission>>();
 
@@ -110,30 +113,35 @@ namespace Neo.Core.Shared
         /// <summary>
         ///     The status message of this <see cref="Channel"/>.
         /// </summary>
+        [JsonIgnore]
         [Obsolete]
         public string StatusMessage { get; set; }
 
         /// <summary>
         ///     Contains the internal ids of all groups that are allowed to join this <see cref="Channel"/>.
         /// </summary>
+        [JsonIgnore]
         [Obsolete]
         public List<Guid> WhitelistedGroupIds { get; set; } = new List<Guid>();
 
         /// <summary>
         ///     Contains the internal ids of all users who are allowed to join this <see cref="Channel"/>.
         /// </summary>
+        [JsonIgnore]
         [Obsolete]
         public List<Guid> WhitelistedUserIds { get; set; } = new List<Guid>();
 
         /// <summary>
         ///     Contains the internal ids of all groups that are allowed to see this <see cref="Channel"/>.
         /// </summary>
+        [JsonIgnore]
         [Obsolete]
         public List<Guid> VisibleToGroupIds { get; set; } = new List<Guid>();
 
         /// <summary>
         ///     Contains the internal ids of all users who are allowed to see this <see cref="Channel"/>.
         /// </summary>
+        [JsonIgnore]
         [Obsolete]
         public List<Guid> VisibleToUserIds { get; set; } = new List<Guid>();
 

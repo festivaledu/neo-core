@@ -143,6 +143,7 @@ namespace Neo.Core.Networking
                 // TODO: Improve Log Messages
                 Logger.Instance.Log(LogLevel.Error, "HttpServer couldn't be started. Make sure you are running in high priviledged mode.");
                 Logger.Instance.Log(LogLevel.Error, "Error starting HttpServer on :" + Port + ". Avatars won't be available.");
+                Pool.Server.AvatarServerAvailable = false;
                 return;
             }
 

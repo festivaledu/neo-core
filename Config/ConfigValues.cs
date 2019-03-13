@@ -24,22 +24,6 @@ namespace Neo.Core.Config
         public bool RegistrationAllowed { get; set; } = true;
 
         /// <summary>
-        ///     The identity for the root account.
-        /// </summary>
-        public Identity RootIdentity { get; set; } = new Identity { Id = "neo", Name = "Neo" };
-
-        /// <summary>
-        ///     The password for the root account.
-        /// </summary>
-        public byte[] RootPassword { get; set; } = NeoCryptoProvider.Instance.Sha512ComputeHash("LT6SUK7JBELX3UAL");
-
-        /// <summary>
-        ///     The key size used for RSA encryption.
-        /// </summary>
-        [Obsolete]
-        public int RSAKeySize { get; set; } = 4096;
-
-        /// <summary>
         ///     The address the server is listening to.
         /// </summary>
         public string ServerAddress { get; set; } = "0.0.0.0";
