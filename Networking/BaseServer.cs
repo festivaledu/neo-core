@@ -52,6 +52,7 @@ namespace Neo.Core.Networking
 
         public Dictionary<string, string> KnownPermissions { get; set; } = new Dictionary<string, string> {
             { "neo.channel.create", "Channel erstellen" },
+            { "neo.channel.edit", "Channel bearbeiten" },
             { "neo.channel.delete", "Channel löschen" },
             { "neo.channel.join.$", "Channel betreten" },
             { "neo.channel.join.ignoreblacklist", "Channel trotz Blacklist betreten" },
@@ -63,7 +64,8 @@ namespace Neo.Core.Networking
             { "neo.group.create", "Gruppe erstellen" },
             { "neo.group.delete", "Gruppe löschen" },
             { "neo.moderate.ban", "Benutzer bannen" },
-            { "neo.moderate.kick", "Benutzer kicken" }
+            { "neo.moderate.kick", "Benutzer kicken" },
+            { "neo.server.edit", "Server-Einstellungen bearbeiten" }
         };
 
         public bool AvatarServerAvailable { get; set; } = true;
