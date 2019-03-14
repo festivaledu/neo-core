@@ -33,11 +33,6 @@ namespace Neo.Core.Config
         public string ServerName { get; set; } = "neoChat Server";
 
         /// <summary>
-        ///     The port the server is listening on.
-        /// </summary>
-        public int ServerPort { get; set; } = 42420;
-
-        /// <summary>
         ///     The amount of messages each <see cref="Channel"/> saves.
         /// </summary>
         [EditableProperty("Maximale Länge der Nachrichtenhistorie")]

@@ -250,9 +250,9 @@ namespace Neo.Core.Networking
             //}
             //Logger.Instance.Log(LogLevel.Ok, "RSA key pair successfully generated");
 
-            Logger.Instance.Log(LogLevel.Info, $"Attempting to start WebSocket server on ws://{ConfigManager.Instance.Values.ServerAddress}:{ConfigManager.Instance.Values.ServerPort}...");
+            Logger.Instance.Log(LogLevel.Info, $"Attempting to start WebSocket server on ws://{ConfigManager.Instance.Values.ServerAddress}:42420...");
 
-            webSocketServer = new WebSocketServer($"ws://{ConfigManager.Instance.Values.ServerAddress}:{ConfigManager.Instance.Values.ServerPort}");
+            webSocketServer = new WebSocketServer($"ws://{ConfigManager.Instance.Values.ServerAddress}:42420");
             webSocketServer.AddWebSocketService<NeoWebSocketBehaviour>("/neo");
             webSocketServer.Start();
 
