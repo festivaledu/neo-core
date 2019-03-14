@@ -1,7 +1,5 @@
 ﻿// ReSharper disable InconsistentNaming
 
-using System;
-using Neo.Core.Cryptography;
 using Neo.Core.Shared;
 
 namespace Neo.Core.Config
@@ -32,7 +30,7 @@ namespace Neo.Core.Config
         ///     The name of the server.
         /// </summary>
         [EditableProperty("Servername")]
-        public string ServerName { get; set; } = "Neo Server";
+        public string ServerName { get; set; } = "neoChat Server";
 
         /// <summary>
         ///     The port the server is listening on.
