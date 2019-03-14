@@ -62,6 +62,7 @@ namespace Neo.Core.Networking
             { "neo.global.read", "Nachrichten lesen" },
             { "neo.global.write", "Nachrichten schreiben" },
             { "neo.group.create", "Gruppe erstellen" },
+            { "neo.group.edit", "Gruppe bearbeiten" },
             { "neo.group.delete", "Gruppe löschen" },
             { "neo.moderate.ban", "Benutzer bannen" },
             { "neo.moderate.kick", "Benutzer kicken" },
