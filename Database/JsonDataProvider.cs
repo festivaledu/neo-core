@@ -15,7 +15,7 @@ namespace Neo.Core.Database
         }
 
         public override void Load() {
-            Logger.Instance.Log(LogLevel.Info, $"Loading data from {directoryPath} using a JsonDataProvider");
+            Logger.Instance.Log(LogLevel.Info, $"Loading data...");
 
             var dataPath = new DirectoryInfo(directoryPath);
 
@@ -32,7 +32,7 @@ namespace Neo.Core.Database
                 File.WriteAllText(channelsPath.FullName, JsonConvert.SerializeObject(server.Channels, Formatting.Indented));
                 File.WriteAllText(groupsPath.FullName, JsonConvert.SerializeObject(server.Groups, Formatting.Indented));
 
-                Logger.Instance.Log(LogLevel.Ok, "Data directory successfully created");
+                Logger.Instance.Log(LogLevel.Ok, "Data directory successfully created.");
             }
 
             if (!accountsPath.Exists || accountsPath.Length == 0) {
@@ -54,11 +54,11 @@ namespace Neo.Core.Database
             server.Channels = JsonConvert.DeserializeObject<List<Channel>>(File.ReadAllText(channelsPath.FullName));
             server.Groups = JsonConvert.DeserializeObject<List<Group>>(File.ReadAllText(groupsPath.FullName));
 
-            Logger.Instance.Log(LogLevel.Ok, "Data successfully loaded");
+            Logger.Instance.Log(LogLevel.Ok, "Data successfully loaded.");
         }
 
         public override void Save() {
-            Logger.Instance.Log(LogLevel.Info, $"Saving data to {directoryPath} using a JsonDataProvider");
+            Logger.Instance.Log(LogLevel.Info, $"Saving data...");
             var dataPath = new DirectoryInfo(directoryPath);
 
             var accountsPath = new FileInfo(Path.Combine(dataPath.FullName, "accounts.json"));
@@ -73,7 +73,7 @@ namespace Neo.Core.Database
             File.WriteAllText(channelsPath.FullName, JsonConvert.SerializeObject(channels, Formatting.Indented));
             File.WriteAllText(groupsPath.FullName, JsonConvert.SerializeObject(groups, Formatting.Indented));
 
-            Logger.Instance.Log(LogLevel.Ok, "Data successfully saved");
+            Logger.Instance.Log(LogLevel.Ok, "Data successfully saved.");
         }
     }
 }

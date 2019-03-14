@@ -136,7 +136,6 @@ namespace Neo.Core.Networking
                         { "*", Permission.Allow }
                     }
                 });
-                Logger.Instance.Log(LogLevel.Debug, "No root account existed. Default root account created");
             }
 
             Channels.ForEach(_ => _.MemberIds.Remove(UserManager.GetRoot().InternalId));
@@ -156,7 +155,6 @@ namespace Neo.Core.Networking
                 });
 
                 ChannelManager.GetMainChannel().MemberIds.AddRange(Accounts.FindAll(a => a.Email != "root@internal.neo").Select(a => a.InternalId));
-                Logger.Instance.Log(LogLevel.Debug, "No main channel existed. Default main channel created");
             }
 
             if (GroupManager.GetAdminGroup() == null) {
@@ -172,7 +170,6 @@ namespace Neo.Core.Networking
                     SortValue = 999
                 });
                 DataProvider.Save();
-                Logger.Instance.Log(LogLevel.Debug, "No admin group existed. Default admin group created");
             }
 
             if (GroupManager.GetGuestGroup() == null) {
@@ -189,7 +186,6 @@ namespace Neo.Core.Networking
                     SortValue = 0
                 });
                 DataProvider.Save();
-                Logger.Instance.Log(LogLevel.Debug, "No guest group existed. Default guest group created");
             }
 
             if (GroupManager.GetUserGroup() == null) {
@@ -205,7 +201,6 @@ namespace Neo.Core.Networking
                     SortValue = 1
                 });
                 DataProvider.Save();
-                Logger.Instance.Log(LogLevel.Debug, "No user group existed. Default user group created");
             }
 
             foreach (var pluginFile in new DirectoryInfo(pluginDirectoryPath).EnumerateFiles("*.dll")) {
