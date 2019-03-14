@@ -23,7 +23,7 @@ namespace Neo.Core.Config
         /// <param name="user">The <see cref="User"/> editing the settings.</param>
         /// <returns>Returns <c>true</c> when the model was applied successfully, otherwise <c>false</c>.</returns>
         public static bool EditSettings(string scope, dynamic model, User user) {
-            if (!user.IsAuthorized($"neo.{scope}.edit")) {
+            if (!user.IsAuthorized($"neo.{scope}.edit") && scope != "channel" && scope != "account") {
                 return false;
             }
 
@@ -65,6 +65,10 @@ namespace Neo.Core.Config
                     return false;
                 }
 
+                if (!user.IsAuthorized($"neo.{scope}.edit") && !channel.Owner.Equals(user.InternalId)) {
+                    return false;
+                }
+
                 if (channel.Password == "true") {
                     channel.Password = Pool.Server.Channels[index].Password;
                 }
@@ -73,7 +77,7 @@ namespace Neo.Core.Config
                 Pool.Server.DataProvider.Save();
                 ChannelManager.RefreshChannels();
             }
-            
+
             return true;
         }
 

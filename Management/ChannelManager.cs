@@ -101,7 +101,7 @@ namespace Neo.Core.Management
         /// <param name="deletor">The <see cref="User"/> who deletes the <see cref="Channel"/>.</param>
         /// <returns>Returns <c>false</c> if the user is not authorized to delete channels. Otherwise <c>true</c>.</returns>
         public static bool DeleteChannel(this Channel channel, User deletor) {
-            if (!deletor.IsAuthorized("neo.channel.delete")) {
+            if (!deletor.IsAuthorized("neo.channel.delete") && !channel.Owner.Equals(deletor.InternalId)) {
                 return false;
             }
 
