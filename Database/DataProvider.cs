@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 
 namespace Neo.Core.Database
 {
-    // TODO: Add docs
     public abstract class DataProvider
     {
         protected BaseServer server;
@@ -44,11 +43,6 @@ namespace Neo.Core.Database
 
         protected void PrepareChannels() {
             channels = server.Channels.Select(_ => JsonConvert.DeserializeObject<Channel>(JsonConvert.SerializeObject(_))).ToList();
-
-            // TODO: Remove expired channels
-
-            // Remove main channel
-            //channels.RemoveAll(c => c.Attributes.ContainsKey("neo.channeltype") && c.Attributes["neo.channeltype"].ToString() == "main");
 
             foreach (var channel in channels) {
                 // Remove all active members

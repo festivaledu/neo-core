@@ -51,9 +51,14 @@ namespace Neo.Core.Management
                 EventService.RaiseEvent(EventType.GroupJoined, new JoinElementEventArgs<Group>(member, group));
             }
         }
-
-        // TODO: Add docs
-        public static GroupActionResult CreateGroup(Group group, User creator) {
+        
+        /// <summary>
+        ///     Creates a new <see cref="Group"/> on behalf of an <see cref="User"/>.
+        /// </summary>
+        /// <param name="group">The <see cref="Group"/> to create.</param>
+        /// <param name="creator">The <see cref="User"/> to create the <see cref="Group"/> for.</param>
+        /// <returns>Returns the result of this action.</returns>
+        public static GroupActionResult CreateGroup(this User creator, Group group) {
             if (!creator.IsAuthorized("neo.group.create")) {
                 return GroupActionResult.NotAllowed;
             }
@@ -68,8 +73,13 @@ namespace Neo.Core.Management
             return GroupActionResult.Success;
         }
 
-        // TODO: Add docs
-        public static GroupActionResult DeleteGroup(Group group, User deletor) {
+        /// <summary>
+        ///     Deletes a <see cref="Group"/> on behalf of an <see cref="User"/>.
+        /// </summary>
+        /// <param name="group">The <see cref="Group"/> to delete.</param>
+        /// <param name="deletor">The <see cref="User"/> to delete the <see cref="Group"/> for.</param>
+        /// <returns>Returns the result of this action.</returns>
+        public static GroupActionResult DeleteGroup(this Group group, User deletor) {
             if (!deletor.IsAuthorized("neo.group.delete")) {
                 return GroupActionResult.NotAllowed;
             }
@@ -159,12 +169,23 @@ namespace Neo.Core.Management
         }
     }
 
-    // TODO: Add docs
+    /// <summary>
+    ///     Specifies the result of a group action.
+    /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum GroupActionResult
     {
+        /// <summary>
+        ///     The action was successful.
+        /// </summary>
         Success,
+        /// <summary>
+        ///     The action failed because the user isn't authorized.
+        /// </summary>
         NotAllowed,
+        /// <summary>
+        ///     The action failed because the id is already used.
+        /// </summary>
         IdInUse,
     }
 }

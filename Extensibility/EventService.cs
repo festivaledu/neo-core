@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Neo.Core.Extensibility.Events;
 
 namespace Neo.Core.Extensibility
@@ -41,13 +40,10 @@ namespace Neo.Core.Extensibility
         /// </summary>
         /// <param name="type">The <see cref="EventType"/> to raise.</param>
         /// <param name="args">The event arguments to pass.</param>
-        /// <returns>Returns a <see cref="Task"/> that represents the asynchronous operation.</returns>
-        public static async Task RaiseEvent(EventType type, dynamic args) {
+        public static void RaiseEvent(EventType type, dynamic args) {
             if (listeners.ContainsKey(type) && listeners[type] != null) {
                 foreach (var listener in listeners[type]) {
-
-                    // Convert returned object back to Task to allow await
-                    await (Task) listener.Method.Invoke(listener.Plugin, new[] { args });
+                    listener.Method.Invoke(listener.Plugin, new[] { args });
                 }
             }
         }

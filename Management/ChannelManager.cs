@@ -70,26 +70,26 @@ namespace Neo.Core.Management
         /// <summary>
         ///     Creates a new <see cref="Channel"/> for a <see cref="User"/>.
         /// </summary>
-        /// <param name="user">The <see cref="User"/> who creates the <see cref="Channel"/>.</param>
+        /// <param name="creator">The <see cref="User"/> who creates the <see cref="Channel"/>.</param>
         /// <param name="channel">The <see cref="Channel"/> to create.</param>
         /// <returns>Returns <c>false</c> if a channel with the given id already exists or the user is not authorized to create channels. Otherwise <c>true</c>.</returns>
-        public static bool CreateChannel(this User user, Channel channel) {
+        public static bool CreateChannel(this User creator, Channel channel) {
             if (Pool.Server.Channels.Any(_ => _.Id == channel.Id)) {
                 return false;
             }
 
-            if (!user.IsAuthorized("neo.channel.create")) {
+            if (!creator.IsAuthorized("neo.channel.create")) {
                 return false;
             }
 
             channel.Attributes.Add("neo.origin", "neo.client");
-            channel.Owner = user.InternalId;
+            channel.Owner = creator.InternalId;
             Pool.Server.Channels.Add(channel);
 
             RefreshChannels();
 
-            AddUserToChannel(user, channel);
-            MoveToChannel(user, channel);
+            AddUserToChannel(creator, channel);
+            MoveToChannel(creator, channel);
 
             return true;
         }
@@ -98,10 +98,10 @@ namespace Neo.Core.Management
         ///     Deletes a <see cref="Channel"/> for a <see cref="User"/>.
         /// </summary>
         /// <param name="channel">The <see cref="Channel"/> to delete.</param>
-        /// <param name="user">The <see cref="User"/> who deletes the <see cref="Channel"/>.</param>
+        /// <param name="deletor">The <see cref="User"/> who deletes the <see cref="Channel"/>.</param>
         /// <returns>Returns <c>false</c> if the user is not authorized to delete channels. Otherwise <c>true</c>.</returns>
-        public static bool DeleteChannel(this Channel channel, User user) {
-            if (!user.IsAuthorized("neo.channel.delete")) {
+        public static bool DeleteChannel(this Channel channel, User deletor) {
+            if (!deletor.IsAuthorized("neo.channel.delete")) {
                 return false;
             }
 
@@ -119,7 +119,13 @@ namespace Neo.Core.Management
             return Pool.Server.Channels.Find(_ => _.Attributes.ContainsKey("neo.channeltype") && _.Attributes["neo.channeltype"].ToString() == "main");
         }
 
-        // TODO: Add docs
+        /// <summary>
+        ///     Joins a <see cref="Channel"/> by adding the the <see cref="User"/> to the member list when allowed.
+        /// </summary>
+        /// <param name="user">The <see cref="User"/> to add.</param>
+        /// <param name="channel">The <see cref="Channel"/> to add the <see cref="User"/> to.</param>
+        /// <param name="password">The password entered by the client.</param>
+        /// <returns>Returns the result of this action.</returns>
         public static ChannelActionResult JoinChannel(this User user, Channel channel, string password = "") {
             if (!user.IsAuthorized("neo.channel.join.$")) {
                 return ChannelActionResult.NotAllowed;
@@ -169,7 +175,12 @@ namespace Neo.Core.Management
             return ChannelActionResult.Success;
         }
 
-        // TODO: Add docs
+        
+        /// <summary>
+        ///     Leaves a <see cref="Channel"/> by removing the <see cref="User"/> from the member list.
+        /// </summary>
+        /// <param name="user">The <see cref="User"/> to remove.</param>
+        /// <param name="channel">The <see cref="Channel"/> to remove the <see cref="User"/> from.</param>
         public static void LeaveChannel(this User user, Channel channel) {
             var beforeChannelLeaveEvent = new Before<LeaveElementEventArgs<Channel>>(new LeaveElementEventArgs<Channel>(user, channel));
             EventService.RaiseEvent(EventType.BeforeChannelLeave, beforeChannelLeaveEvent);
@@ -202,13 +213,11 @@ namespace Neo.Core.Management
                     var currentActiveChannel = user.ActiveChannel;
 
                     if (currentActiveChannel != null) {
-                        // user.LeaveChannel(user.ActiveChannel);
                         user.ActiveChannel.ActiveMemberIds.Remove(user.InternalId);
                     }
                     
                     channel.ActiveMemberIds.Add(user.InternalId);
-
-                    // Reference issue solution
+                    
                     var index = Pool.Server.Channels.FindIndex(_ => _.InternalId.Equals(channel.InternalId));
                     Pool.Server.Channels[index] = channel;
 
@@ -267,15 +276,35 @@ namespace Neo.Core.Management
         }
     }
 
-    // TODO: Add docs
+    /// <summary>
+    ///     Specifies the result of a channel action.
+    /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum ChannelActionResult
     {
+        /// <summary>
+        ///     The action was successful.
+        /// </summary>
         Success,
+        /// <summary>
+        ///     The action failed because the user isn't authorized.
+        /// </summary>
         NotAllowed,
+        /// <summary>
+        ///     The action failed because the user is blacklisted.
+        /// </summary>
         Blacklisted,
+        /// <summary>
+        ///     The action failed because the user entered a wrong password.
+        /// </summary>
         IncorrectPassword,
+        /// <summary>
+        ///     The action failed because the channel is full.
+        /// </summary>
         Full,
+        /// <summary>
+        ///     The action failed because the user isn't whitelisted.
+        /// </summary>
         NotWhitelisted
     }
 }

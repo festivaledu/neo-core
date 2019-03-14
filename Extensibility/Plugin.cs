@@ -2,7 +2,6 @@
 // ReSharper disable UnusedMember.Global
 
 using System;
-using System.Threading.Tasks;
 using Neo.Core.Communication;
 using Neo.Core.Extensibility.Events;
 using Neo.Core.Networking;
@@ -26,60 +25,60 @@ namespace Neo.Core.Extensibility
         public abstract string Namespace { get; }
 
 
-        public virtual async Task OnInitialize(string storagePath) { }
-        public virtual async Task OnDispose() { }
+        public virtual void OnInitialize(string storagePath) { }
+        public virtual void OnDispose() { }
 
-        public virtual async Task OnCustom(CustomEventArgs args) { }
+        public virtual void OnCustom(CustomEventArgs args) { }
 
-        public virtual async Task OnServerInitialized(BaseServer server) { }
+        public virtual void OnServerInitialized(BaseServer server) { }
 
-        public virtual async Task OnConnected(ConnectEventArgs args) { }
-        public virtual async Task OnDisconnected(DisconnectEventArgs args) { }
-        public virtual async Task OnServerJoined(JoinElementEventArgs<BaseServer> args) { }
-        public virtual async Task OnLogin(LoginEventArgs args) { }
-        public virtual async Task OnServerLeft(LeaveElementEventArgs<BaseServer> args) { }
+        public virtual void OnConnected(ConnectEventArgs args) { }
+        public virtual void OnDisconnected(DisconnectEventArgs args) { }
+        public virtual void OnServerJoined(JoinElementEventArgs<BaseServer> args) { }
+        public virtual void OnLogin(LoginEventArgs args) { }
+        public virtual void OnServerLeft(LeaveElementEventArgs<BaseServer> args) { }
 
-        public virtual async Task OnBeforePackageReceive(Before<ReceiveElementEventArgs<Package>> args) { }
-        public virtual async Task OnPackageReceived(ReceiveElementEventArgs<Package> args) { }
+        public virtual void OnBeforePackageReceive(Before<ReceiveElementEventArgs<Package>> args) { }
+        public virtual void OnPackageReceived(ReceiveElementEventArgs<Package> args) { }
 
-        public virtual async Task OnBeforeAccountCreate(Before<CreateElementEventArgs<Account>> args) { }
-        public virtual async Task OnAccountCreated(CreateElementEventArgs<Account> args) { }
-        public virtual async Task OnBeforeChannelCreate(Before<CreateElementEventArgs<Channel>> args) { }
-        public virtual async Task OnChannelCreated(CreateElementEventArgs<Channel> args) { }
-        public virtual async Task OnBeforeGroupCreate(Before<CreateElementEventArgs<Group>> args) { }
-        public virtual async Task OnGroupCreated(CreateElementEventArgs<Group> args) { }
+        public virtual void OnBeforeAccountCreate(Before<CreateElementEventArgs<Account>> args) { }
+        public virtual void OnAccountCreated(CreateElementEventArgs<Account> args) { }
+        public virtual void OnBeforeChannelCreate(Before<CreateElementEventArgs<Channel>> args) { }
+        public virtual void OnChannelCreated(CreateElementEventArgs<Channel> args) { }
+        public virtual void OnBeforeGroupCreate(Before<CreateElementEventArgs<Group>> args) { }
+        public virtual void OnGroupCreated(CreateElementEventArgs<Group> args) { }
 
-        public virtual async Task OnBeforeAccountEdit(Before<EditElementEventArgs<Account>> args) { }
-        public virtual async Task OnAccountEdited(EditElementEventArgs<Account> args) { }
-        public virtual async Task OnBeforeChannelEdit(Before<EditElementEventArgs<Channel>> args) { }
-        public virtual async Task OnChannelEdited(EditElementEventArgs<Channel> args) { }
-        public virtual async Task OnBeforeGroupEdit(Before<EditElementEventArgs<Group>> args) { }
-        public virtual async Task OnGroupEdited(EditElementEventArgs<Group> args) { }
-        public virtual async Task OnBeforeIdentityEdit(Before<EditElementEventArgs<Identity>> args) { }
-        public virtual async Task OnIdentityEdited(EditElementEventArgs<Identity> args) { }
+        public virtual void OnBeforeAccountEdit(Before<EditElementEventArgs<Account>> args) { }
+        public virtual void OnAccountEdited(EditElementEventArgs<Account> args) { }
+        public virtual void OnBeforeChannelEdit(Before<EditElementEventArgs<Channel>> args) { }
+        public virtual void OnChannelEdited(EditElementEventArgs<Channel> args) { }
+        public virtual void OnBeforeGroupEdit(Before<EditElementEventArgs<Group>> args) { }
+        public virtual void OnGroupEdited(EditElementEventArgs<Group> args) { }
+        public virtual void OnBeforeIdentityEdit(Before<EditElementEventArgs<Identity>> args) { }
+        public virtual void OnIdentityEdited(EditElementEventArgs<Identity> args) { }
 
-        public virtual async Task OnBeforeChannelJoin(Before<JoinElementEventArgs<Channel>> args) { }
-        public virtual async Task OnChannelJoined(JoinElementEventArgs<Channel> args) { }
-        public virtual async Task OnBeforeGroupJoin(Before<JoinElementEventArgs<Group>> args) { }
-        public virtual async Task OnGroupJoined(JoinElementEventArgs<Group> args) { }
+        public virtual void OnBeforeChannelJoin(Before<JoinElementEventArgs<Channel>> args) { }
+        public virtual void OnChannelJoined(JoinElementEventArgs<Channel> args) { }
+        public virtual void OnBeforeGroupJoin(Before<JoinElementEventArgs<Group>> args) { }
+        public virtual void OnGroupJoined(JoinElementEventArgs<Group> args) { }
 
-        public virtual async Task OnBeforeChannelLeave(Before<LeaveElementEventArgs<Channel>> args) { }
-        public virtual async Task OnChannelLeft(LeaveElementEventArgs<Channel> args) { }
-        public virtual async Task OnBeforeGroupLeave(Before<LeaveElementEventArgs<Group>> args) { }
-        public virtual async Task OnGroupLeft(LeaveElementEventArgs<Group> args) { }
+        public virtual void OnBeforeChannelLeave(Before<LeaveElementEventArgs<Channel>> args) { }
+        public virtual void OnChannelLeft(LeaveElementEventArgs<Channel> args) { }
+        public virtual void OnBeforeGroupLeave(Before<LeaveElementEventArgs<Group>> args) { }
+        public virtual void OnGroupLeft(LeaveElementEventArgs<Group> args) { }
 
-        public virtual async Task OnBeforeAccountRemove(Before<RemoveElementEventArgs<Account>> args) { }
-        public virtual async Task OnAccountRemoved(RemoveElementEventArgs<Account> args) { }
-        public virtual async Task OnBeforeChannelRemove(Before<RemoveElementEventArgs<Channel>> args) { }
-        public virtual async Task OnChannelRemoved(RemoveElementEventArgs<Channel> args) { }
-        public virtual async Task OnBeforeGroupRemove(Before<RemoveElementEventArgs<Group>> args) { }
-        public virtual async Task OnGroupRemoved(RemoveElementEventArgs<Group> args) { }
+        public virtual void OnBeforeAccountRemove(Before<RemoveElementEventArgs<Account>> args) { }
+        public virtual void OnAccountRemoved(RemoveElementEventArgs<Account> args) { }
+        public virtual void OnBeforeChannelRemove(Before<RemoveElementEventArgs<Channel>> args) { }
+        public virtual void OnChannelRemoved(RemoveElementEventArgs<Channel> args) { }
+        public virtual void OnBeforeGroupRemove(Before<RemoveElementEventArgs<Group>> args) { }
+        public virtual void OnGroupRemoved(RemoveElementEventArgs<Group> args) { }
 
         [Obsolete]
-        public virtual async Task OnTyping(TypingEventArgs args) { }
+        public virtual void OnTyping(TypingEventArgs args) { }
 
-        public virtual async Task OnBeforeInput(Before<InputEventArgs> args) { }
-        public virtual async Task OnInput(InputEventArgs args) { }
+        public virtual void OnBeforeInput(Before<InputEventArgs> args) { }
+        public virtual void OnInput(InputEventArgs args) { }
     }
 }
  

@@ -52,8 +52,8 @@ namespace Neo.Core.Networking
 
         public Dictionary<string, string> KnownPermissions { get; set; } = new Dictionary<string, string> {
             { "neo.channel.create", "Channel erstellen" },
-            { "neo.channel.edit", "Channel bearbeiten" },
             { "neo.channel.delete", "Channel löschen" },
+            { "neo.channel.edit", "Channel bearbeiten" },
             { "neo.channel.join.$", "Channel betreten" },
             { "neo.channel.join.ignoreblacklist", "Channel trotz Blacklist betreten" },
             { "neo.channel.join.ignorelimit", "Channel trotz Limit betreten" },
@@ -62,8 +62,8 @@ namespace Neo.Core.Networking
             { "neo.global.read", "Nachrichten lesen" },
             { "neo.global.write", "Nachrichten schreiben" },
             { "neo.group.create", "Gruppe erstellen" },
-            { "neo.group.edit", "Gruppe bearbeiten" },
             { "neo.group.delete", "Gruppe löschen" },
+            { "neo.group.edit", "Gruppe bearbeiten" },
             { "neo.moderate.ban", "Benutzer bannen" },
             { "neo.moderate.kick", "Benutzer kicken" },
             { "neo.server.edit", "Server-Einstellungen bearbeiten" }
@@ -116,7 +116,7 @@ namespace Neo.Core.Networking
         public void Initialize(string configPath, string dataDirectoryPath, string pluginDirectoryPath) {
             ConfigManager.Instance.Load(configPath);
             Pool.Server = this;
-            this.dataPath = dataDirectoryPath;
+            dataPath = dataDirectoryPath;
             DataProvider = new JsonDataProvider(this, dataDirectoryPath);
             DataProvider.Load();
 
