@@ -50,6 +50,9 @@ namespace Neo.Core.Networking
         /// </summary>
         public List<User> Users { get; set; } = new List<User>();
 
+        /// <summary>
+        ///     Contains all known permissions and the corresponding human-readable title.
+        /// </summary>
         public Dictionary<string, string> KnownPermissions { get; set; } = new Dictionary<string, string> {
             { "neo.channel.create", "Channel erstellen" },
             { "neo.channel.delete", "Channel löschen" },
@@ -69,8 +72,14 @@ namespace Neo.Core.Networking
             { "neo.server.edit", "Server-Einstellungen bearbeiten" }
         };
 
+        /// <summary>
+        ///     Whether the avatar server is working.
+        /// </summary>
         public bool AvatarServerAvailable { get; set; } = true;
 
+        /// <summary>
+        ///     Provides access to the database.
+        /// </summary>
         public DataProvider DataProvider { get; set; }
         
         // ReSharper disable once InconsistentNaming
