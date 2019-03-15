@@ -1,0 +1,654 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Neo.Core.Authentication.Authenticator" Collapsed="true">
+    <Position X="25.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAEIAAAABAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Authentication\Authenticator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Authorization.Authorizer" Collapsed="true">
+    <Position X="27.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAACAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Authorization\Authorizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.AesPackageContent" Collapsed="true">
+    <Position X="24" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Communication\Packages\AesPackageContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.AvatarPackageContent" Collapsed="true">
+    <Position X="29.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Communication\Packages\AvatarPackageContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.CreateChannelPackageContent">
+    <Position X="17.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAQQAAAAAAAACAEAAAAAAAAA=</HashCode>
+      <FileName>Communication\Packages\CreateChannelPackageContent.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Lifetime" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.CreateGroupPackageContent" Collapsed="true">
+    <Position X="25.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Communication\Packages\CreateGroupPackageContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.CreatePunishmentPackageContent" Collapsed="true">
+    <Position X="27.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Communication\Packages\CreatePunishmentPackageContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.EditProfilePackageContent" Collapsed="true">
+    <Position X="32.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Communication\Packages\EditProfilePackageContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.EditProfileResponsePackageContent" Collapsed="true">
+    <Position X="24" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAEAAAAAAAEA=</HashCode>
+      <FileName>Communication\Packages\EditProfileResponsePackageContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.EditSettingsPackageContent" Collapsed="true">
+    <Position X="25.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Communication\Packages\EditSettingsPackageContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.EnterChannelPackageContent" Collapsed="true">
+    <Position X="27.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAQAAAAAAAA=</HashCode>
+      <FileName>Communication\Packages\EnterChannelPackageContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.EnterChannelResponsePackageContent">
+    <Position X="13.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Communication\Packages\EnterChannelResponsePackageContent.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Channel" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.InputPackageContent" Collapsed="true">
+    <Position X="24" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Communication\Packages\InputPackageContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.LoginResponsePackageContent">
+    <Position X="5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAEAAAEAAAACAAAAAAAAACAAAEIAAAAAAEg=</HashCode>
+      <FileName>Communication\Packages\LoginResponsePackageContent.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Account" />
+      <Property Name="Identity" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.MemberLoginPackageContent" Collapsed="true">
+    <Position X="29.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Communication\Packages\MemberLoginPackageContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.MessagePackageContent">
+    <Position X="16.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAIEAAAAAAACAAAAAAABAAAAAEQAIAAAQAA=</HashCode>
+      <FileName>Communication\Packages\MessagePackageContent.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Identity" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.OpenSettingsResponsePackageContent" Collapsed="true">
+    <Position X="24" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Communication\Packages\OpenSettingsResponsePackageContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.RegisterPackageContent" Collapsed="true">
+    <Position X="27.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAAAAAAAAAAQAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Communication\Packages\RegisterPackageContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Communication.Packages.ServerMetaResponsePackageContent" Collapsed="true">
+    <Position X="29.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAQAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Communication\Packages\ServerMetaResponsePackageContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Communication.Container" Collapsed="true">
+    <Position X="24" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Communication\Container.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Communication.Package">
+    <Position X="21.5" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAQAAgAAAAAA=</HashCode>
+      <FileName>Communication\Package.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Type" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Neo.Core.Config.ConfigManager">
+    <Position X="12.5" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAAAAAAAAAAAAAAAAAAABAAEAAQAAgAAAAAAA=</HashCode>
+      <FileName>Config\ConfigManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Values" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Neo.Core.Config.ConfigValues" Collapsed="true">
+    <Position X="12.5" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAKEAABIAAAQAAAAgAAAAAQQAAAAAAA=</HashCode>
+      <FileName>Config\ConfigValues.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Config.EditablePropertyAttribute" Collapsed="true">
+    <Position X="31" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Config\EditablePropertyAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Config.SettingsProvider" Collapsed="true">
+    <Position X="31" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAgAAA=</HashCode>
+      <FileName>Config\SettingsProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Cryptography.NeoCryptoProvider" Collapsed="true">
+    <Position X="31" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAABCAAAAAkEAAEAAAAABAAIAIQAAAAAAAAAA=</HashCode>
+      <FileName>Cryptography\NeoCryptoProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Database.DataProvider">
+    <Position X="10.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAgIACAAAAAAAAAAIAAAAAAIAAAAAAAAARAAAAAAI=</HashCode>
+      <FileName>Database\DataProvider.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="server" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="accounts" />
+      <Field Name="channels" />
+      <Field Name="groups" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Neo.Core.Database.JsonDataProvider">
+    <Position X="10.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Database\JsonDataProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Extensibility.Events.Before&lt;TEvent&gt;" Collapsed="true">
+    <Position X="31" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extensibility\Events\Before.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Extensibility.Events.ConnectEventArgs">
+    <Position X="2.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Extensibility\Events\ConnectEventArgs.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Client" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Neo.Core.Extensibility.Events.CreateElementEventArgs&lt;TElement&gt;" BaseTypeListCollapsed="true">
+    <Position X="2.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Extensibility\Events\CreateElementEventArgs.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Creator" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Neo.Core.Extensibility.Events.CustomEventArgs" Collapsed="true">
+    <Position X="29.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extensibility\Events\CustomEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Extensibility.Events.DisconnectEventArgs">
+    <Position X="3.5" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAgAABAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Extensibility\Events\DisconnectEventArgs.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Client" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Neo.Core.Extensibility.Events.EditElementEventArgs&lt;TElement&gt;" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extensibility\Events\EditElementEventArgs.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Editor" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Neo.Core.Extensibility.Events.InputEventArgs" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Extensibility\Events\InputEventArgs.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Sender" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Neo.Core.Extensibility.Events.JoinElementEventArgs&lt;TElement&gt;" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extensibility\Events\JoinElementEventArgs.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Joiner" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Neo.Core.Extensibility.Events.LeaveElementEventArgs&lt;TElement&gt;" BaseTypeListCollapsed="true">
+    <Position X="11.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extensibility\Events\LeaveElementEventArgs.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Leaver" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Neo.Core.Extensibility.Events.ReceiveElementEventArgs&lt;TElement&gt;" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Extensibility\Events\ReceiveElementEventArgs.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Sender" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Neo.Core.Extensibility.Events.RemoveElementEventArgs&lt;TElement&gt;" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extensibility\Events\RemoveElementEventArgs.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Remover" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Neo.Core.Extensibility.Events.TypingEventArgs">
+    <Position X="11.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAgAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Extensibility\Events\TypingEventArgs.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Channel" />
+      <Property Name="User" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Neo.Core.Extensibility.EventListenerAttribute">
+    <Position X="20.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Extensibility\EventListenerAttribute.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Type" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Neo.Core.Extensibility.EventService" Collapsed="true">
+    <Position X="29.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAIAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Extensibility\EventService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Extensibility.Listener">
+    <Position X="17.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extensibility\Listener.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Plugin" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Neo.Core.Extensibility.Plugin" Collapsed="true">
+    <Position X="17.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IEAAAAJAAAIAAAAoAIEjAAJCgpQKIgKMEAEkBEgAABA=</HashCode>
+      <FileName>Extensibility\Plugin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Extensibility.PluginLoader" Collapsed="true">
+    <Position X="25.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgQAAAAAAAA=</HashCode>
+      <FileName>Extensibility\PluginLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Localization.LocaleManager" Collapsed="true">
+    <Position X="25.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAIABAAgAACAAAAAAAAABAAEAAQAAAAAAAAAA=</HashCode>
+      <FileName>Localization\LocaleManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Management.ChannelManager" Collapsed="true">
+    <Position X="32.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAECICAAAAAAAAEgAASAAAAHAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Management\ChannelManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Management.GroupManager" Collapsed="true">
+    <Position X="31" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAUAAAAAAAEAAAAAAAAAACAAAACBAAAQJQ=</HashCode>
+      <FileName>Management\GroupManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Management.UserManager" Collapsed="true">
+    <Position X="24" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAACAAAAAA=</HashCode>
+      <FileName>Management\UserManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Networking.BaseServer">
+    <Position X="8.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAGAAACCAISEAASAAAAJAAAAEAAKEMAAQAAAAFAA=</HashCode>
+      <FileName>Networking\BaseServer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DataProvider" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Accounts" />
+      <Property Name="Channels" />
+      <Property Name="Clients" />
+      <Property Name="Groups" />
+      <Property Name="Users" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Neo.Core.Networking.Client">
+    <Position X="3.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAEAAgBAAAAAAACAAAQAAAgAAAAAAAAA=</HashCode>
+      <FileName>Networking\Client.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Networking.HttpServer" Collapsed="true">
+    <Position X="32.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQUAAAgAAAAAAKYAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Networking\HttpServer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Networking.NeoWebSocketBehaviour" Collapsed="true">
+    <Position X="32.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAACAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAA=</HashCode>
+      <FileName>Networking\NeoWebSocketBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Networking.Target" Collapsed="true">
+    <Position X="32.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAEAABAABAAAAAAAAEAAAIBAAAAAAIA=</HashCode>
+      <FileName>Networking\Target.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Shared.Account" BaseTypeListCollapsed="true">
+    <Position X="8" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAACAAAAAAAAAgAAAQAAAIAAACEEAAAAAAAAA=</HashCode>
+      <FileName>Shared\Account.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Identity" />
+      <Property Name="Member" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Groups" />
+      <Property Name="Permissions" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Neo.Core.Shared.Channel" BaseTypeListCollapsed="true">
+    <Position X="13.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECAQGAAMACCAAAAAIgAUQQAAAAAAACAEQEAYABAgA=</HashCode>
+      <FileName>Shared\Channel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Lifetime" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ActiveMembers" />
+      <Property Name="Members" />
+      <Property Name="Messages" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Neo.Core.Shared.Group" BaseTypeListCollapsed="true">
+    <Position X="6" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAgAQQQAAAAAAAAEAAEACAAAAA=</HashCode>
+      <FileName>Shared\Group.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Members" />
+      <Property Name="Permissions" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Neo.Core.Shared.Guest">
+    <Position X="9.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Shared\Guest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Shared.Identity">
+    <Position X="11.25" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Shared\Identity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Shared.Logger" Collapsed="true">
+    <Position X="27.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAhAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Shared\Logger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Neo.Core.Shared.Member">
+    <Position X="7.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAgAAAQAAAAAAAAEEAAAAAAAEA=</HashCode>
+      <FileName>Shared\Member.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Account" />
+      <Property Name="Identity" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Groups" />
+      <Property Name="Permissions" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Neo.Core.Shared.Pool">
+    <Position X="8.25" Y="17" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Shared\Pool.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Server" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Neo.Core.Shared.User">
+    <Position X="8.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAABAAAAAAAAgAAAQAAAAAAAAEEAAAAAAEAQ=</HashCode>
+      <FileName>Shared\User.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ActiveChannel" />
+      <Property Name="Client" />
+      <Property Name="Identity" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Channels" />
+      <Property Name="Permissions" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Struct Name="Neo.Core.Cryptography.AesParameters" Collapsed="true">
+    <Position X="24" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAgAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cryptography\AesParameters.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="Neo.Core.Attribution.IAttributable" Collapsed="true">
+    <Position X="24" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Attribution\IAttributable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Neo.Core.Authorization.IAuthorizable" Collapsed="true">
+    <Position X="25.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Authorization\IAuthorizable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Neo.Core.Extensibility.Events.ICancellableEvent" Collapsed="true">
+    <Position X="27.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Extensibility\Events\ICancellableEvent.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Neo.Core.Authentication.AuthenticationResult" Collapsed="true">
+    <Position X="24" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAgAQAAAggAAAAAA=</HashCode>
+      <FileName>Authentication\AuthenticationResult.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Neo.Core.Authorization.Permission" Collapsed="true">
+    <Position X="5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAABAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Authorization\Permission.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Neo.Core.Communication.PackageType" Collapsed="true">
+    <Position X="21.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IQgAhUoAAiAQFIACIgIAIEAAEAABgrACAAAQJIIgARQ=</HashCode>
+      <FileName>Communication\Package.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Neo.Core.Extensibility.Events.EventType" Collapsed="true">
+    <Position X="20.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CEAQgAhgEIAAQAIAAAMTABACEAAAAIIQAEIBA5AABIo=</HashCode>
+      <FileName>Extensibility\Events\EventType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Neo.Core.Management.ChannelActionResult" Collapsed="true">
+    <Position X="25.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAEAAAAAQAAAAAAgAAAAAAAgAAgAAAAAA=</HashCode>
+      <FileName>Management\ChannelManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Neo.Core.Management.GroupActionResult" Collapsed="true">
+    <Position X="27.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAgAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Management\GroupManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Neo.Core.Shared.Lifespan">
+    <Position X="14.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAAAAAAAAAAQIAAAAAAAAAAAg=</HashCode>
+      <FileName>Shared\Lifespan.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Neo.Core.Shared.LogLevel" Collapsed="true">
+    <Position X="29.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAYAAAAAAAAAAAAAAAAEAAAABAEAEAAA=</HashCode>
+      <FileName>Shared\Logger.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
